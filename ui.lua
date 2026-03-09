@@ -265,7 +265,8 @@ end
 
 -- The main update loop (moved from the anonymous function in original ui.lua)
 ui.tick = 0
-function ui.OnUpdate(elapsed)
+function ui.OnUpdate()
+    local elapsed = arg1 or 0
     local config = Cursive.db.profile
     if not config.enabled then
         for i = 1, ui.maxButtons do ui.unitButtons[i]:Hide() end
@@ -400,7 +401,14 @@ function ui.OnUpdate(elapsed)
 end
 
 -- Initialize the UI
-Cursive:RegisterEvent("PLAYER_ENTERING_WORLD", function()
+function ui.Initialize()
     ui.Setup()
     CursiveFrame:SetScript("OnUpdate", ui.OnUpdate)
-end)
+    if Cursive.db.profile.enabled then
+        CursiveFrame:Show()
+        CursiveUnitsFrame:Show()
+    else
+        CursiveFrame:Hide()
+        CursiveUnitsFrame:Hide()
+    end
+end
