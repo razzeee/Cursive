@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Button name="CursiveUnitButtonTemplate" virtual="true" hidden="true" toplevel="true">
-        <Size x="190" y="42"/>
+        <Size x="190" y="24"/>
         <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true">
             <TileSize val="16"/>
             <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
@@ -113,8 +113,26 @@
                     </OnLoad>
                 </Scripts>
             </Frame>
+            <Frame name="$parentHover" hidden="true" toplevel="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentHealthBar">
+                        <Offset x="-2" y="2"/>
+                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentHealthBar">
+                        <Offset x="2" y="-2"/>
+                    </Anchor>
+                </Anchors>
+                <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+                    <EdgeSize val="10"/>
+                </Backdrop>
+                <Scripts>
+                    <OnLoad>
+                        this:SetBackdropBorderColor(1, 0.8, 0, 0.8)
+                    </OnLoad>
+                </Scripts>
+            </Frame>
             <StatusBar name="$parentHealthBar">
-                <Size x="180" y="18"/>
+                <Size x="180" y="24"/>
                 <Anchors>
                     <Anchor point="TOP">
                         <Offset x="0" y="-1"/>
@@ -134,7 +152,7 @@
                     </Layer>
                     <Layer level="OVERLAY">
                         <FontString name="$parentName" inherits="GameFontNormalLarge" justifyH="LEFT">
-                            <Size x="120" y="18"/>
+                            <Size x="120" y="24"/>
                             <Anchors>
                                 <Anchor point="LEFT">
                                     <Offset x="5" y="0"/>
@@ -142,7 +160,7 @@
                             </Anchors>
                         </FontString>
                         <FontString name="$parentHPText" inherits="GameFontNormalSmall" justifyH="RIGHT">
-                            <Size x="50" y="18"/>
+                            <Size x="50" y="24"/>
                             <Anchors>
                                 <Anchor point="RIGHT">
                                     <Offset x="-5" y="0"/>
@@ -188,6 +206,7 @@
             <EdgeSize val="16"/>
             <TileSize val="16"/>
             <BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+            <Color r="0" g="0" b="0" a="0.5"/>
         </Backdrop>
         <Layers>
             <Layer level="BACKGROUND">

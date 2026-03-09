@@ -55,6 +55,7 @@ function ui.UpdateBackdrop()
             tile = true, tileSize = 16, edgeSize = 16,
             insets = { left = 5, right = 5, top = top, bottom = 5 }
         })
+        CursiveFrame:SetBackdropColor(0, 0, 0, 0.5)
     else
         CursiveFrame:SetBackdrop(nil)
     end
@@ -122,7 +123,7 @@ function ui.UpdateLayout()
             hpText:SetJustifyH("LEFT")
             targetInd:SetPoint("RIGHT", healthBar, "LEFT", -2, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
-            raidIcon:SetPoint("CENTER", healthBar, "TOPLEFT", 5, 0)
+            raidIcon:SetPoint("CENTER", healthBar, "TOPRIGHT", -5, 0)
         else
             healthBar:SetPoint("TOP", btn, "TOP", 0, -1)
             nameText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
@@ -131,22 +132,22 @@ function ui.UpdateLayout()
             hpText:SetJustifyH("RIGHT")
             targetInd:SetPoint("LEFT", healthBar, "RIGHT", 2, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
-            raidIcon:SetPoint("CENTER", healthBar, "TOPRIGHT", -5, 0)
+            raidIcon:SetPoint("CENTER", healthBar, "TOPLEFT", 5, 0)
         end
 
-        -- Update curses icons layout (below health bar)
+        -- Update curses icons layout (overlapping health bar bottom)
         for j = 1, 5 do
             local curse = getglobal(btn:GetName().."Curse"..j)
             curse:ClearAllPoints()
             if config.invertbars then
                 if j == 1 then
-                    curse:SetPoint("TOPRIGHT", btn, "TOPRIGHT", -15, -20)
+                    curse:SetPoint("BOTTOMRIGHT", healthBar, "BOTTOMRIGHT", -5, 1)
                 else
                     curse:SetPoint("RIGHT", getglobal(btn:GetName().."Curse"..(j-1)), "LEFT", -2, 0)
                 end
             else
                 if j == 1 then
-                    curse:SetPoint("TOPLEFT", btn, "TOPLEFT", 15, -20)
+                    curse:SetPoint("BOTTOMLEFT", healthBar, "BOTTOMLEFT", 5, 1)
                 else
                     curse:SetPoint("LEFT", getglobal(btn:GetName().."Curse"..(j-1)), "RIGHT", 2, 0)
                 end
@@ -266,6 +267,7 @@ end
 
 -- Bar functions used by templates
 function ui.BarClick()
+    if not this.guid then return end
     if arg1 == "LeftButton" then
         TargetUnit(this.guid)
     elseif arg1 == "RightButton" then
@@ -278,11 +280,8 @@ end
 
 function ui.BarEnter()
     this.hover = true
-    if not this.guid then
-        local healthBar = getglobal(this:GetName().."HealthBar")
-        healthBar:SetBackdropBorderColor(1, 1, 1, 1)
-        return
-    end
+    getglobal(this:GetName().."Hover"):Show()
+    if not this.guid then return end
 
     if this.guid then
         GameTooltip_SetDefaultAnchor(GameTooltip, this)
@@ -293,6 +292,7 @@ end
 
 function ui.BarLeave()
     this.hover = false
+    getglobal(this:GetName().."Hover"):Hide()
     GameTooltip:Hide()
 end
 
@@ -442,7 +442,7 @@ function ui.OnUpdate()
 
     -- Adjust main frame height based on num buttons
     local titleSize = config.showtitle and 40 or 10
-    CursiveFrame:SetHeight(titleSize + (math.min(numToShow, config.maxrow) * 42))
+    CursiveFrame:SetHeight(titleSize + (math.min(numToShow, config.maxrow) * 24))
 end
 
 -- Initialize the UI
