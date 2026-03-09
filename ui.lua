@@ -344,43 +344,27 @@ function ui.OnUpdate()
     local displayedGuids = {}
     local guidList = {}
 
-    -- (Simplified for this conversion, but should follow Cursive's priority)
-    -- 1. Raid marks
-    for i = 8, 1, -1 do
-        local _, guid = UnitExists("mark" .. i)
-        if guid and Cursive:ShouldDisplayGuid(guid) then
-            if not displayedGuids[guid] then
-                table.insert(guidList, guid)
-                displayedGuids[guid] = true
-            end
-        end
-    end
-
-    -- 2. Current target
-    local _, targetGuid = UnitExists("target")
-    if targetGuid and Cursive:ShouldDisplayGuid(targetGuid) and config.alwaysshowcurrenttarget then
-        if not displayedGuids[targetGuid] then
-            table.insert(guidList, targetGuid)
-            displayedGuids[targetGuid] = true
-        end
-    end
-
-    -- 3. Top HP mobs and others
-    -- Collect all potential guids
-    local potential = {}
+    -- Logic for choosing which GUIDs to show (Stable order requested)
+    -- Collect all potential guids first to ensure a stable sort
+    local allPotential = {}
     for guid, _ in pairs(Cursive.core.guids) do
-        if not displayedGuids[guid] and Cursive:ShouldDisplayGuid(guid) then
-            table.insert(potential, guid)
+        if Cursive:ShouldDisplayGuid(guid) then
+            table.insert(allPotential, guid)
         end
     end
-    -- Sort potential by max HP
-    table.sort(potential, function(a, b)
+
+    -- Stable Sort: Raid Mark priority first, then Max HP
+    table.sort(allPotential, function(a, b)
+        local markA = GetRaidTargetIndex(a) or 0
+        local markB = GetRaidTargetIndex(b) or 0
+        if markA ~= markB then
+            return markA > markB
+        end
         return UnitHealthMax(a) > UnitHealthMax(b)
     end)
-    for _, guid in ipairs(potential) do
-        if table.getn(guidList) >= config.maxrow * config.maxcol then break end
-        table.insert(guidList, guid)
-        displayedGuids[guid] = true
+
+    for i = 1, math.min(table.getn(allPotential), config.maxrow) do
+        table.insert(guidList, allPotential[i])
     end
 
     -- Now update the buttons
@@ -400,8 +384,7 @@ function ui.OnUpdate()
             local dots = getglobal(btn:GetName().."Dots")
 
             nameText:SetText(name)
-            local _, r, g, b = utils.GetUnitColor(guid)
-            nameText:SetTextColor(r, g, b)
+            nameText:SetTextColor(1, 1, 1) -- Use white for better contrast against health bar
 
             local hp = UnitHealth(guid)
             local hpMax = UnitHealthMax(guid)

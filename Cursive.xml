@@ -44,6 +44,11 @@
                                     <Offset x="5" y="0"/>
                                 </Anchor>
                             </Anchors>
+                            <FontHeight val="12"/>
+                            <Shadow>
+                                <Offset x="1" y="-1"/>
+                                <Color r="0" g="0" b="0"/>
+                            </Shadow>
                         </FontString>
                         <FontString name="$parentHPText" inherits="GameFontNormalSmall" justifyH="RIGHT">
                             <Size x="50" y="22"/>
@@ -52,6 +57,10 @@
                                     <Offset x="-5" y="0"/>
                                 </Anchor>
                             </Anchors>
+                            <Shadow>
+                                <Offset x="1" y="-1"/>
+                                <Color r="0" g="0" b="0"/>
+                            </Shadow>
                         </FontString>
                     </Layer>
                 </Layers>
