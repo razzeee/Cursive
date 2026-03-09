@@ -13,6 +13,37 @@ Cursive.ui = ui
 ui.unitButtons = {}
 ui.maxButtons = 15
 
+local function GetSortedCurses(guidCurses)
+	-- Collect keys
+	local curseNames = {}
+	for key in pairs(guidCurses) do
+		table.insert(curseNames, key)
+	end
+
+	if Cursive.db.profile.curseordering == L["Order applied"] then
+		table.sort(curseNames, function(a, b)
+			return guidCurses[a].start < guidCurses[b].start
+		end)
+	elseif Cursive.db.profile.curseordering == L["Expiring soonest -> latest"] then
+		table.sort(curseNames, function(a, b)
+			return Cursive.curses:TimeRemaining(guidCurses[a]) < Cursive.curses:TimeRemaining(guidCurses[b])
+		end)
+	elseif Cursive.db.profile.curseordering == L["Expiring latest -> soonest"] then
+		table.sort(curseNames, function(a, b)
+			return Cursive.curses:TimeRemaining(guidCurses[a]) > Cursive.curses:TimeRemaining(guidCurses[b])
+		end)
+	end
+
+	local i = 0
+	return function()
+		i = i + 1
+		local key = curseNames[i]
+		if key then
+			return key, guidCurses[key]
+		end
+	end
+end
+
 function ui.Setup()
     ui.UpdateScale()
     CursiveFrame:SetAlpha(Cursive.db.profile.opacity or 1)
@@ -102,18 +133,20 @@ function ui.UpdateLayout()
             end
         end
 
-        -- Invert internal button layout if needed
+        -- Layout components
         local healthBar = getglobal(btn:GetName().."HealthBar")
         local nameText = getglobal(btn:GetName().."HealthBarName")
         local hpText = getglobal(btn:GetName().."HealthBarHPText")
         local targetInd = getglobal(btn:GetName().."TargetIndicator")
         local raidIcon = getglobal(btn:GetName().."RaidIcon")
+        local dots = getglobal(btn:GetName().."Dots")
 
         healthBar:ClearAllPoints()
         nameText:ClearAllPoints()
         hpText:ClearAllPoints()
         targetInd:ClearAllPoints()
         raidIcon:ClearAllPoints()
+        dots:ClearAllPoints()
 
         if config.invertbars then
             healthBar:SetPoint("TOP", btn, "TOP", 0, -1)
@@ -121,35 +154,37 @@ function ui.UpdateLayout()
             nameText:SetJustifyH("RIGHT")
             hpText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             hpText:SetJustifyH("LEFT")
-            targetInd:SetPoint("RIGHT", healthBar, "LEFT", -2, 0)
+            targetInd:SetPoint("LEFT", healthBar, "RIGHT", 2, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
-            raidIcon:SetPoint("CENTER", healthBar, "TOPRIGHT", -5, 0)
+            raidIcon:SetPoint("CENTER", healthBar, "TOPLEFT", 5, 0)
+            dots:SetPoint("BOTTOM", btn, "BOTTOM", 0, 1)
         else
             healthBar:SetPoint("TOP", btn, "TOP", 0, -1)
             nameText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             nameText:SetJustifyH("LEFT")
             hpText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             hpText:SetJustifyH("RIGHT")
-            targetInd:SetPoint("LEFT", healthBar, "RIGHT", 2, 0)
+            targetInd:SetPoint("RIGHT", healthBar, "LEFT", -2, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
-            raidIcon:SetPoint("CENTER", healthBar, "TOPLEFT", 5, 0)
+            raidIcon:SetPoint("CENTER", healthBar, "TOPRIGHT", -5, 0)
+            dots:SetPoint("BOTTOM", btn, "BOTTOM", 0, 1)
         end
 
-        -- Update curses icons layout (overlapping health bar bottom)
+        -- Update curses icons layout
         for j = 1, 5 do
-            local curse = getglobal(btn:GetName().."Curse"..j)
+            local curse = getglobal(dots:GetName().."Curse"..j)
             curse:ClearAllPoints()
             if config.invertbars then
                 if j == 1 then
-                    curse:SetPoint("BOTTOMRIGHT", healthBar, "BOTTOMRIGHT", -5, 1)
+                    curse:SetPoint("RIGHT", dots, "RIGHT", -5, 0)
                 else
-                    curse:SetPoint("RIGHT", getglobal(btn:GetName().."Curse"..(j-1)), "LEFT", -2, 0)
+                    curse:SetPoint("RIGHT", getglobal(dots:GetName().."Curse"..(j-1)), "LEFT", -4, 0)
                 end
             else
                 if j == 1 then
-                    curse:SetPoint("BOTTOMLEFT", healthBar, "BOTTOMLEFT", 5, 1)
+                    curse:SetPoint("LEFT", dots, "LEFT", 5, 0)
                 else
-                    curse:SetPoint("LEFT", getglobal(btn:GetName().."Curse"..(j-1)), "RIGHT", 2, 0)
+                    curse:SetPoint("LEFT", getglobal(dots:GetName().."Curse"..(j-1)), "RIGHT", 4, 0)
                 end
             end
         end
@@ -367,6 +402,7 @@ function ui.OnUpdate()
             local hpText = getglobal(btn:GetName().."HealthBarHPText")
             local targetInd = getglobal(btn:GetName().."TargetIndicator")
             local raidIcon = getglobal(btn:GetName().."RaidIcon")
+            local dots = getglobal(btn:GetName().."Dots")
 
             nameText:SetText(name)
             local _, r, g, b = utils.GetUnitColor(guid)
@@ -413,13 +449,13 @@ function ui.OnUpdate()
             local guidCurses = Cursive.curses.guids[guid]
             local curseIdx = 1
             if guidCurses then
-                -- Sort curses (reusing logic from displayGuid if possible, but let's just use first 5)
-                for curseName, curseData in pairs(guidCurses) do
+                -- Sort curses
+                for curseName, curseData in GetSortedCurses(guidCurses) do
                     if curseIdx > 5 then break end
                     local remaining = Cursive.curses:TimeRemaining(curseData)
                     if remaining >= 0 then
-                        local curseTex = getglobal(btn:GetName().."Curse"..curseIdx)
-                        local curseBorder = getglobal(btn:GetName().."Curse"..curseIdx.."Border")
+                        local curseTex = getglobal(dots:GetName().."Curse"..curseIdx)
+                        local curseBorder = getglobal(dots:GetName().."Curse"..curseIdx.."Border")
                         curseTex:SetTexture(Cursive.curses.trackedCurseIds[curseData.spellID].texture)
                         curseTex:SetDesaturated(not curseData.currentPlayer)
                         curseTex:Show()
@@ -429,8 +465,8 @@ function ui.OnUpdate()
                 end
             end
             for j = curseIdx, 5 do
-                getglobal(btn:GetName().."Curse"..j):Hide()
-                getglobal(btn:GetName().."Curse"..j.."Border"):Hide()
+                getglobal(dots:GetName().."Curse"..j):Hide()
+                getglobal(dots:GetName().."Curse"..j.."Border"):Hide()
             end
 
             btn:Show()
@@ -442,7 +478,7 @@ function ui.OnUpdate()
 
     -- Adjust main frame height based on num buttons
     local titleSize = config.showtitle and 40 or 10
-    CursiveFrame:SetHeight(titleSize + (math.min(numToShow, config.maxrow) * 24))
+    CursiveFrame:SetHeight(titleSize + (math.min(numToShow, config.maxrow) * 48))
 end
 
 -- Initialize the UI
