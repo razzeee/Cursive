@@ -7,31 +7,13 @@
             <Color r="0" g="0" b="0"/>
         </Backdrop>
         <Layers>
-            <Layer level="BORDER">
-                <FontString name="$parentPlayer" inherits="GameFontNormalLarge" justifyH="LEFT">
-                    <Size x="150" y="20"/>
-                    <Anchors>
-                        <Anchor point="TOPLEFT">
-                            <Offset x="10" y="3"/>
-                        </Anchor>
-                    </Anchors>
-                </FontString>
-                <FontString name="$parentHP" inherits="GameFontNormalSmall" justifyH="RIGHT">
-                    <Size x="50" y="20"/>
-                    <Anchors>
-                        <Anchor point="TOPRIGHT">
-                            <Offset x="-10" y="3"/>
-                        </Anchor>
-                    </Anchors>
-                </FontString>
-            </Layer>
             <Layer level="ARTWORK">
                 <!-- Multi-curse icons will be created dynamically or fixed slots -->
                 <Texture name="$parentCurse1" hidden="true">
                     <Size x="16" y="16"/>
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT">
-                            <Offset x="10" y="2"/>
+                        <Anchor point="TOPLEFT">
+                            <Offset x="15" y="-20"/>
                         </Anchor>
                     </Anchors>
                 </Texture>
@@ -124,21 +106,41 @@
         </Layers>
         <Frames>
             <StatusBar name="$parentHealthBar">
-                <Size x="190" y="40"/>
+                <Size x="180" y="18"/>
                 <Anchors>
-                    <Anchor point="CENTER"/>
+                    <Anchor point="TOP">
+                        <Offset x="0" y="-1"/>
+                    </Anchor>
                 </Anchors>
                 <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
                 <BarColor r="0" g="1" b="0"/>
                 <Layers>
-                    <Layer level="ARTWORK">
+                    <Layer level="BACKGROUND">
                         <Texture name="$parentBackground">
                             <Anchors>
                                 <Anchor point="TOPLEFT"/>
                                 <Anchor point="BOTTOMRIGHT"/>
                             </Anchors>
-                            <Color r="0" g="0" b="0" a="0.5"/>
+                            <Color r="0" g="0" b="0" a="0.8"/>
                         </Texture>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <FontString name="$parentName" inherits="GameFontNormalLarge" justifyH="LEFT">
+                            <Size x="120" y="18"/>
+                            <Anchors>
+                                <Anchor point="LEFT">
+                                    <Offset x="5" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                        </FontString>
+                        <FontString name="$parentHPText" inherits="GameFontNormalSmall" justifyH="RIGHT">
+                            <Size x="50" y="18"/>
+                            <Anchors>
+                                <Anchor point="RIGHT">
+                                    <Offset x="-5" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                        </FontString>
                     </Layer>
                 </Layers>
             </StatusBar>
@@ -226,8 +228,8 @@
                     <Button name="CursiveFrameOptionsButton">
                         <Size x="20" y="20"/>
                         <Anchors>
-                            <Anchor point="RIGHT">
-                                <Offset x="-10" y="0"/>
+                            <Anchor point="TOP">
+                                <Offset x="10" y="-5"/>
                             </Anchor>
                         </Anchors>
                         <NormalTexture file="Interface\GossipFrame\BinderGossipIcon"/>

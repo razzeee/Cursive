@@ -100,51 +100,51 @@ function ui.UpdateLayout()
         end
 
         -- Invert internal button layout if needed
-        local player = getglobal(btn:GetName().."Player")
-        local hp = getglobal(btn:GetName().."HP")
         local healthBar = getglobal(btn:GetName().."HealthBar")
+        local nameText = getglobal(btn:GetName().."HealthBarName")
+        local hpText = getglobal(btn:GetName().."HealthBarHPText")
         local targetInd = getglobal(btn:GetName().."TargetIndicator")
         local raidIcon = getglobal(btn:GetName().."RaidIcon")
 
-        player:ClearAllPoints()
-        hp:ClearAllPoints()
         healthBar:ClearAllPoints()
+        nameText:ClearAllPoints()
+        hpText:ClearAllPoints()
         targetInd:ClearAllPoints()
         raidIcon:ClearAllPoints()
 
         if config.invertbars then
-            player:SetPoint("TOPRIGHT", btn, "TOPRIGHT", -10, -5)
-            player:SetJustifyH("RIGHT")
-            hp:SetPoint("TOPLEFT", btn, "TOPLEFT", 10, -5)
-            hp:SetJustifyH("LEFT")
-            healthBar:SetPoint("CENTER", btn, "CENTER")
+            healthBar:SetPoint("TOP", btn, "TOP", 0, -1)
+            nameText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
+            nameText:SetJustifyH("RIGHT")
+            hpText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
+            hpText:SetJustifyH("LEFT")
             targetInd:SetPoint("RIGHT", btn, "RIGHT", -2, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
             raidIcon:SetPoint("CENTER", btn, "TOPLEFT", 5, 0)
         else
-            player:SetPoint("TOPLEFT", btn, "TOPLEFT", 10, -5)
-            player:SetJustifyH("LEFT")
-            hp:SetPoint("TOPRIGHT", btn, "TOPRIGHT", -10, -5)
-            hp:SetJustifyH("RIGHT")
-            healthBar:SetPoint("CENTER", btn, "CENTER")
+            healthBar:SetPoint("TOP", btn, "TOP", 0, -1)
+            nameText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
+            nameText:SetJustifyH("LEFT")
+            hpText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
+            hpText:SetJustifyH("RIGHT")
             targetInd:SetPoint("LEFT", btn, "LEFT", 2, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
             raidIcon:SetPoint("CENTER", btn, "TOPRIGHT", -5, 0)
         end
 
-        -- Update curses icons layout
+        -- Update curses icons layout (below health bar)
         for j = 1, 5 do
             local curse = getglobal(btn:GetName().."Curse"..j)
             curse:ClearAllPoints()
             if config.invertbars then
                 if j == 1 then
-                    curse:SetPoint("BOTTOMRIGHT", btn, "BOTTOMRIGHT", -10, 5)
+                    curse:SetPoint("TOPRIGHT", btn, "TOPRIGHT", -15, -20)
                 else
                     curse:SetPoint("RIGHT", getglobal(btn:GetName().."Curse"..(j-1)), "LEFT", -2, 0)
                 end
             else
                 if j == 1 then
-                    curse:SetPoint("BOTTOMLEFT", btn, "BOTTOMLEFT", 10, 5)
+                    curse:SetPoint("TOPLEFT", btn, "TOPLEFT", 15, -20)
                 else
                     curse:SetPoint("LEFT", getglobal(btn:GetName().."Curse"..(j-1)), "RIGHT", 2, 0)
                 end
@@ -341,15 +341,15 @@ function ui.OnUpdate()
             btn.guid = guid
 
             local name = UnitName(guid)
-            local playerText = getglobal(btn:GetName().."Player")
-            local hpText = getglobal(btn:GetName().."HP")
             local healthBar = getglobal(btn:GetName().."HealthBar")
+            local nameText = getglobal(btn:GetName().."HealthBarName")
+            local hpText = getglobal(btn:GetName().."HealthBarHPText")
             local targetInd = getglobal(btn:GetName().."TargetIndicator")
             local raidIcon = getglobal(btn:GetName().."RaidIcon")
 
-            playerText:SetText(name)
+            nameText:SetText(name)
             local _, r, g, b = utils.GetUnitColor(guid)
-            playerText:SetTextColor(r, g, b)
+            nameText:SetTextColor(r, g, b)
 
             local hp = UnitHealth(guid)
             local hpMax = UnitHealthMax(guid)
