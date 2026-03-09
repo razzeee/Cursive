@@ -4,7 +4,7 @@
         <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true">
             <TileSize val="16"/>
             <BackgroundInsets left="5" right="5" top="0" bottom="0"/>
-            <Color r="0" g="0" b="0" a="0.8"/>
+            <Color r="0" g="0" b="0"/>
         </Backdrop>
         <Layers>
             <Layer level="BORDER">
@@ -77,6 +77,13 @@
                 </Texture>
             </Layer>
             <Layer level="OVERLAY">
+                <Texture name="$parentBorder" file="Interface\Buttons\UI-Debuff-Overlays">
+                    <Size x="34" y="32"/>
+                    <Anchors>
+                        <Anchor point="CENTER" relativeTo="$parentIcon"/>
+                    </Anchors>
+                    <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+                </Texture>
                 <Texture name="$parentTargetIndicator" file="Interface\AddOns\Cursive\img\target-left" hidden="true">
                     <Size x="8" y="16"/>
                     <Anchors>
@@ -434,13 +441,63 @@
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText("Show Title")
+                        getglobal(this:GetName().."Text"):SetText("Show Header")
                     </OnLoad>
                     <OnClick>
                         Cursive.ui.ToggleShowTitle(this:GetChecked())
                     </OnClick>
                 </Scripts>
             </CheckButton>
+            <CheckButton name="$parentShowHealthBar" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentShowTitle" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="7"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("Show Health Bar")
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleShowHealthBar(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentAlwaysShowTarget" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentShowHealthBar" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="7"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("Always Show Target")
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleAlwaysShowTarget(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <Slider name="$parentMaxRowSlider" inherits="CursiveOptionsSliderTemplate">
+                <Size x="160" y="16"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentAlwaysShowTarget" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="-12"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("Max Rows")
+                        getglobal(this:GetName().."Low"):SetText("1")
+                        getglobal(this:GetName().."High"):SetText("20")
+                        this:SetMinMaxValues(1, 20)
+                        this:SetValueStep(1)
+                    </OnLoad>
+                    <OnValueChanged>
+                        Cursive.ui.MaxRowChanged(this:GetValue())
+                    </OnValueChanged>
+                </Scripts>
+            </Slider>
         </Frames>
         <Scripts>
             <OnMouseDown>

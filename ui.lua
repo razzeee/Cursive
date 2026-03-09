@@ -156,6 +156,9 @@ function ui.ToggleOptions()
         CursiveOptionsFrameExpandUpwards:SetChecked(Cursive.db.profile.expandupwards)
         CursiveOptionsFrameShowBackdrop:SetChecked(Cursive.db.profile.showbackdrop)
         CursiveOptionsFrameShowTitle:SetChecked(Cursive.db.profile.showtitle)
+        CursiveOptionsFrameShowHealthBar:SetChecked(Cursive.db.profile.showhealthbar)
+        CursiveOptionsFrameAlwaysShowTarget:SetChecked(Cursive.db.profile.alwaysshowcurrenttarget)
+        CursiveOptionsFrameMaxRowSlider:SetValue(Cursive.db.profile.maxrow)
         CursiveOptionsFrame:Show()
     end
 end
@@ -195,6 +198,19 @@ function ui.ToggleShowTitle(val)
     Cursive.db.profile.showtitle = val
     ui.UpdateHeader()
     ui.UpdateLayout()
+end
+
+function ui.ToggleShowHealthBar(val)
+    Cursive.db.profile.showhealthbar = val
+    ui.UpdateLayout()
+end
+
+function ui.ToggleAlwaysShowTarget(val)
+    Cursive.db.profile.alwaysshowcurrenttarget = val
+end
+
+function ui.MaxRowChanged(val)
+    Cursive.db.profile.maxrow = val
 end
 
 function ui.Show()
@@ -326,6 +342,11 @@ function ui.OnUpdate(elapsed)
             healthBar:SetMinMaxValues(0, hpMax)
             healthBar:SetValue(hp)
             healthBar:SetStatusBarColor(r, g, b)
+            if config.showhealthbar then
+                healthBar:Show()
+            else
+                healthBar:Hide()
+            end
 
             -- HP text formatting
             local hpStr = hp
