@@ -8,11 +8,11 @@
         </Backdrop>
         <Layers>
             <Layer level="OVERLAY">
-                <Texture name="$parentTargetIndicator" file="Interface\AddOns\Cursive\img\target-left" hidden="true">
-                    <Size x="8" y="16"/>
+                <Texture name="$parentTargetIndicator" hidden="true">
+                    <Size x="10" y="20"/>
                 </Texture>
                 <Texture name="$parentRaidIcon" file="Interface\TargetingFrame\UI-RaidTargetingIcons" hidden="true">
-                    <Size x="16" y="16"/>
+                    <Size x="20" y="20"/>
                 </Texture>
             </Layer>
         </Layers>
@@ -66,7 +66,7 @@
                 </Layers>
             </StatusBar>
             <Frame name="$parentDots">
-                <Size x="180" y="22"/>
+                <Size x="180" y="24"/>
                 <Anchors>
                     <Anchor point="BOTTOM">
                         <Offset x="0" y="1"/>
@@ -76,43 +76,18 @@
                     <Layer level="OVERLAY">
                         <Texture name="$parentCurse1" hidden="true">
                             <Size x="20" y="20"/>
-                            <Anchors>
-                                <Anchor point="LEFT">
-                                    <Offset x="0" y="0"/>
-                                </Anchor>
-                            </Anchors>
                         </Texture>
                         <Texture name="$parentCurse2" hidden="true">
                             <Size x="20" y="20"/>
-                            <Anchors>
-                                <Anchor point="LEFT" relativeTo="$parentCurse1" relativePoint="RIGHT">
-                                    <Offset x="4" y="0"/>
-                                </Anchor>
-                            </Anchors>
                         </Texture>
                         <Texture name="$parentCurse3" hidden="true">
                             <Size x="20" y="20"/>
-                            <Anchors>
-                                <Anchor point="LEFT" relativeTo="$parentCurse2" relativePoint="RIGHT">
-                                    <Offset x="4" y="0"/>
-                                </Anchor>
-                            </Anchors>
                         </Texture>
                         <Texture name="$parentCurse4" hidden="true">
                             <Size x="20" y="20"/>
-                            <Anchors>
-                                <Anchor point="LEFT" relativeTo="$parentCurse3" relativePoint="RIGHT">
-                                    <Offset x="4" y="0"/>
-                                </Anchor>
-                            </Anchors>
                         </Texture>
                         <Texture name="$parentCurse5" hidden="true">
                             <Size x="20" y="20"/>
-                            <Anchors>
-                                <Anchor point="LEFT" relativeTo="$parentCurse4" relativePoint="RIGHT">
-                                    <Offset x="4" y="0"/>
-                                </Anchor>
-                            </Anchors>
                         </Texture>
                         <Texture name="$parentCurse1Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
                             <Size x="22" y="22"/>
@@ -149,6 +124,28 @@
                             </Anchors>
                             <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
                         </Texture>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <FontString name="$parentCurse1Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors><Anchor point="CENTER" relativeTo="$parentCurse1"/></Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
+                        <FontString name="$parentCurse2Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors><Anchor point="CENTER" relativeTo="$parentCurse2"/></Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
+                        <FontString name="$parentCurse3Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors><Anchor point="CENTER" relativeTo="$parentCurse3"/></Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
+                        <FontString name="$parentCurse4Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors><Anchor point="CENTER" relativeTo="$parentCurse4"/></Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
+                        <FontString name="$parentCurse5Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors><Anchor point="CENTER" relativeTo="$parentCurse5"/></Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
                     </Layer>
                 </Layers>
             </Frame>
