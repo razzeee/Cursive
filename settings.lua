@@ -55,6 +55,7 @@ Cursive:RegisterDefaults("profile", {
 
 	ignorelist = {},
 	ignorelistuseregex = false,
+	opacity = 1,
 })
 
 local function splitString(str, delimiter)
