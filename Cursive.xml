@@ -212,7 +212,7 @@
         </Scripts>
     </Button>
 
-    <Frame name="CursiveFrame" toplevel="false" parent="UIParent" movable="true" enableMouse="true" clampedToScreen="true" resizable="false">
+    <Frame name="CursiveFrame" toplevel="false" parent="UIParent" movable="true" enableMouse="true" clampedToScreen="true" resizable="false" frameStrata="LOW">
         <Size x="200" y="250"/>
         <Anchors>
             <Anchor point="CENTER"/>
@@ -323,7 +323,7 @@
         </Scripts>
     </Frame>
 
-    <Frame name="CursiveUnitsFrame" parent="UIParent">
+    <Frame name="CursiveUnitsFrame" parent="UIParent" frameStrata="LOW" clampedToScreen="true">
         <Size x="200" y="220"/>
         <Anchors>
             <Anchor point="TOP" relativePoint="TOP" relativeTo="CursiveFrame">

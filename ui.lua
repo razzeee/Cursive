@@ -470,8 +470,8 @@ function ui.OnUpdate()
     local titleSize = config.showtitle and 40 or 10
     local spacing = config.spacing or 4
     local num = math.max(1, math.min(numToShow, config.maxrow)) -- Keep window open to a degree
-    local entriesHeight = (num * 36) + ((num > 0 and num - 1 or 0) * spacing)
-    CursiveFrame:SetHeight(titleSize + entriesHeight + 10)
+    local entriesHeight = (num * 48) + ((num > 0 and num - 1 or 0) * spacing)
+    CursiveFrame:SetHeight(titleSize + entriesHeight + 15)
 end
 
 -- Initialize the UI
