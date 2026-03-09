@@ -8,27 +8,19 @@
         </Backdrop>
         <Layers>
             <Layer level="BORDER">
-                <Texture name="$parentIcon">
-                    <Size x="32" y="32"/>
-                    <Anchors>
-                        <Anchor point="LEFT">
-                            <Offset x="10" y="0"/>
-                        </Anchor>
-                    </Anchors>
-                </Texture>
                 <FontString name="$parentPlayer" inherits="GameFontNormalLarge" justifyH="LEFT">
                     <Size x="150" y="20"/>
                     <Anchors>
-                        <Anchor point="TOPLEFT" relativeTo="$parentIcon" relativePoint="TOPRIGHT">
-                            <Offset x="5" y="3"/>
+                        <Anchor point="TOPLEFT">
+                            <Offset x="10" y="3"/>
                         </Anchor>
                     </Anchors>
                 </FontString>
-                <FontString name="$parentHP" inherits="GameFontNormalSmall" justifyH="LEFT">
+                <FontString name="$parentHP" inherits="GameFontNormalSmall" justifyH="RIGHT">
                     <Size x="50" y="20"/>
                     <Anchors>
-                        <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
-                            <Offset x="-5" y="3"/>
+                        <Anchor point="TOPRIGHT">
+                            <Offset x="-10" y="3"/>
                         </Anchor>
                     </Anchors>
                 </FontString>
@@ -38,8 +30,8 @@
                 <Texture name="$parentCurse1" hidden="true">
                     <Size x="16" y="16"/>
                     <Anchors>
-                        <Anchor point="BOTTOMLEFT" relativeTo="$parentIcon" relativePoint="BOTTOMRIGHT">
-                            <Offset x="5" y="0"/>
+                        <Anchor point="BOTTOMLEFT">
+                            <Offset x="10" y="2"/>
                         </Anchor>
                     </Anchors>
                 </Texture>
@@ -77,10 +69,38 @@
                 </Texture>
             </Layer>
             <Layer level="OVERLAY">
-                <Texture name="$parentBorder" file="Interface\Buttons\UI-Debuff-Overlays">
-                    <Size x="34" y="32"/>
+                <Texture name="$parentCurse1Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
+                    <Size x="18" y="18"/>
                     <Anchors>
-                        <Anchor point="CENTER" relativeTo="$parentIcon"/>
+                        <Anchor point="CENTER" relativeTo="$parentCurse1"/>
+                    </Anchors>
+                    <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+                </Texture>
+                <Texture name="$parentCurse2Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
+                    <Size x="18" y="18"/>
+                    <Anchors>
+                        <Anchor point="CENTER" relativeTo="$parentCurse2"/>
+                    </Anchors>
+                    <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+                </Texture>
+                <Texture name="$parentCurse3Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
+                    <Size x="18" y="18"/>
+                    <Anchors>
+                        <Anchor point="CENTER" relativeTo="$parentCurse3"/>
+                    </Anchors>
+                    <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+                </Texture>
+                <Texture name="$parentCurse4Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
+                    <Size x="18" y="18"/>
+                    <Anchors>
+                        <Anchor point="CENTER" relativeTo="$parentCurse4"/>
+                    </Anchors>
+                    <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+                </Texture>
+                <Texture name="$parentCurse5Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
+                    <Size x="18" y="18"/>
+                    <Anchors>
+                        <Anchor point="CENTER" relativeTo="$parentCurse5"/>
                     </Anchors>
                     <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
                 </Texture>
@@ -95,8 +115,8 @@
                 <Texture name="$parentRaidIcon" file="Interface\TargetingFrame\UI-RaidTargetingIcons" hidden="true">
                     <Size x="16" y="16"/>
                     <Anchors>
-                        <Anchor point="CENTER" relativeTo="$parentIcon" relativePoint="TOPRIGHT">
-                            <Offset x="0" y="0"/>
+                        <Anchor point="CENTER" relativeTo="$parent" relativePoint="TOPRIGHT">
+                            <Offset x="-5" y="0"/>
                         </Anchor>
                     </Anchors>
                 </Texture>
@@ -104,14 +124,23 @@
         </Layers>
         <Frames>
             <StatusBar name="$parentHealthBar">
-                <Size x="180" y="4"/>
+                <Size x="190" y="40"/>
                 <Anchors>
-                    <Anchor point="BOTTOMLEFT">
-                        <Offset x="10" y="2"/>
-                    </Anchor>
+                    <Anchor point="CENTER"/>
                 </Anchors>
                 <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
                 <BarColor r="0" g="1" b="0"/>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <Texture name="$parentBackground">
+                            <Anchors>
+                                <Anchor point="TOPLEFT"/>
+                                <Anchor point="BOTTOMRIGHT"/>
+                            </Anchors>
+                            <Color r="0" g="0" b="0" a="0.5"/>
+                        </Texture>
+                    </Layer>
+                </Layers>
             </StatusBar>
         </Frames>
         <HighlightTexture inherits="DialogButtonHighlightTexture"/>

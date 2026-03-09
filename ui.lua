@@ -14,7 +14,7 @@ ui.unitButtons = {}
 ui.maxButtons = 15
 
 function ui.Setup()
-    CursiveFrame:SetScale(Cursive.db.profile.scale)
+    ui.UpdateScale()
     CursiveFrame:SetAlpha(Cursive.db.profile.opacity or 1)
     CursiveFrame:ClearAllPoints()
     CursiveFrame:SetPoint(Cursive.db.profile.anchor, Cursive.db.profile.x, Cursive.db.profile.y)
@@ -100,30 +100,36 @@ function ui.UpdateLayout()
         end
 
         -- Invert internal button layout if needed
-        local icon = getglobal(btn:GetName().."Icon")
         local player = getglobal(btn:GetName().."Player")
         local hp = getglobal(btn:GetName().."HP")
         local healthBar = getglobal(btn:GetName().."HealthBar")
+        local targetInd = getglobal(btn:GetName().."TargetIndicator")
+        local raidIcon = getglobal(btn:GetName().."RaidIcon")
 
-        icon:ClearAllPoints()
         player:ClearAllPoints()
         hp:ClearAllPoints()
         healthBar:ClearAllPoints()
+        targetInd:ClearAllPoints()
+        raidIcon:ClearAllPoints()
 
         if config.invertbars then
-            icon:SetPoint("RIGHT", btn, "RIGHT", -10, 0)
-            player:SetPoint("TOPRIGHT", icon, "TOPLEFT", -5, 3)
+            player:SetPoint("TOPRIGHT", btn, "TOPRIGHT", -10, -5)
             player:SetJustifyH("RIGHT")
-            hp:SetPoint("TOPLEFT", btn, "TOPLEFT", 5, 3)
+            hp:SetPoint("TOPLEFT", btn, "TOPLEFT", 10, -5)
             hp:SetJustifyH("LEFT")
-            healthBar:SetPoint("BOTTOMRIGHT", btn, "BOTTOMRIGHT", -10, 2)
+            healthBar:SetPoint("CENTER", btn, "CENTER")
+            targetInd:SetPoint("RIGHT", btn, "RIGHT", -2, 0)
+            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
+            raidIcon:SetPoint("CENTER", btn, "TOPLEFT", 5, 0)
         else
-            icon:SetPoint("LEFT", btn, "LEFT", 10, 0)
-            player:SetPoint("TOPLEFT", icon, "TOPRIGHT", 5, 3)
+            player:SetPoint("TOPLEFT", btn, "TOPLEFT", 10, -5)
             player:SetJustifyH("LEFT")
-            hp:SetPoint("TOPRIGHT", btn, "TOPRIGHT", -5, 3)
+            hp:SetPoint("TOPRIGHT", btn, "TOPRIGHT", -10, -5)
             hp:SetJustifyH("RIGHT")
-            healthBar:SetPoint("BOTTOMLEFT", btn, "BOTTOMLEFT", 10, 2)
+            healthBar:SetPoint("CENTER", btn, "CENTER")
+            targetInd:SetPoint("LEFT", btn, "LEFT", 2, 0)
+            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
+            raidIcon:SetPoint("CENTER", btn, "TOPRIGHT", -5, 0)
         end
 
         -- Update curses icons layout
@@ -132,13 +138,13 @@ function ui.UpdateLayout()
             curse:ClearAllPoints()
             if config.invertbars then
                 if j == 1 then
-                    curse:SetPoint("BOTTOMRIGHT", icon, "BOTTOMLEFT", -5, 0)
+                    curse:SetPoint("BOTTOMRIGHT", btn, "BOTTOMRIGHT", -10, 5)
                 else
                     curse:SetPoint("RIGHT", getglobal(btn:GetName().."Curse"..(j-1)), "LEFT", -2, 0)
                 end
             else
                 if j == 1 then
-                    curse:SetPoint("BOTTOMLEFT", icon, "BOTTOMRIGHT", 5, 0)
+                    curse:SetPoint("BOTTOMLEFT", btn, "BOTTOMLEFT", 10, 5)
                 else
                     curse:SetPoint("LEFT", getglobal(btn:GetName().."Curse"..(j-1)), "RIGHT", 2, 0)
                 end
@@ -166,9 +172,15 @@ function ui.ToggleOptions()
 end
 
 -- Option callbacks
+function ui.UpdateScale()
+    local scale = Cursive.db.profile.scale or 1
+    CursiveFrame:SetScale(scale)
+    CursiveUnitsFrame:SetScale(scale)
+end
+
 function ui.ScaleChanged(val)
     Cursive.db.profile.scale = val
-    CursiveFrame:SetScale(val)
+    ui.UpdateScale()
 end
 
 function ui.OpacityChanged(val)
@@ -332,7 +344,6 @@ function ui.OnUpdate()
             local playerText = getglobal(btn:GetName().."Player")
             local hpText = getglobal(btn:GetName().."HP")
             local healthBar = getglobal(btn:GetName().."HealthBar")
-            local icon = getglobal(btn:GetName().."Icon")
             local targetInd = getglobal(btn:GetName().."TargetIndicator")
             local raidIcon = getglobal(btn:GetName().."RaidIcon")
 
@@ -379,14 +390,19 @@ function ui.OnUpdate()
                     local remaining = Cursive.curses:TimeRemaining(curseData)
                     if remaining >= 0 then
                         local curseTex = getglobal(btn:GetName().."Curse"..curseIdx)
+                        local curseBorder = getglobal(btn:GetName().."Curse"..curseIdx.."Border")
                         curseTex:SetTexture(Cursive.curses.trackedCurseIds[curseData.spellID].texture)
                         curseTex:SetDesaturated(not curseData.currentPlayer)
                         curseTex:Show()
+                        curseBorder:Show()
                         curseIdx = curseIdx + 1
                     end
                 end
             end
-            for j = curseIdx, 5 do getglobal(btn:GetName().."Curse"..j):Hide() end
+            for j = curseIdx, 5 do
+                getglobal(btn:GetName().."Curse"..j):Hide()
+                getglobal(btn:GetName().."Curse"..j.."Border"):Hide()
+            end
 
             btn:Show()
         else
