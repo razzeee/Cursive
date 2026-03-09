@@ -4,7 +4,7 @@
         <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true">
             <TileSize val="16"/>
             <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
-            <Color r="0" g="0" b="0" a="0"/>
+            <Color r="0" g="0" b="0" a="0.3"/>
         </Backdrop>
         <Layers>
             <Layer level="OVERLAY">
@@ -163,19 +163,19 @@
             </Frame>
             <Frame name="$parentHover" hidden="true" toplevel="true">
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentHealthBar">
-                        <Offset x="-2" y="2"/>
+                    <Anchor point="TOPLEFT">
+                        <Offset x="-1" y="1"/>
                     </Anchor>
-                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentHealthBar">
-                        <Offset x="2" y="-2"/>
+                    <Anchor point="BOTTOMRIGHT">
+                        <Offset x="1" y="-1"/>
                     </Anchor>
                 </Anchors>
                 <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-                    <EdgeSize val="10"/>
+                    <EdgeSize val="12"/>
                 </Backdrop>
                 <Scripts>
                     <OnLoad>
-                        this:SetBackdropBorderColor(1, 0.8, 0, 0.8)
+                        this:SetBackdropBorderColor(1, 0.8, 0, 1)
                     </OnLoad>
                 </Scripts>
             </Frame>
@@ -524,24 +524,9 @@
                     </OnClick>
                 </Scripts>
             </CheckButton>
-            <CheckButton name="$parentShowHealthBar" inherits="CursiveOptionsCheckButtonTemplate">
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentShowTitle" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="7"/>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText("Show Health Bar")
-                    </OnLoad>
-                    <OnClick>
-                        Cursive.ui.ToggleShowHealthBar(this:GetChecked())
-                    </OnClick>
-                </Scripts>
-            </CheckButton>
             <CheckButton name="$parentAlwaysShowTarget" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentShowHealthBar" relativePoint="BOTTOMLEFT">
+                    <Anchor point="TOPLEFT" relativeTo="$parentShowTitle" relativePoint="BOTTOMLEFT">
                         <Offset x="0" y="7"/>
                     </Anchor>
                 </Anchors>

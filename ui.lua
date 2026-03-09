@@ -115,21 +115,22 @@ function ui.UpdateLayout()
         end
     end
 
+    local spacing = config.spacing or 4
     for i = 1, ui.maxButtons do
         local btn = ui.unitButtons[i]
         if not btn then break end
         btn:ClearAllPoints()
         if i == 1 then
             if config.expandupwards then
-                btn:SetPoint("BOTTOM", CursiveUnitsFrame, "BOTTOM")
+                btn:SetPoint("BOTTOM", CursiveUnitsFrame, "BOTTOM", 0, 0)
             else
-                btn:SetPoint("TOP", CursiveUnitsFrame, "TOP")
+                btn:SetPoint("TOP", CursiveUnitsFrame, "TOP", 0, 0)
             end
         else
             if config.expandupwards then
-                btn:SetPoint("BOTTOM", ui.unitButtons[i-1], "TOP")
+                btn:SetPoint("BOTTOM", ui.unitButtons[i-1], "TOP", 0, spacing)
             else
-                btn:SetPoint("TOP", ui.unitButtons[i-1], "BOTTOM")
+                btn:SetPoint("TOP", ui.unitButtons[i-1], "BOTTOM", 0, -spacing)
             end
         end
 
@@ -203,7 +204,6 @@ function ui.ToggleOptions()
         CursiveOptionsFrameExpandUpwards:SetChecked(config.expandupwards)
         CursiveOptionsFrameShowBackdrop:SetChecked(config.showbackdrop)
         CursiveOptionsFrameShowTitle:SetChecked(config.showtitle)
-        CursiveOptionsFrameShowHealthBar:SetChecked(config.showhealthbar)
         CursiveOptionsFrameAlwaysShowTarget:SetChecked(config.alwaysshowcurrenttarget)
         CursiveOptionsFrameMaxRowSlider:SetValue(config.maxrow)
 
@@ -260,11 +260,6 @@ end
 function ui.ToggleShowTitle(val)
     Cursive.db.profile.showtitle = val
     ui.UpdateHeader()
-    ui.UpdateLayout()
-end
-
-function ui.ToggleShowHealthBar(val)
-    Cursive.db.profile.showhealthbar = val
     ui.UpdateLayout()
 end
 
@@ -413,13 +408,8 @@ function ui.OnUpdate()
             healthBar:SetMinMaxValues(0, hpMax)
             healthBar:SetValue(hp)
             healthBar:SetStatusBarColor(r, g, b)
-            if config.showhealthbar then
-                healthBar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
-                getglobal(healthBar:GetName().."Background"):SetAlpha(0.8)
-            else
-                healthBar:SetStatusBarTexture(nil)
-                getglobal(healthBar:GetName().."Background"):SetAlpha(0)
-            end
+            healthBar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
+            getglobal(healthBar:GetName().."Background"):SetAlpha(0.8)
 
             -- HP text formatting
             local hpStr = hp
@@ -478,7 +468,10 @@ function ui.OnUpdate()
 
     -- Adjust main frame height based on num buttons
     local titleSize = config.showtitle and 40 or 10
-    CursiveFrame:SetHeight(titleSize + (math.min(numToShow, config.maxrow) * 48))
+    local spacing = config.spacing or 4
+    local num = math.min(numToShow, config.maxrow)
+    local entriesHeight = (num * 48) + ((num > 0 and num - 1 or 0) * spacing)
+    CursiveFrame:SetHeight(titleSize + entriesHeight + 10)
 end
 
 -- Initialize the UI
