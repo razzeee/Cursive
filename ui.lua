@@ -197,6 +197,28 @@ function ui.ToggleShowTitle(val)
     ui.UpdateLayout()
 end
 
+function ui.Show()
+    Cursive.db.profile.enabled = true
+    CursiveFrame:Show()
+    CursiveUnitsFrame:Show()
+    Cursive.core.enable()
+end
+
+function ui.Hide()
+    Cursive.db.profile.enabled = false
+    CursiveFrame:Hide()
+    CursiveUnitsFrame:Hide()
+    Cursive.core.disable()
+end
+
+function ui.Toggle()
+    if Cursive.db.profile.enabled then
+        ui.Hide()
+    else
+        ui.Show()
+    end
+end
+
 -- Bar functions used by templates
 function ui.BarClick()
     if arg1 == "LeftButton" then
