@@ -350,12 +350,17 @@ function ui.OnUpdate()
         end
     end
 
-    -- Stable Sort: Raid Mark priority first, then Max HP
+    -- Stable Sort: Raid Mark priority first (Skull/Cross first), then Max HP
     table.sort(allPotential, function(a, b)
         local markA = GetRaidTargetIndex(a) or 0
         local markB = GetRaidTargetIndex(b) or 0
-        if markA ~= markB then
-            return markA > markB
+
+        -- Special case for Skull (8) and Cross (7)
+        local weightA = (markA == 8 or markA == 7) and (markA + 10) or markA
+        local weightB = (markB == 8 or markB == 7) and (markB + 10) or markB
+
+        if weightA ~= weightB then
+            return weightA > weightB
         end
         return UnitHealthMax(a) > UnitHealthMax(b)
     end)
