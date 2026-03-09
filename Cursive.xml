@@ -4,7 +4,7 @@
         <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true">
             <TileSize val="16"/>
             <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
-            <Color r="0" g="0" b="0" a="0.3"/>
+            <Color r="0" g="0" b="0" a="0.4"/>
         </Backdrop>
         <Layers>
             <Layer level="OVERLAY">
@@ -17,11 +17,47 @@
             </Layer>
         </Layers>
         <Frames>
+            <Frame name="$parentSelection" hidden="true" toplevel="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset x="-1" y="1"/>
+                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT">
+                        <Offset x="1" y="-1"/>
+                    </Anchor>
+                </Anchors>
+                <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+                    <EdgeSize val="12"/>
+                </Backdrop>
+                <Scripts>
+                    <OnLoad>
+                        this:SetBackdropBorderColor(1, 1, 1, 1)
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <Frame name="$parentHover" hidden="true" toplevel="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset x="-1" y="1"/>
+                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT">
+                        <Offset x="1" y="-1"/>
+                    </Anchor>
+                </Anchors>
+                <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+                    <EdgeSize val="12"/>
+                </Backdrop>
+                <Scripts>
+                    <OnLoad>
+                        this:SetBackdropBorderColor(1, 0.8, 0, 1)
+                    </OnLoad>
+                </Scripts>
+            </Frame>
             <StatusBar name="$parentHealthBar">
-                <Size x="170" y="22"/>
+                <Size x="174" y="22"/>
                 <Anchors>
                     <Anchor point="TOP">
-                        <Offset x="0" y="-1"/>
+                        <Offset x="0" y="-3"/>
                     </Anchor>
                 </Anchors>
                 <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
@@ -38,7 +74,7 @@
                     </Layer>
                     <Layer level="OVERLAY">
                         <FontString name="$parentName" inherits="GameFontNormalLarge" justifyH="LEFT">
-                            <Size x="120" y="22"/>
+                            <Size x="115" y="22"/>
                             <Anchors>
                                 <Anchor point="LEFT">
                                     <Offset x="5" y="0"/>
@@ -51,7 +87,7 @@
                             </Shadow>
                         </FontString>
                         <FontString name="$parentHPText" inherits="GameFontNormalSmall" justifyH="RIGHT">
-                            <Size x="50" y="22"/>
+                            <Size x="45" y="22"/>
                             <Anchors>
                                 <Anchor point="RIGHT">
                                     <Offset x="-5" y="0"/>
@@ -66,29 +102,84 @@
                 </Layers>
             </StatusBar>
             <Frame name="$parentDots">
-                <Size x="170" y="24"/>
+                <Size x="170" y="20"/>
                 <Anchors>
                     <Anchor point="BOTTOM">
-                        <Offset x="0" y="1"/>
+                        <Offset x="0" y="3"/>
                     </Anchor>
                 </Anchors>
                 <Layers>
                     <Layer level="OVERLAY">
                         <Texture name="$parentCurse1" hidden="true">
                             <Size x="20" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT">
+                                    <Offset x="0" y="0"/>
+                                </Anchor>
+                            </Anchors>
                         </Texture>
+                        <FontString name="$parentCurse1Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse1"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
                         <Texture name="$parentCurse2" hidden="true">
                             <Size x="20" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="$parentCurse1" relativePoint="RIGHT">
+                                    <Offset x="4" y="0"/>
+                                </Anchor>
+                            </Anchors>
                         </Texture>
+                        <FontString name="$parentCurse2Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse2"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
                         <Texture name="$parentCurse3" hidden="true">
                             <Size x="20" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="$parentCurse2" relativePoint="RIGHT">
+                                    <Offset x="4" y="0"/>
+                                </Anchor>
+                            </Anchors>
                         </Texture>
+                        <FontString name="$parentCurse3Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse3"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
                         <Texture name="$parentCurse4" hidden="true">
                             <Size x="20" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="$parentCurse3" relativePoint="RIGHT">
+                                    <Offset x="4" y="0"/>
+                                </Anchor>
+                            </Anchors>
                         </Texture>
+                        <FontString name="$parentCurse4Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse4"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
                         <Texture name="$parentCurse5" hidden="true">
                             <Size x="20" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="$parentCurse4" relativePoint="RIGHT">
+                                    <Offset x="4" y="0"/>
+                                </Anchor>
+                            </Anchors>
                         </Texture>
+                        <FontString name="$parentCurse5Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse5"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
                         <Texture name="$parentCurse1Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
                             <Size x="22" y="22"/>
                             <Anchors>
@@ -125,74 +216,16 @@
                             <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
                         </Texture>
                     </Layer>
-                    <Layer level="OVERLAY">
-                        <FontString name="$parentCurse1Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
-                            <Anchors><Anchor point="CENTER" relativeTo="$parentCurse1"/></Anchors>
-                            <Color r="1" g="1" b="1"/>
-                        </FontString>
-                        <FontString name="$parentCurse2Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
-                            <Anchors><Anchor point="CENTER" relativeTo="$parentCurse2"/></Anchors>
-                            <Color r="1" g="1" b="1"/>
-                        </FontString>
-                        <FontString name="$parentCurse3Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
-                            <Anchors><Anchor point="CENTER" relativeTo="$parentCurse3"/></Anchors>
-                            <Color r="1" g="1" b="1"/>
-                        </FontString>
-                        <FontString name="$parentCurse4Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
-                            <Anchors><Anchor point="CENTER" relativeTo="$parentCurse4"/></Anchors>
-                            <Color r="1" g="1" b="1"/>
-                        </FontString>
-                        <FontString name="$parentCurse5Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
-                            <Anchors><Anchor point="CENTER" relativeTo="$parentCurse5"/></Anchors>
-                            <Color r="1" g="1" b="1"/>
-                        </FontString>
-                    </Layer>
                 </Layers>
-            </Frame>
-            <Frame name="$parentSelection" hidden="true" toplevel="true">
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentHealthBar">
-                        <Offset x="-2" y="2"/>
-                    </Anchor>
-                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentHealthBar">
-                        <Offset x="2" y="-2"/>
-                    </Anchor>
-                </Anchors>
-                <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-                    <EdgeSize val="12"/>
-                </Backdrop>
-                <Scripts>
-                    <OnLoad>
-                        this:SetBackdropBorderColor(1, 1, 1, 1)
-                    </OnLoad>
-                </Scripts>
-            </Frame>
-            <Frame name="$parentHover" hidden="true" toplevel="true">
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset x="-1" y="1"/>
-                    </Anchor>
-                    <Anchor point="BOTTOMRIGHT">
-                        <Offset x="1" y="-1"/>
-                    </Anchor>
-                </Anchors>
-                <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-                    <EdgeSize val="12"/>
-                </Backdrop>
-                <Scripts>
-                    <OnLoad>
-                        this:SetBackdropBorderColor(1, 0.8, 0, 1)
-                    </OnLoad>
-                </Scripts>
             </Frame>
         </Frames>
         <HighlightTexture inherits="DialogButtonHighlightTexture">
             <Anchors>
-                <Anchor point="TOPLEFT" relativeTo="$parentHealthBar">
-                    <Offset x="-2" y="2"/>
+                <Anchor point="TOPLEFT">
+                    <Offset x="-1" y="1"/>
                 </Anchor>
-                <Anchor point="BOTTOMRIGHT" relativeTo="$parentHealthBar">
-                    <Offset x="2" y="-2"/>
+                <Anchor point="BOTTOMRIGHT">
+                    <Offset x="1" y="-1"/>
                 </Anchor>
             </Anchors>
         </HighlightTexture>

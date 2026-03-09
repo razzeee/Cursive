@@ -371,15 +371,14 @@ function ui.OnUpdate()
 
     -- Now update the buttons
     local numToShow = table.getn(guidList)
-    local displayNum = math.max(1, numToShow) -- Show at least one button to keep window open
 
     for i = 1, ui.maxButtons do
         local btn = ui.unitButtons[i]
-        if i <= displayNum and i <= config.maxrow then
+        if i <= numToShow and i <= config.maxrow then
             local guid = guidList[i]
             btn.guid = guid
 
-            local name = guid and UnitName(guid) or "No Combat"
+            local name = UnitName(guid)
             local healthBar = getglobal(btn:GetName().."HealthBar")
             local nameText = getglobal(btn:GetName().."HealthBarName")
             local hpText = getglobal(btn:GetName().."HealthBarHPText")
@@ -388,21 +387,14 @@ function ui.OnUpdate()
             local dots = getglobal(btn:GetName().."Dots")
 
             nameText:SetText(name)
-            if guid then
-                nameText:SetTextColor(1, 1, 1) -- Use white for better contrast against health bar
-            else
-                nameText:SetTextColor(0.5, 0.5, 0.5) -- Gray out if no GUID
-            end
+            nameText:SetTextColor(1, 1, 1) -- Use white for better contrast against health bar
 
-            local hp = guid and UnitHealth(guid) or 0
-            local hpMax = guid and UnitHealthMax(guid) or 100
+            local hp = UnitHealth(guid)
+            local hpMax = UnitHealthMax(guid)
             healthBar:SetMinMaxValues(0, hpMax)
             healthBar:SetValue(hp)
 
-            local r, g, b = 0.5, 0.5, 0.5
-            if guid then
-                _, r, g, b = utils.GetUnitColor(guid)
-            end
+            local _, r, g, b = utils.GetUnitColor(guid)
             healthBar:SetStatusBarColor(r, g, b)
             healthBar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
             getglobal(healthBar:GetName().."Background"):SetAlpha(0.8)
@@ -469,9 +461,10 @@ function ui.OnUpdate()
     -- Adjust main frame height based on num buttons
     local titleSize = config.showtitle and 40 or 10
     local spacing = config.spacing or 4
-    local num = math.max(1, math.min(numToShow, config.maxrow)) -- Keep window open to a degree
+    local num = math.min(numToShow, config.maxrow)
     local entriesHeight = (num * 48) + ((num > 0 and num - 1 or 0) * spacing)
-    CursiveFrame:SetHeight(titleSize + entriesHeight + 15)
+    local padding = num > 0 and 15 or 0
+    CursiveFrame:SetHeight(titleSize + entriesHeight + padding)
 end
 
 -- Initialize the UI
