@@ -11,7 +11,8 @@ local ui = {}
 Cursive.ui = ui
 
 ui.unitButtons = {}
-ui.maxButtons = 15
+ui.maxButtons = 20
+ui.lastCleanup = 0
 
 local function GetSortedCurses(guidCurses)
 	-- Collect keys
@@ -55,8 +56,12 @@ function ui.Setup()
     ui.UpdateLock()
 
     for i = 1, ui.maxButtons do
-        local btn = CreateFrame("Button", "CursiveUnitButton"..i, CursiveUnitsFrame, "CursiveUnitButtonTemplate")
-        btn:SetID(i)
+        local name = "CursiveUnitButton"..i
+        local btn = getglobal(name)
+        if not btn then
+            btn = CreateFrame("Button", name, CursiveUnitsFrame, "CursiveUnitButtonTemplate")
+            btn:SetID(i)
+        end
         ui.unitButtons[i] = btn
     end
 
@@ -326,6 +331,21 @@ function ui.BarLeave()
     GameTooltip:Hide()
 end
 
+function ui.CheckForCleanup()
+    local now = GetTime()
+    if (now - ui.lastCleanup < 5) then return end
+    ui.lastCleanup = now
+
+    for guid, _ in pairs(Cursive.core.guids) do
+        if (not UnitExists(guid) or UnitIsDead(guid)) then
+            Cursive.core.guids[guid] = nil
+            if Cursive.curses.guids[guid] then
+                Cursive.curses.guids[guid] = nil
+            end
+        end
+    end
+end
+
 -- The main update loop (moved from the anonymous function in original ui.lua)
 ui.tick = 0
 function ui.OnUpdate()
@@ -335,6 +355,8 @@ function ui.OnUpdate()
         for i = 1, ui.maxButtons do ui.unitButtons[i]:Hide() end
         return
     end
+
+    ui.CheckForCleanup()
 
     ui.tick = ui.tick + elapsed
     if ui.tick < 0.1 then return end
@@ -471,6 +493,7 @@ end
 function ui.Initialize()
     ui.Setup()
     CursiveFrame:SetScript("OnUpdate", ui.OnUpdate)
+    ui.OnUpdate() -- Initial update to set height
     if Cursive.db.profile.enabled then
         CursiveFrame:Show()
         CursiveUnitsFrame:Show()

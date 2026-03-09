@@ -19,11 +19,11 @@
         <Frames>
             <Frame name="$parentSelection" hidden="true" toplevel="true">
                 <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset x="-1" y="1"/>
+                    <Anchor point="TOPLEFT" relativeTo="$parentHealthBar">
+                        <Offset x="-2" y="2"/>
                     </Anchor>
-                    <Anchor point="BOTTOMRIGHT">
-                        <Offset x="1" y="-1"/>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentDots">
+                        <Offset x="2" y="-2"/>
                     </Anchor>
                 </Anchors>
                 <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
@@ -37,11 +37,11 @@
             </Frame>
             <Frame name="$parentHover" hidden="true" toplevel="true">
                 <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset x="-1" y="1"/>
+                    <Anchor point="TOPLEFT" relativeTo="$parentHealthBar">
+                        <Offset x="-2" y="2"/>
                     </Anchor>
-                    <Anchor point="BOTTOMRIGHT">
-                        <Offset x="1" y="-1"/>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentDots">
+                        <Offset x="2" y="-2"/>
                     </Anchor>
                 </Anchors>
                 <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
@@ -336,6 +336,14 @@
                     </Button>
                 </Frames>
             </Frame>
+            <Frame name="CursiveUnitsFrame" clampedToScreen="true">
+                <Size x="180" y="220"/>
+                <Anchors>
+                    <Anchor point="TOP">
+                        <Offset x="0" y="-35"/>
+                    </Anchor>
+                </Anchors>
+            </Frame>
         </Frames>
         <Scripts>
             <OnLoad>
@@ -356,18 +364,9 @@
         </Scripts>
     </Frame>
 
-    <Frame name="CursiveUnitsFrame" parent="UIParent" frameStrata="LOW" clampedToScreen="true">
-        <Size x="180" y="220"/>
-        <Anchors>
-            <Anchor point="TOP" relativePoint="TOP" relativeTo="CursiveFrame">
-                <Offset x="0" y="-35"/>
-            </Anchor>
-        </Anchors>
-    </Frame>
-
     <CheckButton name="CursiveOptionsCheckButtonTemplate" inherits="OptionsCheckButtonTemplate" virtual="true">
-        <Size x="32" y="32"/>
-        <HitRectInsets left="0" right="-120" top="5" bottom="5"/>
+        <Size x="26" y="26"/>
+        <HitRectInsets left="0" right="-140" top="0" bottom="0"/>
         <Scripts>
             <OnEnter>
                 local text = getglobal(this:GetName().."Text")
@@ -404,7 +403,7 @@
     </Slider>
 
     <Frame name="CursiveOptionsFrame" parent="UIParent" movable="true" enableMouse="true" toplevel="true" frameStrata="DIALOG" hidden="true">
-        <Size x="400" y="450"/>
+        <Size x="220" y="440"/>
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
@@ -417,7 +416,6 @@
         <Layers>
             <Layer level="BACKGROUND">
                 <Texture>
-                    <Size x="192" y="30"/>
                     <Anchors>
                         <Anchor point="TOPLEFT">
                             <Offset x="5" y="-5"/>
@@ -430,10 +428,10 @@
                 </Texture>
             </Layer>
             <Layer level="BORDER">
-                <FontString inherits="GameFontNormalLarge" text="Cursive Options" justifyH="CENTER">
+                <FontString inherits="GameFontNormal" text="Cursive Options" justifyH="CENTER">
                     <Anchors>
                         <Anchor point="TOP">
-                            <Offset x="0" y="-10"/>
+                            <Offset x="0" y="-12"/>
                         </Anchor>
                     </Anchors>
                 </FontString>
@@ -471,7 +469,7 @@
                 <Size x="160" y="16"/>
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentScaleSlider" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="-16"/>
+                        <Offset x="0" y="-24"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -490,7 +488,7 @@
             <CheckButton name="$parentLock" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentOpacitySlider" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="-16"/>
+                        <Offset x="0" y="-12"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -506,7 +504,7 @@
             <CheckButton name="$parentInvert" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentLock" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="7"/>
+                        <Offset x="0" y="4"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -521,7 +519,7 @@
             <CheckButton name="$parentExpandUpwards" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentInvert" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="7"/>
+                        <Offset x="0" y="4"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -536,12 +534,12 @@
             <CheckButton name="$parentShowBackdrop" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentExpandUpwards" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="7"/>
+                        <Offset x="0" y="4"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
                     <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText("Show Frame Background")
+                        getglobal(this:GetName().."Text"):SetText("Show Background")
                     </OnLoad>
                     <OnClick>
                         Cursive.ui.ToggleShowBackdrop(this:GetChecked())
@@ -551,7 +549,7 @@
              <CheckButton name="$parentShowTitle" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentShowBackdrop" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="7"/>
+                        <Offset x="0" y="4"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -566,7 +564,7 @@
             <CheckButton name="$parentAlwaysShowTarget" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentShowTitle" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="7"/>
+                        <Offset x="0" y="4"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -582,7 +580,7 @@
                 <Size x="160" y="16"/>
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentAlwaysShowTarget" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="-12"/>
+                        <Offset x="0" y="-20"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
