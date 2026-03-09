@@ -1,10 +1,10 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Button name="CursiveUnitButtonTemplate" virtual="true" hidden="true" toplevel="true">
-        <Size x="200" y="42"/>
+        <Size x="190" y="38"/>
         <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true">
             <TileSize val="16"/>
-            <BackgroundInsets left="5" right="5" top="0" bottom="0"/>
-            <Color r="0" g="0" b="0"/>
+            <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
+            <Color r="0" g="0" b="0" a="0"/>
         </Backdrop>
         <Layers>
             <Layer level="ARTWORK">
@@ -51,6 +51,12 @@
                 </Texture>
             </Layer>
             <Layer level="OVERLAY">
+                <Texture name="$parentTargetIndicator" file="Interface\AddOns\Cursive\img\target-left" hidden="true">
+                    <Size x="8" y="16"/>
+                </Texture>
+                <Texture name="$parentRaidIcon" file="Interface\TargetingFrame\UI-RaidTargetingIcons" hidden="true">
+                    <Size x="16" y="16"/>
+                </Texture>
                 <Texture name="$parentCurse1Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
                     <Size x="18" y="18"/>
                     <Anchors>
@@ -85,22 +91,6 @@
                         <Anchor point="CENTER" relativeTo="$parentCurse5"/>
                     </Anchors>
                     <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
-                </Texture>
-                <Texture name="$parentTargetIndicator" file="Interface\AddOns\Cursive\img\target-left" hidden="true">
-                    <Size x="8" y="16"/>
-                    <Anchors>
-                        <Anchor point="LEFT">
-                            <Offset x="2" y="0"/>
-                        </Anchor>
-                    </Anchors>
-                </Texture>
-                <Texture name="$parentRaidIcon" file="Interface\TargetingFrame\UI-RaidTargetingIcons" hidden="true">
-                    <Size x="16" y="16"/>
-                    <Anchors>
-                        <Anchor point="CENTER" relativeTo="$parent" relativePoint="TOPRIGHT">
-                            <Offset x="-5" y="0"/>
-                        </Anchor>
-                    </Anchors>
                 </Texture>
             </Layer>
         </Layers>
@@ -145,7 +135,12 @@
                 </Layers>
             </StatusBar>
         </Frames>
-        <HighlightTexture inherits="DialogButtonHighlightTexture"/>
+        <HighlightTexture inherits="DialogButtonHighlightTexture">
+            <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentHealthBar"/>
+                <Anchor point="BOTTOMRIGHT" relativeTo="$parentHealthBar"/>
+            </Anchors>
+        </HighlightTexture>
         <Scripts>
             <OnLoad>
                 this:RegisterForClicks("LeftButtonDown", "RightButtonDown")

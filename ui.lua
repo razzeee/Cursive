@@ -118,18 +118,18 @@ function ui.UpdateLayout()
             nameText:SetJustifyH("RIGHT")
             hpText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             hpText:SetJustifyH("LEFT")
-            targetInd:SetPoint("RIGHT", btn, "RIGHT", -2, 0)
-            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
-            raidIcon:SetPoint("CENTER", btn, "TOPLEFT", 5, 0)
+            targetInd:SetPoint("LEFT", healthBar, "RIGHT", 2, 0)
+            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
+            raidIcon:SetPoint("CENTER", healthBar, "TOPLEFT", 5, 0)
         else
             healthBar:SetPoint("TOP", btn, "TOP", 0, -1)
             nameText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             nameText:SetJustifyH("LEFT")
             hpText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             hpText:SetJustifyH("RIGHT")
-            targetInd:SetPoint("LEFT", btn, "LEFT", 2, 0)
-            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
-            raidIcon:SetPoint("CENTER", btn, "TOPRIGHT", -5, 0)
+            targetInd:SetPoint("RIGHT", healthBar, "LEFT", -2, 0)
+            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
+            raidIcon:SetPoint("CENTER", healthBar, "TOPRIGHT", -5, 0)
         end
 
         -- Update curses icons layout (below health bar)
@@ -157,16 +157,23 @@ function ui.ToggleOptions()
     if CursiveOptionsFrame:IsShown() then
         CursiveOptionsFrame:Hide()
     else
-        CursiveOptionsFrameScaleSlider:SetValue(Cursive.db.profile.scale)
-        CursiveOptionsFrameOpacitySlider:SetValue(Cursive.db.profile.opacity or 1)
-        CursiveOptionsFrameLock:SetChecked(Cursive.db.profile.clickthrough)
-        CursiveOptionsFrameInvert:SetChecked(Cursive.db.profile.invertbars)
-        CursiveOptionsFrameExpandUpwards:SetChecked(Cursive.db.profile.expandupwards)
-        CursiveOptionsFrameShowBackdrop:SetChecked(Cursive.db.profile.showbackdrop)
-        CursiveOptionsFrameShowTitle:SetChecked(Cursive.db.profile.showtitle)
-        CursiveOptionsFrameShowHealthBar:SetChecked(Cursive.db.profile.showhealthbar)
-        CursiveOptionsFrameAlwaysShowTarget:SetChecked(Cursive.db.profile.alwaysshowcurrenttarget)
-        CursiveOptionsFrameMaxRowSlider:SetValue(Cursive.db.profile.maxrow)
+        local config = Cursive.db.profile
+        CursiveOptionsFrameScaleSlider:SetValue(config.scale)
+        CursiveOptionsFrameOpacitySlider:SetValue(config.opacity or 1)
+        CursiveOptionsFrameLock:SetChecked(config.clickthrough)
+        CursiveOptionsFrameInvert:SetChecked(config.invertbars)
+        CursiveOptionsFrameExpandUpwards:SetChecked(config.expandupwards)
+        CursiveOptionsFrameShowBackdrop:SetChecked(config.showbackdrop)
+        CursiveOptionsFrameShowTitle:SetChecked(config.showtitle)
+        CursiveOptionsFrameShowHealthBar:SetChecked(config.showhealthbar)
+        CursiveOptionsFrameAlwaysShowTarget:SetChecked(config.alwaysshowcurrenttarget)
+        CursiveOptionsFrameMaxRowSlider:SetValue(config.maxrow)
+
+        -- Update labels
+        CursiveOptionsFrameScaleSliderText:SetText("Scale ("..(math.floor(config.scale * 100)/100)..")")
+        CursiveOptionsFrameOpacitySliderText:SetText("Opacity ("..(math.floor((config.opacity or 1) * 100)/100)..")")
+        CursiveOptionsFrameMaxRowSliderText:SetText("Max Rows ("..config.maxrow..")")
+
         CursiveOptionsFrame:Show()
     end
 end
@@ -179,13 +186,17 @@ function ui.UpdateScale()
 end
 
 function ui.ScaleChanged(val)
+    val = math.floor(val * 100) / 100
     Cursive.db.profile.scale = val
     ui.UpdateScale()
+    CursiveOptionsFrameScaleSliderText:SetText("Scale ("..val..")")
 end
 
 function ui.OpacityChanged(val)
+    val = math.floor(val * 100) / 100
     Cursive.db.profile.opacity = val
     CursiveFrame:SetAlpha(val)
+    CursiveOptionsFrameOpacitySliderText:SetText("Opacity ("..val..")")
 end
 
 function ui.ToggleLock(val)
@@ -224,7 +235,9 @@ function ui.ToggleAlwaysShowTarget(val)
 end
 
 function ui.MaxRowChanged(val)
+    val = math.floor(val)
     Cursive.db.profile.maxrow = val
+    CursiveOptionsFrameMaxRowSliderText:SetText("Max Rows ("..val..")")
 end
 
 function ui.Show()
@@ -263,6 +276,12 @@ end
 
 function ui.BarEnter()
     this.hover = true
+    if not this.guid then
+        local healthBar = getglobal(this:GetName().."HealthBar")
+        healthBar:SetBackdropBorderColor(1, 1, 1, 1)
+        return
+    end
+
     if this.guid then
         GameTooltip_SetDefaultAnchor(GameTooltip, this)
         GameTooltip:SetUnit(this.guid)
@@ -357,9 +376,11 @@ function ui.OnUpdate()
             healthBar:SetValue(hp)
             healthBar:SetStatusBarColor(r, g, b)
             if config.showhealthbar then
-                healthBar:Show()
+                healthBar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
+                getglobal(healthBar:GetName().."Background"):SetAlpha(0.8)
             else
-                healthBar:Hide()
+                healthBar:SetStatusBarTexture(nil)
+                getglobal(healthBar:GetName().."Background"):SetAlpha(0)
             end
 
             -- HP text formatting
