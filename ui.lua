@@ -150,25 +150,25 @@ function ui.UpdateLayout()
         dots:ClearAllPoints()
 
         if config.invertbars then
-            healthBar:SetPoint("TOPRIGHT", btn, "TOPRIGHT", -25, -1)
+            healthBar:SetPoint("TOP", btn, "TOP", 0, -1)
             nameText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             nameText:SetJustifyH("RIGHT")
             hpText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             hpText:SetJustifyH("LEFT")
-            targetInd:SetPoint("LEFT", healthBar, "RIGHT", 5, 0)
+            targetInd:SetPoint("LEFT", healthBar, "RIGHT", 2, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
             raidIcon:SetPoint("RIGHT", healthBar, "LEFT", -5, 0)
-            dots:SetPoint("BOTTOMRIGHT", btn, "BOTTOMRIGHT", -25, 1)
+            dots:SetPoint("BOTTOM", btn, "BOTTOM", 0, 1)
         else
-            healthBar:SetPoint("TOPLEFT", btn, "TOPLEFT", 25, -1)
+            healthBar:SetPoint("TOP", btn, "TOP", 0, -1)
             nameText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             nameText:SetJustifyH("LEFT")
             hpText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             hpText:SetJustifyH("RIGHT")
-            targetInd:SetPoint("RIGHT", healthBar, "LEFT", -5, 0)
+            targetInd:SetPoint("RIGHT", healthBar, "LEFT", -2, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
             raidIcon:SetPoint("LEFT", healthBar, "RIGHT", 5, 0)
-            dots:SetPoint("BOTTOMLEFT", btn, "BOTTOMLEFT", 25, 1)
+            dots:SetPoint("BOTTOM", btn, "BOTTOM", 0, 1)
         end
 
         -- Update curses icons layout

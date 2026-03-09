@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Button name="CursiveUnitButtonTemplate" virtual="true" hidden="true" toplevel="true">
-        <Size x="190" y="48"/>
+        <Size x="180" y="48"/>
         <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true">
             <TileSize val="16"/>
             <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
@@ -18,7 +18,7 @@
         </Layers>
         <Frames>
             <StatusBar name="$parentHealthBar">
-                <Size x="180" y="22"/>
+                <Size x="170" y="22"/>
                 <Anchors>
                     <Anchor point="TOP">
                         <Offset x="0" y="-1"/>
@@ -66,7 +66,7 @@
                 </Layers>
             </StatusBar>
             <Frame name="$parentDots">
-                <Size x="180" y="24"/>
+                <Size x="170" y="24"/>
                 <Anchors>
                     <Anchor point="BOTTOM">
                         <Offset x="0" y="1"/>
@@ -324,7 +324,7 @@
     </Frame>
 
     <Frame name="CursiveUnitsFrame" parent="UIParent" frameStrata="LOW" clampedToScreen="true">
-        <Size x="200" y="220"/>
+        <Size x="180" y="220"/>
         <Anchors>
             <Anchor point="TOP" relativePoint="TOP" relativeTo="CursiveFrame">
                 <Offset x="0" y="-35"/>
