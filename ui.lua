@@ -458,12 +458,12 @@ function ui.OnUpdate()
         end
     end
 
-    -- Adjust main frame height based on num buttons
+    -- Adjust main frame height based on num buttons (always draw a box that fits max rows)
     local titleSize = config.showtitle and 40 or 10
     local spacing = config.spacing or 4
-    local num = math.min(numToShow, config.maxrow)
+    local num = config.maxrow
     local entriesHeight = (num * 48) + ((num > 0 and num - 1 or 0) * spacing)
-    local padding = num > 0 and 15 or 0
+    local padding = 15
     CursiveFrame:SetHeight(titleSize + entriesHeight + padding)
 end
 
