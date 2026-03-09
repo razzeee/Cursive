@@ -43,15 +43,17 @@ function ui.UpdateHeader()
         CursiveFrameBackground:Hide()
         CursiveFrameHitRect:Hide()
     end
+    ui.UpdateBackdrop()
 end
 
 function ui.UpdateBackdrop()
     if Cursive.db.profile.showbackdrop then
+        local top = Cursive.db.profile.showtitle and 5 or 0
         CursiveFrame:SetBackdrop({
             bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
             edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
             tile = true, tileSize = 16, edgeSize = 16,
-            insets = { left = 5, right = 5, top = 5, bottom = 5 }
+            insets = { left = 5, right = 5, top = top, bottom = 5 }
         })
     else
         CursiveFrame:SetBackdrop(nil)
@@ -118,8 +120,8 @@ function ui.UpdateLayout()
             nameText:SetJustifyH("RIGHT")
             hpText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             hpText:SetJustifyH("LEFT")
-            targetInd:SetPoint("LEFT", healthBar, "RIGHT", 2, 0)
-            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
+            targetInd:SetPoint("RIGHT", healthBar, "LEFT", -2, 0)
+            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
             raidIcon:SetPoint("CENTER", healthBar, "TOPLEFT", 5, 0)
         else
             healthBar:SetPoint("TOP", btn, "TOP", 0, -1)
@@ -127,8 +129,8 @@ function ui.UpdateLayout()
             nameText:SetJustifyH("LEFT")
             hpText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             hpText:SetJustifyH("RIGHT")
-            targetInd:SetPoint("RIGHT", healthBar, "LEFT", -2, 0)
-            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
+            targetInd:SetPoint("LEFT", healthBar, "RIGHT", 2, 0)
+            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
             raidIcon:SetPoint("CENTER", healthBar, "TOPRIGHT", -5, 0)
         end
 
@@ -389,8 +391,14 @@ function ui.OnUpdate()
             elseif hp >= 1000 then hpStr = math.floor(hp/100)/10 .. "k" end
             hpText:SetText(hpStr)
 
-            -- Target indicator
-            if UnitIsUnit("target", guid) then targetInd:Show() else targetInd:Hide() end
+            -- Target indicator and Selection border
+            if UnitIsUnit("target", guid) then
+                targetInd:Show()
+                getglobal(btn:GetName().."Selection"):Show()
+            else
+                targetInd:Hide()
+                getglobal(btn:GetName().."Selection"):Hide()
+            end
 
             -- Raid icon
             local raidIndex = GetRaidTargetIndex(guid)

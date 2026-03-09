@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Button name="CursiveUnitButtonTemplate" virtual="true" hidden="true" toplevel="true">
-        <Size x="190" y="38"/>
+        <Size x="190" y="42"/>
         <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true">
             <TileSize val="16"/>
             <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
@@ -95,6 +95,24 @@
             </Layer>
         </Layers>
         <Frames>
+            <Frame name="$parentSelection" hidden="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentHealthBar">
+                        <Offset x="-2" y="2"/>
+                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentHealthBar">
+                        <Offset x="2" y="-2"/>
+                    </Anchor>
+                </Anchors>
+                <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+                    <EdgeSize val="12"/>
+                </Backdrop>
+                <Scripts>
+                    <OnLoad>
+                        this:SetBackdropBorderColor(1, 1, 1, 1)
+                    </OnLoad>
+                </Scripts>
+            </Frame>
             <StatusBar name="$parentHealthBar">
                 <Size x="180" y="18"/>
                 <Anchors>
@@ -137,8 +155,12 @@
         </Frames>
         <HighlightTexture inherits="DialogButtonHighlightTexture">
             <Anchors>
-                <Anchor point="TOPLEFT" relativeTo="$parentHealthBar"/>
-                <Anchor point="BOTTOMRIGHT" relativeTo="$parentHealthBar"/>
+                <Anchor point="TOPLEFT" relativeTo="$parentHealthBar">
+                    <Offset x="-2" y="2"/>
+                </Anchor>
+                <Anchor point="BOTTOMRIGHT" relativeTo="$parentHealthBar">
+                    <Offset x="2" y="-2"/>
+                </Anchor>
             </Anchors>
         </HighlightTexture>
         <Scripts>
@@ -223,8 +245,8 @@
                     <Button name="CursiveFrameOptionsButton">
                         <Size x="20" y="20"/>
                         <Anchors>
-                            <Anchor point="TOP">
-                                <Offset x="10" y="-5"/>
+                            <Anchor point="TOPRIGHT">
+                                <Offset x="-5" y="-5"/>
                             </Anchor>
                         </Anchors>
                         <NormalTexture file="Interface\GossipFrame\BinderGossipIcon"/>
