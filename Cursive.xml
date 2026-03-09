@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
     <Button name="CursiveUnitButtonTemplate" virtual="true" hidden="true" toplevel="true">
-        <Size x="180" y="48"/>
+        <Size x="220" y="48"/>
         <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true">
             <TileSize val="16"/>
             <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
@@ -54,7 +54,7 @@
                 </Scripts>
             </Frame>
             <StatusBar name="$parentHealthBar">
-                <Size x="174" y="22"/>
+                <Size x="214" y="22"/>
                 <Anchors>
                     <Anchor point="TOP">
                         <Offset x="0" y="-3"/>
@@ -74,7 +74,7 @@
                     </Layer>
                     <Layer level="OVERLAY">
                         <FontString name="$parentName" inherits="GameFontNormalLarge" justifyH="LEFT">
-                            <Size x="115" y="22"/>
+                            <Size x="155" y="22"/>
                             <Anchors>
                                 <Anchor point="LEFT">
                                     <Offset x="5" y="0"/>
@@ -102,7 +102,7 @@
                 </Layers>
             </StatusBar>
             <Frame name="$parentDots">
-                <Size x="170" y="20"/>
+                <Size x="210" y="20"/>
                 <Anchors>
                     <Anchor point="BOTTOM">
                         <Offset x="0" y="3"/>
@@ -246,7 +246,7 @@
     </Button>
 
     <Frame name="CursiveFrame" toplevel="false" parent="UIParent" movable="true" enableMouse="true" clampedToScreen="true" resizable="false" frameStrata="LOW">
-        <Size x="200" y="250"/>
+        <Size x="240" y="250"/>
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
@@ -259,7 +259,7 @@
         <Layers>
             <Layer level="BACKGROUND">
                 <Texture name="CursiveFrameBackground">
-                    <Size x="190" y="30"/>
+                    <Size x="230" y="30"/>
                     <Anchors>
                         <Anchor point="TOP">
                             <Offset x="0" y="-5"/>
@@ -280,7 +280,7 @@
         </Layers>
         <Frames>
             <Frame name="CursiveFrameHitRect" toplevel="true" enableMouse="true">
-                <Size x="190" y="30"/>
+                <Size x="230" y="30"/>
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="CursiveFrameBackground" relativePoint="CENTER"/>
                 </Anchors>
@@ -337,7 +337,7 @@
                 </Frames>
             </Frame>
             <Frame name="CursiveUnitsFrame" clampedToScreen="true">
-                <Size x="180" y="220"/>
+                <Size x="220" y="220"/>
                 <Anchors>
                     <Anchor point="TOP">
                         <Offset x="0" y="-35"/>

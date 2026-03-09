@@ -225,7 +225,6 @@ end
 function ui.UpdateScale()
     local scale = Cursive.db.profile.scale or 1
     CursiveFrame:SetScale(scale)
-    CursiveUnitsFrame:SetScale(scale)
 end
 
 function ui.ScaleChanged(val)
