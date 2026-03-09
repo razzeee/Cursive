@@ -22,13 +22,14 @@ function ui.Setup()
     ui.UpdateHeader()
     ui.UpdateBackdrop()
     ui.UpdateLock()
-    ui.UpdateInvert()
 
     for i = 1, ui.maxButtons do
         local btn = CreateFrame("Button", "CursiveUnitButton"..i, CursiveUnitsFrame, "CursiveUnitButtonTemplate")
         btn:SetID(i)
         ui.unitButtons[i] = btn
     end
+
+    ui.UpdateInvert()
     ui.UpdateLayout()
 end
 
@@ -82,6 +83,7 @@ function ui.UpdateLayout()
 
     for i = 1, ui.maxButtons do
         local btn = ui.unitButtons[i]
+        if not btn then break end
         btn:ClearAllPoints()
         if i == 1 then
             if config.expandupwards then
