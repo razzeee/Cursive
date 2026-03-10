@@ -6,16 +6,6 @@
             <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
             <Color r="0" g="0" b="0" a="0.4"/>
         </Backdrop>
-        <Layers>
-            <Layer level="OVERLAY">
-                <Texture name="$parentTargetIndicator" hidden="true">
-                    <Size x="10" y="20"/>
-                </Texture>
-                <Texture name="$parentRaidIcon" file="Interface\TargetingFrame\UI-RaidTargetingIcons" hidden="true">
-                    <Size x="20" y="20"/>
-                </Texture>
-            </Layer>
-        </Layers>
         <Frames>
             <Frame name="$parentSelection" hidden="true" toplevel="true">
                 <Anchors>
@@ -55,6 +45,12 @@
                         </Texture>
                     </Layer>
                     <Layer level="OVERLAY">
+                        <Texture name="$parentTargetIndicator" hidden="true">
+                            <Size x="10" y="20"/>
+                        </Texture>
+                        <Texture name="$parentRaidIcon" file="Interface\TargetingFrame\UI-RaidTargetingIcons" hidden="true">
+                            <Size x="18" y="18"/>
+                        </Texture>
                         <FontString name="$parentName" inherits="GameFontNormalLarge" justifyH="LEFT">
                             <Size x="170" y="22"/>
                             <Anchors>
