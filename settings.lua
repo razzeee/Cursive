@@ -27,8 +27,8 @@ Cursive:RegisterDefaults("profile", {
 	alwaysshowcurrenttarget = true,
 
 	scale = 1,
-	healthwidth = 100,
-	height = 16,
+	healthwidth = 220,
+	height = 22,
 	bartexture = "Interface\\TargetingFrame\\UI-StatusBar",
 
 	raidiconsize = 16,

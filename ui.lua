@@ -130,10 +130,10 @@ function ui.UpdateLayout()
 
     local spacing = config.spacing or 4
     local btnWidth = config.healthwidth or 220
-    local btnHeight = config.compactmode and (config.height or 16) or 48
+    local btnHeight = config.compactmode and (config.height or 22) or 48
     local barHeight = config.height or 22
     local raidSize = config.raidiconsize or 18
-    local curseSize = config.curseiconsize or 20
+    local curseSize = config.curseiconsize or (config.compactmode and (barHeight - 2) or 20)
 
     CursiveUnitsFrame:SetWidth(btnWidth)
 
@@ -194,6 +194,12 @@ function ui.UpdateLayout()
         nameText:SetHeight(barHeight)
         hpText:SetHeight(barHeight)
 
+        if config.compactmode then
+            nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - 15 - (curseSize * 2.5))
+        else
+            nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - 65)
+        end
+
         -- Text settings (Move from OnUpdate for performance)
         local font, _, flags = nameText:GetFont()
         nameText:SetFont(font or "Fonts\\FRIZQT__.TTF", config.textsize or 12, flags)
@@ -215,7 +221,6 @@ function ui.UpdateLayout()
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
 
             nameText:SetPoint("RIGHT", targetInd, "LEFT", -5, 0)
-            nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - 65)
             nameText:SetJustifyH("RIGHT")
             hpText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             hpText:SetJustifyH("LEFT")
@@ -225,7 +230,6 @@ function ui.UpdateLayout()
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
 
             nameText:SetPoint("LEFT", targetInd, "RIGHT", 5, 0)
-            nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - 65)
             nameText:SetJustifyH("LEFT")
             hpText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             hpText:SetJustifyH("RIGHT")
@@ -580,7 +584,7 @@ function ui.OnUpdate()
         local titleSize = config.showtitle and 40 or 10
         local spacing = config.spacing or 4
         local num = config.maxrow
-        local btnHeight = config.compactmode and (config.height or 16) or 48
+        local btnHeight = config.compactmode and (config.height or 22) or 48
         local entriesHeight = (num * btnHeight) + ((num > 0 and num - 1 or 0) * spacing)
         local padding = 15
         CursiveFrame:SetWidth((config.healthwidth or 220) + 10)
