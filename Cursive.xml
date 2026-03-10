@@ -15,7 +15,7 @@
                     <Size x="20" y="20"/>
                 </Texture>
             </Layer>
-        </Frames>
+        </Layers>
         <Frames>
             <Frame name="$parentSelection" hidden="true" toplevel="true">
                 <Anchors>
