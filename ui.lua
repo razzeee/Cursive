@@ -133,7 +133,7 @@ function ui.UpdateLayout()
     local btnHeight = config.compactmode and (config.height or 22) or 48
     local barHeight = config.height or 22
     local raidSize = config.raidiconsize or 18
-    local curseSize = config.curseiconsize or (config.compactmode and (barHeight - 2) or 20)
+    local curseSize = config.curseiconsize or (config.compactmode and (barHeight - 4) or 20)
 
     CursiveUnitsFrame:SetWidth(btnWidth)
 
@@ -195,7 +195,9 @@ function ui.UpdateLayout()
         hpText:SetHeight(barHeight)
 
         if config.compactmode then
-            nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - 15 - (curseSize * 2.5))
+            -- Reserve space for 5 curses (curseSize + 4 padding each) + HP text (approx 50)
+            local reserved = 50 + (curseSize * 5) + 20
+            nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - reserved)
         else
             nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - 65)
         end
@@ -248,22 +250,32 @@ function ui.UpdateLayout()
             if config.invertbars then
                 if j == 1 then
                     if config.compactmode then
-                        curse:SetPoint("RIGHT", dots, "RIGHT", -(raidSize + raidSize/1.8 + 10), 0)
+                        -- In compact mode, anchor next to HP text (which is on the LEFT)
+                        curse:SetPoint("LEFT", hpText, "RIGHT", 5, 0)
                     else
                         curse:SetPoint("RIGHT", dots, "RIGHT", -3, 0)
                     end
                 else
-                    curse:SetPoint("RIGHT", getglobal(dots:GetName().."Curse"..(j-1)), "LEFT", -4, 0)
+                    if config.compactmode then
+                        curse:SetPoint("LEFT", getglobal(dots:GetName().."Curse"..(j-1)), "RIGHT", 4, 0)
+                    else
+                        curse:SetPoint("RIGHT", getglobal(dots:GetName().."Curse"..(j-1)), "LEFT", -4, 0)
+                    end
                 end
             else
                 if j == 1 then
                     if config.compactmode then
-                        curse:SetPoint("LEFT", dots, "LEFT", (raidSize + raidSize/1.8 + 10), 0)
+                        -- In compact mode, anchor next to HP text (which is on the RIGHT)
+                        curse:SetPoint("RIGHT", hpText, "LEFT", -5, 0)
                     else
                         curse:SetPoint("LEFT", dots, "LEFT", 3, 0)
                     end
                 else
-                    curse:SetPoint("LEFT", getglobal(dots:GetName().."Curse"..(j-1)), "RIGHT", 4, 0)
+                    if config.compactmode then
+                        curse:SetPoint("RIGHT", getglobal(dots:GetName().."Curse"..(j-1)), "LEFT", -4, 0)
+                    else
+                        curse:SetPoint("LEFT", getglobal(dots:GetName().."Curse"..(j-1)), "RIGHT", 4, 0)
+                    end
                 end
             end
         end
