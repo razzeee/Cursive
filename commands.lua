@@ -89,23 +89,32 @@ end
 local function handleSlashCommands(msg, editbox)
 	if not msg or msg == "" then
 		DEFAULT_CHAT_FRAME:AddMessage(curseCommands)
-		for _, description in pairs(commands) do
+		DEFAULT_CHAT_FRAME:AddMessage("|CFFFFFF00/cursive show|R - Show the Cursive frame")
+		DEFAULT_CHAT_FRAME:AddMessage("|CFFFFFF00/cursive hide|R - Hide the Cursive frame")
+		DEFAULT_CHAT_FRAME:AddMessage("|CFFFFFF00/cursive toggle|R - Toggle the Cursive frame")
+		DEFAULT_CHAT_FRAME:AddMessage("|CFFFFFF00/cursive options|R - Open the options menu")
+		DEFAULT_CHAT_FRAME:AddMessage("|CFFFFFF00/cursive reset|R - Reset frame position")
+		for cmd, description in pairs(commands) do
 			DEFAULT_CHAT_FRAME:AddMessage(description)
-		end
-		DEFAULT_CHAT_FRAME:AddMessage(priorityChoices)
-		for priority, description in pairs(priorities) do
-			DEFAULT_CHAT_FRAME:AddMessage("|CFFFFFF00" .. priority .. "|R: " .. description)
-		end
-
-		DEFAULT_CHAT_FRAME:AddMessage(curseOptions)
-		for option, description in pairs(commandOptions) do
-			DEFAULT_CHAT_FRAME:AddMessage("|CFFFFFF00" .. option .. "|R: " .. description)
 		end
 		return
 	end
 	-- get first word in string
-	local _, _, command, args = string.find(msg, "(%w+) (.*)")
-	if command == "curse" then
+	local _, _, command, args = string.find(msg, "(%w+) ?(.*)")
+	if command == "show" then
+		Cursive.ui.Show()
+	elseif command == "hide" then
+		Cursive.ui.Hide()
+	elseif command == "toggle" then
+		Cursive.ui.Toggle()
+	elseif command == "options" then
+		Cursive.ui.ToggleOptions()
+	elseif command == "reset" then
+		Cursive.db.profile.anchor = "CENTER"
+		Cursive.db.profile.x = -100
+		Cursive.db.profile.y = -100
+		Cursive.ui.Setup()
+	elseif command == "curse" then
 		local spellName, targetedGuid, optionsStr = Cursive.utils.strsplit("|", args)
 		local options = parseOptions(optionsStr)
 		Cursive:Curse(spellName, targetedGuid, options)
@@ -117,12 +126,18 @@ local function handleSlashCommands(msg, editbox)
 		local spellName, priority, optionsStr = Cursive.utils.strsplit("|", args)
 		local options = parseOptions(optionsStr)
 		Cursive:Target(spellName, priority, options)
+	elseif command == "help" then
+		DEFAULT_CHAT_FRAME:AddMessage(priorityChoices)
+		for priority, description in pairs(priorities) do
+			DEFAULT_CHAT_FRAME:AddMessage("|CFFFFFF00" .. priority .. "|R: " .. description)
+		end
+		DEFAULT_CHAT_FRAME:AddMessage(curseOptions)
+		for option, description in pairs(commandOptions) do
+			DEFAULT_CHAT_FRAME:AddMessage("|CFFFFFF00" .. option .. "|R: " .. description)
+		end
 	else
 		DEFAULT_CHAT_FRAME:AddMessage(L["|cffffcc00Cursive:|cffffaaaa Unknown command."])
-		DEFAULT_CHAT_FRAME:AddMessage(curseCommands)
-		for _, description in pairs(commands) do
-			DEFAULT_CHAT_FRAME:AddMessage(description)
-		end
+		handleSlashCommands("")
 	end
 end
 

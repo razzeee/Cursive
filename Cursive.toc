@@ -24,6 +24,7 @@ Libs\Tablet\Tablet-2.0.lua
 Libs\FuBarPlugin\FuBarPlugin-2.0.lua
 
 Localization.lua
+Cursive.xml
 global.lua
 utils.lua
 settings.lua

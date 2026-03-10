@@ -1,0 +1,587 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+    <Button name="CursiveUnitButtonTemplate" virtual="true" hidden="true" toplevel="true">
+        <Size x="220" y="48"/>
+        <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true">
+            <TileSize val="16"/>
+            <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
+            <Color r="0" g="0" b="0" a="0.4"/>
+        </Backdrop>
+        <Frames>
+            <Frame name="$parentSelection" hidden="true" toplevel="true">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentHealthBar">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentDots">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+                    <EdgeSize val="12"/>
+                </Backdrop>
+                <Scripts>
+                    <OnLoad>
+                        this:SetBackdropBorderColor(1, 1, 1, 1)
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <StatusBar name="$parentHealthBar">
+                <Size x="220" y="22"/>
+                <Anchors>
+                    <Anchor point="TOP">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
+                <BarColor r="0" g="1" b="0"/>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <Texture name="$parentBackground">
+                            <Anchors>
+                                <Anchor point="TOPLEFT"/>
+                                <Anchor point="BOTTOMRIGHT"/>
+                            </Anchors>
+                            <Color r="0" g="0" b="0" a="0.8"/>
+                        </Texture>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <Texture name="$parentTargetIndicator" hidden="true">
+                            <Size x="10" y="20"/>
+                        </Texture>
+                        <Texture name="$parentRaidIcon" file="Interface\TargetingFrame\UI-RaidTargetingIcons" hidden="true">
+                            <Size x="18" y="18"/>
+                        </Texture>
+                        <FontString name="$parentName" inherits="GameFontNormalLarge" justifyH="LEFT">
+                            <Size x="170" y="22"/>
+                            <Anchors>
+                                <Anchor point="LEFT">
+                                    <Offset x="5" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                            <FontHeight val="12"/>
+                            <Shadow>
+                                <Offset x="1" y="-1"/>
+                                <Color r="0" g="0" b="0"/>
+                            </Shadow>
+                        </FontString>
+                        <FontString name="$parentHPText" inherits="GameFontNormalSmall" justifyH="RIGHT">
+                            <Size x="45" y="22"/>
+                            <Anchors>
+                                <Anchor point="RIGHT">
+                                    <Offset x="-5" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                            <Shadow>
+                                <Offset x="1" y="-1"/>
+                                <Color r="0" g="0" b="0"/>
+                            </Shadow>
+                        </FontString>
+                    </Layer>
+                </Layers>
+            </StatusBar>
+            <Frame name="$parentDots">
+                <Size x="220" y="20"/>
+                <Anchors>
+                    <Anchor point="BOTTOM">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="OVERLAY">
+                        <Texture name="$parentCurse1" hidden="true">
+                            <Size x="20" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT">
+                                    <Offset x="3" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                        </Texture>
+                        <FontString name="$parentCurse1Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse1"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
+                        <Texture name="$parentCurse2" hidden="true">
+                            <Size x="20" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="$parentCurse1" relativePoint="RIGHT">
+                                    <Offset x="4" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                        </Texture>
+                        <FontString name="$parentCurse2Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse2"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
+                        <Texture name="$parentCurse3" hidden="true">
+                            <Size x="20" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="$parentCurse2" relativePoint="RIGHT">
+                                    <Offset x="4" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                        </Texture>
+                        <FontString name="$parentCurse3Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse3"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
+                        <Texture name="$parentCurse4" hidden="true">
+                            <Size x="20" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="$parentCurse3" relativePoint="RIGHT">
+                                    <Offset x="4" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                        </Texture>
+                        <FontString name="$parentCurse4Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse4"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
+                        <Texture name="$parentCurse5" hidden="true">
+                            <Size x="20" y="20"/>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="$parentCurse4" relativePoint="RIGHT">
+                                    <Offset x="4" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                        </Texture>
+                        <FontString name="$parentCurse5Timer" inherits="NumberFontNormalSmall" hidden="true" outline="THICK">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse5"/>
+                            </Anchors>
+                            <Color r="1" g="1" b="1"/>
+                        </FontString>
+                        <Texture name="$parentCurse1Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
+                            <Size x="22" y="22"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse1"/>
+                            </Anchors>
+                            <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+                        </Texture>
+                        <Texture name="$parentCurse2Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
+                            <Size x="22" y="22"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse2"/>
+                            </Anchors>
+                            <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+                        </Texture>
+                        <Texture name="$parentCurse3Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
+                            <Size x="22" y="22"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse3"/>
+                            </Anchors>
+                            <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+                        </Texture>
+                        <Texture name="$parentCurse4Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
+                            <Size x="22" y="22"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse4"/>
+                            </Anchors>
+                            <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+                        </Texture>
+                        <Texture name="$parentCurse5Border" file="Interface\Buttons\UI-Debuff-Overlays" hidden="true">
+                            <Size x="22" y="22"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parentCurse5"/>
+                            </Anchors>
+                            <TexCoords left="0.296875" right="0.5703125" top="0" bottom="0.515625"/>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                this:RegisterForClicks("LeftButtonDown", "RightButtonDown")
+            </OnLoad>
+            <OnClick>
+                Cursive.ui.BarClick()
+            </OnClick>
+            <OnEnter>
+                Cursive.ui.BarEnter()
+            </OnEnter>
+            <OnLeave>
+                Cursive.ui.BarLeave()
+            </OnLeave>
+        </Scripts>
+        <HighlightTexture file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD">
+            <Anchors>
+                <Anchor point="TOPLEFT">
+                    <Offset x="0" y="0"/>
+                </Anchor>
+                <Anchor point="BOTTOMRIGHT">
+                    <Offset x="0" y="0"/>
+                </Anchor>
+            </Anchors>
+        </HighlightTexture>
+    </Button>
+
+    <Frame name="CursiveFrame" toplevel="false" parent="UIParent" movable="true" enableMouse="true" clampedToScreen="true" resizable="false" frameStrata="LOW">
+        <Size x="230" y="250"/>
+        <Anchors>
+            <Anchor point="CENTER"/>
+        </Anchors>
+        <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+            <EdgeSize val="16"/>
+            <TileSize val="16"/>
+            <BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+            <Color r="0" g="0" b="0" a="0.5"/>
+        </Backdrop>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture name="CursiveFrameBackground">
+                    <Size x="220" y="30"/>
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset x="0" y="-5"/>
+                        </Anchor>
+                    </Anchors>
+                    <Color r="0" g="0" b="0"/>
+                </Texture>
+            </Layer>
+            <Layer level="BORDER">
+                <FontString name="$parentTitle" inherits="GameFontNormal" text="Cursive">
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset x="12" y="-12"/>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Frame name="CursiveFrameHitRect" toplevel="true" enableMouse="true">
+                <Size x="220" y="30"/>
+                <Anchors>
+                    <Anchor point="CENTER" relativeTo="CursiveFrameBackground" relativePoint="CENTER"/>
+                </Anchors>
+                <HitRectInsets left="-5" right="-5" top="-5" bottom="-5"/>
+                <Scripts>
+                    <OnMouseDown>
+                        if this:GetParent():IsMovable() then
+                            this:GetParent():StartMoving()
+                        end
+                    </OnMouseDown>
+                    <OnMouseUp>
+                        this:GetParent():StopMovingOrSizing()
+                        local anchor, _, _, x, y = this:GetParent():GetPoint()
+                        Cursive.db.profile.anchor = anchor
+                        Cursive.db.profile.x = x
+                        Cursive.db.profile.y = y
+                    </OnMouseUp>
+                    <OnEnter>
+                        local parent = this:GetParent()
+                        parent.alpha = parent:GetAlpha()
+                        parent:SetAlpha(1)
+                    </OnEnter>
+                    <OnLeave>
+                        local parent = this:GetParent()
+                        parent:SetAlpha(parent.alpha or 1)
+                    </OnLeave>
+                </Scripts>
+                <Frames>
+                    <Button name="CursiveFrameOptionsButton">
+                        <Size x="20" y="20"/>
+                        <Anchors>
+                            <Anchor point="TOPRIGHT">
+                                <Offset x="-5" y="-5"/>
+                            </Anchor>
+                        </Anchors>
+                        <NormalTexture file="Interface\GossipFrame\BinderGossipIcon"/>
+                        <HighlightTexture file="Interface\Buttons\GlowStar" alphaMode="ADD"/>
+                        <Scripts>
+                            <OnClick>
+                                Cursive.ui.ToggleOptions()
+                            </OnClick>
+                            <OnEnter>
+                                GameTooltip:SetOwner(this, "ANCHOR_TOPRIGHT", 0, 0)
+                                GameTooltip:SetText("Options")
+                                GameTooltip:Show()
+                                CursiveFrame:SetAlpha(1)
+                            </OnEnter>
+                            <OnLeave>
+                                GameTooltip:Hide()
+                                CursiveFrame:SetAlpha(CursiveFrame.alpha or 1)
+                            </OnLeave>
+                        </Scripts>
+                    </Button>
+                </Frames>
+            </Frame>
+            <Frame name="CursiveUnitsFrame" clampedToScreen="true">
+                <Size x="220" y="220"/>
+                <Anchors>
+                    <Anchor point="TOP">
+                        <Offset x="0" y="-35"/>
+                    </Anchor>
+                </Anchors>
+            </Frame>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                this:RegisterForDrag("LeftButton")
+            </OnLoad>
+            <OnMouseDown>
+                if this:IsMovable() then
+                    this:StartMoving()
+                end
+            </OnMouseDown>
+            <OnMouseUp>
+                this:StopMovingOrSizing()
+                local anchor, _, _, x, y = this:GetPoint()
+                Cursive.db.profile.anchor = anchor
+                Cursive.db.profile.x = x
+                Cursive.db.profile.y = y
+            </OnMouseUp>
+        </Scripts>
+    </Frame>
+
+    <CheckButton name="CursiveOptionsCheckButtonTemplate" inherits="OptionsCheckButtonTemplate" virtual="true">
+        <Size x="26" y="26"/>
+        <HitRectInsets left="0" right="-140" top="0" bottom="0"/>
+        <Scripts>
+            <OnEnter>
+                local text = getglobal(this:GetName().."Text")
+                this.r, this.g, this.b = text:GetTextColor()
+                text:SetTextColor(1, 1, 1)
+                if this.tooltipText then
+                    GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
+                    GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1)
+                end
+            </OnEnter>
+            <OnLeave>
+                getglobal(this:GetName().."Text"):SetTextColor(this.r, this.g, this.b)
+                GameTooltip:Hide()
+            </OnLeave>
+        </Scripts>
+    </CheckButton>
+
+    <Slider name="CursiveOptionsSliderTemplate" inherits="OptionsSliderTemplate" virtual="true">
+        <Scripts>
+            <OnEnter>
+                local text = getglobal(this:GetName().."Text")
+                this.r, this.g, this.b = text:GetTextColor()
+                text:SetTextColor(1, 1, 1)
+                if this.tooltipText then
+                    GameTooltip:SetOwner(this, "ANCHOR_RIGHT")
+                    GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1)
+                end
+            </OnEnter>
+            <OnLeave>
+                getglobal(this:GetName().."Text"):SetTextColor(this.r, this.g, this.b)
+                GameTooltip:Hide()
+            </OnLeave>
+        </Scripts>
+    </Slider>
+
+    <Frame name="CursiveOptionsFrame" parent="UIParent" movable="true" enableMouse="true" toplevel="true" frameStrata="DIALOG" hidden="true">
+        <Size x="220" y="440"/>
+        <Anchors>
+            <Anchor point="CENTER"/>
+        </Anchors>
+        <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+            <EdgeSize val="16"/>
+            <TileSize val="16"/>
+            <BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+            <Color r="0" g="0" b="0" a="1"/>
+        </Backdrop>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset x="5" y="-5"/>
+                        </Anchor>
+                        <Anchor point="TOPRIGHT">
+                            <Offset x="-5" y="-35"/>
+                        </Anchor>
+                    </Anchors>
+                    <Color r="0" g="0" b="0"/>
+                </Texture>
+            </Layer>
+            <Layer level="BORDER">
+                <FontString inherits="GameFontNormal" text="Cursive Options" justifyH="CENTER">
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset x="0" y="-12"/>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset x="-3" y="-3"/>
+                    </Anchor>
+                </Anchors>
+            </Button>
+            <Slider name="$parentScaleSlider" inherits="CursiveOptionsSliderTemplate">
+                <Size x="160" y="16"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset x="18" y="-50"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("Scale")
+                        getglobal(this:GetName().."Low"):SetText("0.5")
+                        getglobal(this:GetName().."High"):SetText("2.0")
+                        this:SetMinMaxValues(0.5, 2.0)
+                        this:SetValueStep(0.1)
+                    </OnLoad>
+                    <OnValueChanged>
+                        Cursive.ui.ScaleChanged(this:GetValue())
+                    </OnValueChanged>
+                </Scripts>
+            </Slider>
+            <Slider name="$parentOpacitySlider" inherits="CursiveOptionsSliderTemplate">
+                <Size x="160" y="16"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentScaleSlider" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="-24"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("Opacity")
+                        getglobal(this:GetName().."Low"):SetText("0")
+                        getglobal(this:GetName().."High"):SetText("1")
+                        this:SetMinMaxValues(0, 1)
+                        this:SetValueStep(0.01)
+                    </OnLoad>
+                    <OnValueChanged>
+                        Cursive.ui.OpacityChanged(this:GetValue())
+                    </OnValueChanged>
+                </Scripts>
+            </Slider>
+            <CheckButton name="$parentLock" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentOpacitySlider" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="-12"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("Lock Frame Position")
+                        this.tooltipText = "Prevent window from moving."
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleLock(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentInvert" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentLock" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="4"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("Invert Bar Display")
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleInvert(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentExpandUpwards" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentInvert" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="4"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("Expand Bars Upwards")
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleExpandUpwards(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentShowBackdrop" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentExpandUpwards" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="4"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("Show Background")
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleShowBackdrop(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+             <CheckButton name="$parentShowTitle" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentShowBackdrop" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="4"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("Show Header")
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleShowTitle(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentAlwaysShowTarget" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentShowTitle" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="4"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("Always Show Target")
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleAlwaysShowTarget(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <Slider name="$parentMaxRowSlider" inherits="CursiveOptionsSliderTemplate">
+                <Size x="160" y="16"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentAlwaysShowTarget" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="-20"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        getglobal(this:GetName().."Text"):SetText("Max Rows")
+                        getglobal(this:GetName().."Low"):SetText("1")
+                        getglobal(this:GetName().."High"):SetText("20")
+                        this:SetMinMaxValues(1, 20)
+                        this:SetValueStep(1)
+                    </OnLoad>
+                    <OnValueChanged>
+                        Cursive.ui.MaxRowChanged(this:GetValue())
+                    </OnValueChanged>
+                </Scripts>
+            </Slider>
+        </Frames>
+        <Scripts>
+            <OnMouseDown>
+                this:StartMoving()
+            </OnMouseDown>
+            <OnMouseUp>
+                this:StopMovingOrSizing()
+            </OnMouseUp>
+        </Scripts>
+    </Frame>
+</Ui>
