@@ -111,12 +111,12 @@ function ui.UpdateLayout()
     CursiveUnitsFrame:ClearAllPoints()
 
     if config.expandupwards then
-        CursiveUnitsFrame:SetPoint("BOTTOM", CursiveFrame, "BOTTOM", 0, 0)
+        CursiveUnitsFrame:SetPoint("BOTTOM", CursiveFrame, "BOTTOM", 0, 5)
     else
         if config.showtitle then
-            CursiveUnitsFrame:SetPoint("TOP", CursiveFrame, "TOP", 0, -30)
+            CursiveUnitsFrame:SetPoint("TOP", CursiveFrame, "TOP", 0, -35)
         else
-            CursiveUnitsFrame:SetPoint("TOP", CursiveFrame, "TOP", 0, 0)
+            CursiveUnitsFrame:SetPoint("TOP", CursiveFrame, "TOP", 0, -5)
         end
     end
 
@@ -156,23 +156,23 @@ function ui.UpdateLayout()
 
         if config.invertbars then
             healthBar:SetPoint("TOP", btn, "TOP", 0, 0)
-            nameText:SetPoint("RIGHT", healthBar, "RIGHT", -2, 0)
+            nameText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             nameText:SetJustifyH("RIGHT")
-            hpText:SetPoint("LEFT", healthBar, "LEFT", 2, 0)
+            hpText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             hpText:SetJustifyH("LEFT")
             targetInd:SetPoint("LEFT", healthBar, "RIGHT", 2, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
-            raidIcon:SetPoint("RIGHT", healthBar, "LEFT", -2, 0)
+            raidIcon:SetPoint("RIGHT", healthBar, "LEFT", -5, 0)
             dots:SetPoint("BOTTOM", btn, "BOTTOM", 0, 0)
         else
             healthBar:SetPoint("TOP", btn, "TOP", 0, 0)
-            nameText:SetPoint("LEFT", healthBar, "LEFT", 2, 0)
+            nameText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             nameText:SetJustifyH("LEFT")
-            hpText:SetPoint("RIGHT", healthBar, "RIGHT", -2, 0)
+            hpText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             hpText:SetJustifyH("RIGHT")
             targetInd:SetPoint("RIGHT", healthBar, "LEFT", -2, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
-            raidIcon:SetPoint("LEFT", healthBar, "RIGHT", 2, 0)
+            raidIcon:SetPoint("LEFT", healthBar, "RIGHT", 5, 0)
             dots:SetPoint("BOTTOM", btn, "BOTTOM", 0, 0)
         end
 
@@ -182,13 +182,13 @@ function ui.UpdateLayout()
             curse:ClearAllPoints()
             if config.invertbars then
                 if j == 1 then
-                    curse:SetPoint("RIGHT", dots, "RIGHT", 0, 0)
+                    curse:SetPoint("RIGHT", dots, "RIGHT", -3, 0)
                 else
                     curse:SetPoint("RIGHT", getglobal(dots:GetName().."Curse"..(j-1)), "LEFT", -4, 0)
                 end
             else
                 if j == 1 then
-                    curse:SetPoint("LEFT", dots, "LEFT", 0, 0)
+                    curse:SetPoint("LEFT", dots, "LEFT", 3, 0)
                 else
                     curse:SetPoint("LEFT", getglobal(dots:GetName().."Curse"..(j-1)), "RIGHT", 4, 0)
                 end
@@ -313,8 +313,6 @@ function ui.BarClick()
 end
 
 function ui.BarEnter()
-    this.hover = true
-    getglobal(this:GetName().."Hover"):Show()
     if not this.guid then return end
 
     if this.guid then
@@ -325,8 +323,6 @@ function ui.BarEnter()
 end
 
 function ui.BarLeave()
-    this.hover = false
-    getglobal(this:GetName().."Hover"):Hide()
     GameTooltip:Hide()
 end
 
@@ -480,11 +476,11 @@ function ui.OnUpdate()
     end
 
     -- Adjust main frame height based on num buttons (always draw a box that fits max rows)
-    local titleSize = config.showtitle and 35 or 5
+    local titleSize = config.showtitle and 40 or 10
     local spacing = config.spacing or 4
     local num = config.maxrow
     local entriesHeight = (num * 48) + ((num > 0 and num - 1 or 0) * spacing)
-    local padding = 5
+    local padding = 15
     CursiveFrame:SetHeight(titleSize + entriesHeight + padding)
 end
 
