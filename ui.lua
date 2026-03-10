@@ -47,22 +47,26 @@ end
 
 function ui.Setup()
     ui.UpdateScale()
-    CursiveFrame:SetAlpha(Cursive.db.profile.opacity or 1)
-    CursiveFrame:ClearAllPoints()
-    CursiveFrame:SetPoint(Cursive.db.profile.anchor, Cursive.db.profile.x, Cursive.db.profile.y)
+    if CursiveFrame then
+        CursiveFrame:SetAlpha(Cursive.db.profile.opacity or 1)
+        CursiveFrame:ClearAllPoints()
+        CursiveFrame:SetPoint(Cursive.db.profile.anchor, Cursive.db.profile.x, Cursive.db.profile.y)
+    end
 
     ui.UpdateHeader()
     ui.UpdateBackdrop()
     ui.UpdateLock()
 
-    for i = 1, ui.maxButtons do
-        local name = "CursiveUnitButton"..i
-        local btn = getglobal(name)
-        if not btn then
-            btn = CreateFrame("Button", name, CursiveUnitsFrame, "CursiveUnitButtonTemplate")
-            btn:SetID(i)
+    if CursiveUnitsFrame then
+        for i = 1, ui.maxButtons do
+            local name = "CursiveUnitButton"..i
+            local btn = getglobal(name)
+            if not btn then
+                btn = CreateFrame("Button", name, CursiveUnitsFrame, "CursiveUnitButtonTemplate")
+                btn:SetID(i)
+            end
+            ui.unitButtons[i] = btn
         end
-        ui.unitButtons[i] = btn
     end
 
     ui.UpdateInvert()
@@ -70,6 +74,7 @@ function ui.Setup()
 end
 
 function ui.UpdateHeader()
+    if not CursiveFrame then return end
     if Cursive.db.profile.showtitle then
         CursiveFrameTitle:Show()
         CursiveFrameBackground:Show()
@@ -83,6 +88,7 @@ function ui.UpdateHeader()
 end
 
 function ui.UpdateBackdrop()
+    if not CursiveFrame then return end
     if Cursive.db.profile.showbackdrop then
         local top = Cursive.db.profile.showtitle and 5 or 0
         CursiveFrame:SetBackdrop({
@@ -98,6 +104,7 @@ function ui.UpdateBackdrop()
 end
 
 function ui.UpdateLock()
+    if not CursiveFrame then return end
     CursiveFrame:SetMovable(not Cursive.db.profile.clickthrough) -- In Cursive, clickthrough means locked
     CursiveFrame:EnableMouse(not Cursive.db.profile.clickthrough)
 end
@@ -107,6 +114,7 @@ function ui.UpdateInvert()
 end
 
 function ui.UpdateLayout()
+    if not CursiveFrame or not CursiveUnitsFrame then return end
     local config = Cursive.db.profile
     CursiveUnitsFrame:ClearAllPoints()
 
@@ -154,26 +162,27 @@ function ui.UpdateLayout()
         raidIcon:ClearAllPoints()
         dots:ClearAllPoints()
 
+        healthBar:SetPoint("TOP", btn, "TOP", 0, 0)
+        dots:SetPoint("BOTTOM", btn, "BOTTOM", 0, 0)
+
         if config.invertbars then
-            healthBar:SetPoint("TOP", btn, "TOP", 0, 0)
-            nameText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
+            raidIcon:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
+            targetInd:SetPoint("RIGHT", raidIcon, "LEFT", -2, 0)
+            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
+
+            nameText:SetPoint("RIGHT", targetInd, "LEFT", -5, 0)
             nameText:SetJustifyH("RIGHT")
             hpText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             hpText:SetJustifyH("LEFT")
-            targetInd:SetPoint("LEFT", healthBar, "RIGHT", 2, 0)
-            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
-            raidIcon:SetPoint("RIGHT", healthBar, "LEFT", -5, 0)
-            dots:SetPoint("BOTTOM", btn, "BOTTOM", 0, 0)
         else
-            healthBar:SetPoint("TOP", btn, "TOP", 0, 0)
-            nameText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
+            raidIcon:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
+            targetInd:SetPoint("LEFT", raidIcon, "RIGHT", 2, 0)
+            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
+
+            nameText:SetPoint("LEFT", targetInd, "RIGHT", 5, 0)
             nameText:SetJustifyH("LEFT")
             hpText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             hpText:SetJustifyH("RIGHT")
-            targetInd:SetPoint("RIGHT", healthBar, "LEFT", -2, 0)
-            targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
-            raidIcon:SetPoint("LEFT", healthBar, "RIGHT", 5, 0)
-            dots:SetPoint("BOTTOM", btn, "BOTTOM", 0, 0)
         end
 
         -- Update curses icons layout
@@ -223,6 +232,7 @@ end
 
 -- Option callbacks
 function ui.UpdateScale()
+    if not CursiveFrame then return end
     local scale = Cursive.db.profile.scale or 1
     CursiveFrame:SetScale(scale)
 end
@@ -235,6 +245,7 @@ function ui.ScaleChanged(val)
 end
 
 function ui.OpacityChanged(val)
+    if not CursiveFrame then return end
     val = math.floor(val * 100) / 100
     Cursive.db.profile.opacity = val
     CursiveFrame:SetAlpha(val)
@@ -278,6 +289,7 @@ function ui.MaxRowChanged(val)
 end
 
 function ui.Show()
+    if not CursiveFrame then return end
     Cursive.db.profile.enabled = true
     CursiveFrame:Show()
     CursiveUnitsFrame:Show()
@@ -285,6 +297,7 @@ function ui.Show()
 end
 
 function ui.Hide()
+    if not CursiveFrame then return end
     Cursive.db.profile.enabled = false
     CursiveFrame:Hide()
     CursiveUnitsFrame:Hide()
@@ -347,7 +360,10 @@ function ui.OnUpdate()
     local elapsed = arg1 or 0
     local config = Cursive.db.profile
     if not config.enabled then
-        for i = 1, ui.maxButtons do ui.unitButtons[i]:Hide() end
+        for i = 1, ui.maxButtons do
+            local btn = ui.unitButtons[i]
+            if btn then btn:Hide() end
+        end
         return
     end
 
@@ -391,6 +407,7 @@ function ui.OnUpdate()
 
     for i = 1, ui.maxButtons do
         local btn = ui.unitButtons[i]
+        if not btn then break end
         if i <= numToShow and i <= config.maxrow then
             local guid = guidList[i]
             btn.guid = guid
@@ -476,24 +493,28 @@ function ui.OnUpdate()
     end
 
     -- Adjust main frame height based on num buttons (always draw a box that fits max rows)
-    local titleSize = config.showtitle and 40 or 10
-    local spacing = config.spacing or 4
-    local num = config.maxrow
-    local entriesHeight = (num * 48) + ((num > 0 and num - 1 or 0) * spacing)
-    local padding = 15
-    CursiveFrame:SetHeight(titleSize + entriesHeight + padding)
+    if CursiveFrame then
+        local titleSize = config.showtitle and 40 or 10
+        local spacing = config.spacing or 4
+        local num = config.maxrow
+        local entriesHeight = (num * 48) + ((num > 0 and num - 1 or 0) * spacing)
+        local padding = 15
+        CursiveFrame:SetHeight(titleSize + entriesHeight + padding)
+    end
 end
 
 -- Initialize the UI
 function ui.Initialize()
     ui.Setup()
-    CursiveFrame:SetScript("OnUpdate", ui.OnUpdate)
-    ui.OnUpdate() -- Initial update to set height
-    if Cursive.db.profile.enabled then
-        CursiveFrame:Show()
-        CursiveUnitsFrame:Show()
-    else
-        CursiveFrame:Hide()
-        CursiveUnitsFrame:Hide()
+    if CursiveFrame then
+        CursiveFrame:SetScript("OnUpdate", ui.OnUpdate)
+        ui.OnUpdate() -- Initial update to set height
+        if Cursive.db.profile.enabled then
+            CursiveFrame:Show()
+            CursiveUnitsFrame:Show()
+        else
+            CursiveFrame:Hide()
+            CursiveUnitsFrame:Hide()
+        end
     end
 end
