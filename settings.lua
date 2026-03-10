@@ -44,6 +44,7 @@ Cursive:RegisterDefaults("profile", {
 	curseshowdecimals = false,
 	invertbars = false,
 	expandupwards = false,
+	compactmode = false,
 
 	filterincombat = true,
 	filterhostile = true,
@@ -95,6 +96,19 @@ local barOptions = {
 		end,
 		set = function(v)
 			Cursive.db.profile.expandupwards = v
+			Cursive.UpdateFramesFromConfig()
+		end,
+	},
+	["compactmode"] = {
+		type = "toggle",
+		name = L["Compact Mode"],
+		desc = L["Moves curse icons onto the health bar and reduces button height."],
+		order = 3,
+		get = function()
+			return Cursive.db.profile.compactmode
+		end,
+		set = function(v)
+			Cursive.db.profile.compactmode = v
 			Cursive.UpdateFramesFromConfig()
 		end,
 	},
@@ -177,8 +191,8 @@ local barOptions = {
 		name = L["Health Bar/Unit Name Width"],
 		desc = L["Health Bar/Unit Name Width"],
 		order = 40,
-		min = 30,
-		max = 150,
+		min = 50,
+		max = 300,
 		step = 5,
 		get = function()
 			return Cursive.db.profile.healthwidth
@@ -195,8 +209,8 @@ local barOptions = {
 		name = L["Health Bar/Unit Name Height"],
 		desc = L["Health Bar/Unit Name Height"],
 		order = 50,
-		min = 10,
-		max = 30,
+		min = 8,
+		max = 50,
 		step = 2,
 		get = function()
 			return Cursive.db.profile.height

@@ -381,7 +381,7 @@
     </Slider>
 
     <Frame name="CursiveOptionsFrame" parent="UIParent" movable="true" enableMouse="true" toplevel="true" frameStrata="DIALOG" hidden="true">
-        <Size x="220" y="440"/>
+        <Size x="220" y="520"/>
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
@@ -482,7 +482,7 @@
             <CheckButton name="$parentInvert" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentLock" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="4"/>
+                        <Offset x="0" y="0"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -497,7 +497,7 @@
             <CheckButton name="$parentExpandUpwards" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentInvert" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="4"/>
+                        <Offset x="0" y="0"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -512,7 +512,7 @@
             <CheckButton name="$parentShowBackdrop" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentExpandUpwards" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="4"/>
+                        <Offset x="0" y="0"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -527,7 +527,7 @@
              <CheckButton name="$parentShowTitle" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentShowBackdrop" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="4"/>
+                        <Offset x="0" y="0"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -542,7 +542,7 @@
             <CheckButton name="$parentAlwaysShowTarget" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentShowTitle" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="4"/>
+                        <Offset x="0" y="0"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -554,11 +554,69 @@
                     </OnClick>
                 </Scripts>
             </CheckButton>
+            <CheckButton name="$parentCompactMode" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentAlwaysShowTarget" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText(L["Compact Mode"])
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleCompactMode(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <Slider name="$parentBarWidthSlider" inherits="CursiveOptionsSliderTemplate">
+                <Size x="160" y="16"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentCompactMode" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="-20"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText(L["Health Bar/Unit Name Width"])
+                        getglobal(this:GetName().."Low"):SetText("50")
+                        getglobal(this:GetName().."High"):SetText("300")
+                        this:SetMinMaxValues(50, 300)
+                        this:SetValueStep(5)
+                    </OnLoad>
+                    <OnValueChanged>
+                        Cursive.ui.BarWidthChanged(this:GetValue())
+                    </OnValueChanged>
+                </Scripts>
+            </Slider>
+            <Slider name="$parentBarHeightSlider" inherits="CursiveOptionsSliderTemplate">
+                <Size x="160" y="16"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentBarWidthSlider" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="-24"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText(L["Health Bar/Unit Name Height"])
+                        getglobal(this:GetName().."Low"):SetText("8")
+                        getglobal(this:GetName().."High"):SetText("50")
+                        this:SetMinMaxValues(8, 50)
+                        this:SetValueStep(2)
+                    </OnLoad>
+                    <OnValueChanged>
+                        Cursive.ui.BarHeightChanged(this:GetValue())
+                    </OnValueChanged>
+                </Scripts>
+            </Slider>
             <Slider name="$parentMaxRowSlider" inherits="CursiveOptionsSliderTemplate">
                 <Size x="160" y="16"/>
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentAlwaysShowTarget" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="-20"/>
+                    <Anchor point="TOPLEFT" relativeTo="$parentBarHeightSlider" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="-24"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
