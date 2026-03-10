@@ -20,10 +20,10 @@
             <Frame name="$parentSelection" hidden="true" toplevel="true">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentHealthBar">
-                        <Offset x="-2" y="2"/>
+                        <Offset x="0" y="0"/>
                     </Anchor>
                     <Anchor point="BOTTOMRIGHT" relativeTo="$parentDots">
-                        <Offset x="2" y="-2"/>
+                        <Offset x="0" y="0"/>
                     </Anchor>
                 </Anchors>
                 <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
@@ -37,27 +37,24 @@
             </Frame>
             <Frame name="$parentHover" hidden="true" toplevel="true">
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentHealthBar">
-                        <Offset x="-2" y="2"/>
+                    <Anchor point="TOPLEFT">
+                        <Offset x="0" y="0"/>
                     </Anchor>
-                    <Anchor point="BOTTOMRIGHT" relativeTo="$parentDots">
-                        <Offset x="2" y="-2"/>
+                    <Anchor point="BOTTOMRIGHT">
+                        <Offset x="0" y="0"/>
                     </Anchor>
                 </Anchors>
-                <Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
-                    <EdgeSize val="12"/>
+                <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true">
+                    <TileSize val="16"/>
+                    <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
+                    <Color r="1" g="1" b="1" a="0.1"/>
                 </Backdrop>
-                <Scripts>
-                    <OnLoad>
-                        this:SetBackdropBorderColor(1, 0.8, 0, 1)
-                    </OnLoad>
-                </Scripts>
             </Frame>
             <StatusBar name="$parentHealthBar">
-                <Size x="214" y="22"/>
+                <Size x="220" y="22"/>
                 <Anchors>
                     <Anchor point="TOP">
-                        <Offset x="0" y="-3"/>
+                        <Offset x="0" y="0"/>
                     </Anchor>
                 </Anchors>
                 <BarTexture file="Interface\TargetingFrame\UI-StatusBar"/>
@@ -74,10 +71,10 @@
                     </Layer>
                     <Layer level="OVERLAY">
                         <FontString name="$parentName" inherits="GameFontNormalLarge" justifyH="LEFT">
-                            <Size x="155" y="22"/>
+                            <Size x="170" y="22"/>
                             <Anchors>
                                 <Anchor point="LEFT">
-                                    <Offset x="5" y="0"/>
+                                    <Offset x="2" y="0"/>
                                 </Anchor>
                             </Anchors>
                             <FontHeight val="12"/>
@@ -90,7 +87,7 @@
                             <Size x="45" y="22"/>
                             <Anchors>
                                 <Anchor point="RIGHT">
-                                    <Offset x="-5" y="0"/>
+                                    <Offset x="-2" y="0"/>
                                 </Anchor>
                             </Anchors>
                             <Shadow>
@@ -102,10 +99,10 @@
                 </Layers>
             </StatusBar>
             <Frame name="$parentDots">
-                <Size x="210" y="20"/>
+                <Size x="220" y="20"/>
                 <Anchors>
                     <Anchor point="BOTTOM">
-                        <Offset x="0" y="3"/>
+                        <Offset x="0" y="0"/>
                     </Anchor>
                 </Anchors>
                 <Layers>
@@ -222,10 +219,10 @@
         <HighlightTexture inherits="DialogButtonHighlightTexture">
             <Anchors>
                 <Anchor point="TOPLEFT">
-                    <Offset x="-1" y="1"/>
+                    <Offset x="0" y="0"/>
                 </Anchor>
                 <Anchor point="BOTTOMRIGHT">
-                    <Offset x="1" y="-1"/>
+                    <Offset x="0" y="0"/>
                 </Anchor>
             </Anchors>
         </HighlightTexture>
@@ -246,23 +243,23 @@
     </Button>
 
     <Frame name="CursiveFrame" toplevel="false" parent="UIParent" movable="true" enableMouse="true" clampedToScreen="true" resizable="false" frameStrata="LOW">
-        <Size x="240" y="250"/>
+        <Size x="220" y="250"/>
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
         <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
             <EdgeSize val="16"/>
             <TileSize val="16"/>
-            <BackgroundInsets left="5" right="5" top="5" bottom="5"/>
+            <BackgroundInsets left="0" right="0" top="0" bottom="0"/>
             <Color r="0" g="0" b="0" a="0.5"/>
         </Backdrop>
         <Layers>
             <Layer level="BACKGROUND">
                 <Texture name="CursiveFrameBackground">
-                    <Size x="230" y="30"/>
+                    <Size x="220" y="30"/>
                     <Anchors>
                         <Anchor point="TOP">
-                            <Offset x="0" y="-5"/>
+                            <Offset x="0" y="0"/>
                         </Anchor>
                     </Anchors>
                     <Color r="0" g="0" b="0"/>
@@ -272,7 +269,7 @@
                 <FontString name="$parentTitle" inherits="GameFontNormal" text="Cursive">
                     <Anchors>
                         <Anchor point="TOPLEFT">
-                            <Offset x="12" y="-12"/>
+                            <Offset x="8" y="-8"/>
                         </Anchor>
                     </Anchors>
                 </FontString>
@@ -280,11 +277,11 @@
         </Layers>
         <Frames>
             <Frame name="CursiveFrameHitRect" toplevel="true" enableMouse="true">
-                <Size x="230" y="30"/>
+                <Size x="220" y="30"/>
                 <Anchors>
                     <Anchor point="CENTER" relativeTo="CursiveFrameBackground" relativePoint="CENTER"/>
                 </Anchors>
-                <HitRectInsets left="-5" right="-5" top="-5" bottom="-5"/>
+                <HitRectInsets left="0" right="0" top="0" bottom="0"/>
                 <Scripts>
                     <OnMouseDown>
                         if this:GetParent():IsMovable() then
@@ -340,7 +337,7 @@
                 <Size x="220" y="220"/>
                 <Anchors>
                     <Anchor point="TOP">
-                        <Offset x="0" y="-35"/>
+                        <Offset x="0" y="-30"/>
                     </Anchor>
                 </Anchors>
             </Frame>
