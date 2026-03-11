@@ -75,10 +75,15 @@ end
 
 function ui.UpdateHeader()
     if not CursiveFrame then return end
-    if Cursive.db.profile.showtitle then
+    local config = Cursive.db.profile
+    if config.showtitle then
         CursiveFrameTitle:Show()
         CursiveFrameBackground:Show()
         CursiveFrameHitRect:Show()
+
+        local width = config.healthwidth or 220
+        CursiveFrameBackground:SetWidth(width)
+        CursiveFrameHitRect:SetWidth(width)
     else
         CursiveFrameTitle:Hide()
         CursiveFrameBackground:Hide()
