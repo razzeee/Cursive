@@ -84,6 +84,7 @@ function ui.UpdateHeader()
         local width = config.healthwidth or 220
         CursiveFrameBackground:SetWidth(width)
         CursiveFrameHitRect:SetWidth(width)
+        CursiveFrame:SetWidth(width + 10)
     else
         CursiveFrameTitle:Hide()
         CursiveFrameBackground:Hide()
