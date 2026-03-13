@@ -40,7 +40,6 @@ end
 Cursive.core.enable = function()
 	-- unitstr
 	Cursive.core:RegisterEvent("PLAYER_TARGET_CHANGED")
-	Cursive.core:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 	-- arg1
 	Cursive.core:RegisterEvent("UNIT_COMBAT") -- this can get called with player/target/raid1 etc
 	Cursive.core:RegisterEvent("UNIT_MODEL_CHANGED")
@@ -54,8 +53,6 @@ end
 Cursive.core:SetScript("OnEvent", function()
 	if event == "PLAYER_TARGET_CHANGED" then
 		this.add("target")
-	elseif event == "UPDATE_MOUSEOVER_UNIT" then
-		this.add("mouseover")
 	else
 		-- arg1 is guid
 		this.addGuid(arg1)
