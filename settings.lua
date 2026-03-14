@@ -57,6 +57,20 @@ Cursive:RegisterDefaults("profile", {
 	ignorelist = {},
 	ignorelistuseregex = false,
 	opacity = 1,
+
+	-- command defaults
+	warnings = false,
+	resistsound = false,
+	expiringsound = false,
+	allowooc = false,
+	minhp = 0,
+	refreshtime = 0,
+	priotarget = false,
+	ignoretarget = false,
+	playeronly = false,
+	name = "",
+	ignorespellid = 0,
+	ignorespelltexture = "",
 })
 
 local function splitString(str, delimiter)
@@ -71,6 +85,162 @@ local function splitString(str, delimiter)
 	table.insert(result, string.sub(str, from))
 	return result
 end
+
+local commandDefaults = {
+	["warnings"] = {
+		type = "toggle",
+		name = L["Display text warnings when a curse fails to cast."],
+		desc = L["Display text warnings when a curse fails to cast."],
+		order = 1,
+		get = function()
+			return Cursive.db.profile.warnings
+		end,
+		set = function(v)
+			Cursive.db.profile.warnings = v
+		end,
+	},
+	["resistsound"] = {
+		type = "toggle",
+		name = L["Play a sound when a curse is resisted."],
+		desc = L["Play a sound when a curse is resisted."],
+		order = 2,
+		get = function()
+			return Cursive.db.profile.resistsound
+		end,
+		set = function(v)
+			Cursive.db.profile.resistsound = v
+		end,
+	},
+	["expiringsound"] = {
+		type = "toggle",
+		name = L["Play a sound when a curse is about to expire."],
+		desc = L["Play a sound when a curse is about to expire."],
+		order = 3,
+		get = function()
+			return Cursive.db.profile.expiringsound
+		end,
+		set = function(v)
+			Cursive.db.profile.expiringsound = v
+		end,
+	},
+	["allowooc"] = {
+		type = "toggle",
+		name = L["Allow out of combat targets to be multicursed.  Would only consider using this solo to avoid potentially griefing raids/dungeons by pulling unintended mobs."],
+		desc = L["Allow out of combat targets to be multicursed.  Would only consider using this solo to avoid potentially griefing raids/dungeons by pulling unintended mobs."],
+		order = 4,
+		get = function()
+			return Cursive.db.profile.allowooc
+		end,
+		set = function(v)
+			Cursive.db.profile.allowooc = v
+		end,
+	},
+	["priotarget"] = {
+		type = "toggle",
+		name = L["Always prioritize current target when choosing target for multicurse.  Does not affect 'curse' command."],
+		desc = L["Always prioritize current target when choosing target for multicurse.  Does not affect 'curse' command."],
+		order = 5,
+		get = function()
+			return Cursive.db.profile.priotarget
+		end,
+		set = function(v)
+			Cursive.db.profile.priotarget = v
+		end,
+	},
+	["minhp"] = {
+		type = "range",
+		name = L["Minimum HP for a target to be considered.  Example usage minhp=10000. "],
+		desc = L["Minimum HP for a target to be considered.  Example usage minhp=10000. "],
+		order = 6,
+		min = 0,
+		max = 2000000,
+		step = 100,
+		get = function()
+			return Cursive.db.profile.minhp
+		end,
+		set = function(v)
+			Cursive.db.profile.minhp = v
+		end,
+	},
+	["refreshtime"] = {
+		type = "range",
+		name = L["Time threshold at which to allow refreshing a curse.  Default is 0 seconds."],
+		desc = L["Time threshold at which to allow refreshing a curse.  Default is 0 seconds."],
+		order = 7,
+		min = 0,
+		max = 30,
+		step = 1,
+		get = function()
+			return Cursive.db.profile.refreshtime
+		end,
+		set = function(v)
+			Cursive.db.profile.refreshtime = v
+		end,
+	},
+	["ignoretarget"] = {
+		type = "toggle",
+		name = L["Ignore the current target when choosing target for multicurse.  Does not affect 'curse' command."],
+		desc = L["Ignore the current target when choosing target for multicurse.  Does not affect 'curse' command."],
+		order = 8,
+		get = function()
+			return Cursive.db.profile.ignoretarget
+		end,
+		set = function(v)
+			Cursive.db.profile.ignoretarget = v
+		end,
+	},
+	["playeronly"] = {
+		type = "toggle",
+		name = L["Only choose players and ignore npcs when choosing target for multicurse.  Does not affect 'curse' command."],
+		desc = L["Only choose players and ignore npcs when choosing target for multicurse.  Does not affect 'curse' command."],
+		order = 9,
+		get = function()
+			return Cursive.db.profile.playeronly
+		end,
+		set = function(v)
+			Cursive.db.profile.playeronly = v
+		end,
+	},
+	["name"] = {
+		type = "text",
+		name = L["Filter targets by name. Can be a partial match.  If no match is found, the command will do nothing."],
+		desc = L["Filter targets by name. Can be a partial match.  If no match is found, the command will do nothing."],
+		order = 10,
+		get = function()
+			return Cursive.db.profile.name
+		end,
+		set = function(v)
+			Cursive.db.profile.name = v
+		end,
+	},
+	["ignorespellid"] = {
+		type = "range",
+		name = L["Ignore targets with the specified spell id already on them. Useful for ignoring targets that already have a shared debuff."],
+		desc = L["Ignore targets with the specified spell id already on them. Useful for ignoring targets that already have a shared debuff."],
+		order = 11,
+		min = 0,
+		max = 60000,
+		step = 1,
+		get = function()
+			return Cursive.db.profile.ignorespellid
+		end,
+		set = function(v)
+			Cursive.db.profile.ignorespellid = v
+		end,
+	},
+	["ignorespelltexture"] = {
+		type = "text",
+		name = L["Ignore targets with the specified spell texture already on them. Useful for ignoring targets that already have a shared debuff."],
+		desc = L["Ignore targets with the specified spell texture already on them. Useful for ignoring targets that already have a shared debuff."],
+		order = 12,
+		get = function()
+			return Cursive.db.profile.ignorespelltexture
+		end,
+		set = function(v)
+			Cursive.db.profile.ignorespelltexture = v
+		end,
+	},
+}
 
 local barOptions = {
 	["invertbars"] = {
@@ -602,6 +772,13 @@ Cursive.cmdtable = {
 			desc = L["Shared Debuffs"],
 			order = 20,
 			args = sharedDebuffs
+		},
+		["commanddefaults"] = {
+			type = "group",
+			name = "Command Defaults",
+			desc = "Default settings for /cursive commands",
+			order = 21,
+			args = commandDefaults
 		},
 		["spacer2"] = {
 			type = "header",

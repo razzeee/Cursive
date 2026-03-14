@@ -48,10 +48,18 @@ local curseNoTarget = L["|cffffcc00Cursive:|cffffaaaa Couldn't find a target to 
 
 local function parseOptions(optionsStr)
 	local options = {  }
+	local config = Cursive.db.profile
+
+	-- Initialize with global defaults
+	for option, _ in pairs(commandOptions) do
+		if config[option] ~= nil then
+			options[option] = config[option]
+		end
+	end
 
 	if optionsStr then
 		for option, _ in pairs(commandOptions) do
-			-- special case for minhp as it takes a param
+			-- special case for options that take a param
 			if option == "minhp" then
 				local _, _, minHp = string.find(optionsStr, "minhp=(%d+)")
 				if minHp then
