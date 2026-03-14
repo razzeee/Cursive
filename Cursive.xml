@@ -570,31 +570,10 @@
                     </OnClick>
                 </Scripts>
             </CheckButton>
-            <Slider name="$parentBarWidthSlider" inherits="CursiveOptionsSliderTemplate">
-                <Size x="160" y="16"/>
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentCompactMode" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="-20"/>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnLoad>
-                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
-                        getglobal(this:GetName().."Text"):SetText(L["Health Bar/Unit Name Width"])
-                        getglobal(this:GetName().."Low"):SetText("50")
-                        getglobal(this:GetName().."High"):SetText("300")
-                        this:SetMinMaxValues(50, 300)
-                        this:SetValueStep(5)
-                    </OnLoad>
-                    <OnValueChanged>
-                        Cursive.ui.BarWidthChanged(this:GetValue())
-                    </OnValueChanged>
-                </Scripts>
-            </Slider>
             <Slider name="$parentBarHeightSlider" inherits="CursiveOptionsSliderTemplate">
                 <Size x="160" y="16"/>
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentBarWidthSlider" relativePoint="BOTTOMLEFT">
+                    <Anchor point="TOPLEFT" relativeTo="$parentCompactMode" relativePoint="BOTTOMLEFT">
                         <Offset x="0" y="-24"/>
                     </Anchor>
                 </Anchors>

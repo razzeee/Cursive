@@ -186,24 +186,6 @@ local barOptions = {
 		name = "Size & Appearance",
 		order = 35,
 	},
-	["barwidth"] = {
-		type = "range",
-		name = L["Health Bar/Unit Name Width"],
-		desc = L["Health Bar/Unit Name Width"],
-		order = 40,
-		min = 50,
-		max = 300,
-		step = 5,
-		get = function()
-			return Cursive.db.profile.healthwidth
-		end,
-		set = function(v)
-			if v ~= Cursive.db.profile.healthwidth then
-				Cursive.db.profile.healthwidth = v
-				Cursive.UpdateFramesFromConfig()
-			end
-		end,
-	},
 	["barheight"] = {
 		type = "range",
 		name = L["Health Bar/Unit Name Height"],

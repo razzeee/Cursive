@@ -302,14 +302,12 @@ function ui.ToggleOptions()
         CursiveOptionsFrameShowTitle:SetChecked(config.showtitle)
         CursiveOptionsFrameAlwaysShowTarget:SetChecked(config.alwaysshowcurrenttarget)
         CursiveOptionsFrameCompactMode:SetChecked(config.compactmode)
-        CursiveOptionsFrameBarWidthSlider:SetValue(config.healthwidth)
         CursiveOptionsFrameBarHeightSlider:SetValue(config.height)
         CursiveOptionsFrameMaxRowSlider:SetValue(config.maxrow)
 
         -- Update labels
         CursiveOptionsFrameScaleSliderText:SetText("Scale ("..(math.floor(config.scale * 100)/100)..")")
         CursiveOptionsFrameOpacitySliderText:SetText("Opacity ("..(math.floor((config.opacity or 1) * 100)/100)..")")
-        CursiveOptionsFrameBarWidthSliderText:SetText(L["Health Bar/Unit Name Width"].." ("..config.healthwidth..")")
         CursiveOptionsFrameBarHeightSliderText:SetText(L["Health Bar/Unit Name Height"].." ("..config.height..")")
         CursiveOptionsFrameMaxRowSliderText:SetText("Max Rows ("..config.maxrow..")")
 
@@ -372,13 +370,6 @@ end
 function ui.ToggleCompactMode(val)
     Cursive.db.profile.compactmode = val
     ui.UpdateLayout()
-end
-
-function ui.BarWidthChanged(val)
-    val = math.floor(val)
-    Cursive.db.profile.healthwidth = val
-    ui.UpdateLayout()
-    CursiveOptionsFrameBarWidthSliderText:SetText(L["Health Bar/Unit Name Width"].." ("..val..")")
 end
 
 function ui.BarHeightChanged(val)
