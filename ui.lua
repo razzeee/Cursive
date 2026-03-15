@@ -137,6 +137,14 @@ function ui.UpdateLayout()
     local spacing = config.spacing or 4
     local btnWidth = config.healthwidth or 220
     local btnHeight = config.compactmode and (config.height or 22) or 48
+
+    -- Adjust main frame height based on num buttons (always draw a box that fits max rows)
+    local titleSize = config.showtitle and 40 or 10
+    local num = config.maxrow
+    local entriesHeight = (num * btnHeight) + ((num > 0 and num - 1 or 0) * spacing)
+    local padding = 15
+    CursiveFrame:SetWidth(btnWidth + 10)
+    CursiveFrame:SetHeight(titleSize + entriesHeight + padding)
     local barHeight = config.height or 22
     local raidSize = config.raidiconsize or 18
     local curseSize = config.curseiconsize or (config.compactmode and (barHeight - 4) or 20)
@@ -201,8 +209,9 @@ function ui.UpdateLayout()
         hpText:SetHeight(barHeight)
 
         if config.compactmode then
-            -- Reserve space for 5 curses (curseSize + 4 padding each) + HP text (approx 50)
-            local reserved = 50 + (curseSize * 5) + 20
+            -- Reserve space for 3 curses (curseSize + 4 padding each) + HP text (approx 50)
+            -- If more than 3 curses, they will overlap the name or be hidden.
+            local reserved = 50 + (curseSize * 3) + 15
             nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - reserved)
         else
             nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - 65)
@@ -302,12 +311,33 @@ function ui.ToggleOptions()
         CursiveOptionsFrameShowTitle:SetChecked(config.showtitle)
         CursiveOptionsFrameAlwaysShowTarget:SetChecked(config.alwaysshowcurrenttarget)
         CursiveOptionsFrameCompactMode:SetChecked(config.compactmode)
+        CursiveOptionsFrameWarnings:SetChecked(config.warnings)
+        CursiveOptionsFrameResistSound:SetChecked(config.resistsound)
+        CursiveOptionsFrameExpiringSound:SetChecked(config.expiringsound)
+        CursiveOptionsFrameAllowOOC:SetChecked(config.allowooc)
+        CursiveOptionsFramePrioTarget:SetChecked(config.priotarget)
+        CursiveOptionsFrameIgnoreTarget:SetChecked(config.ignoretarget)
+        CursiveOptionsFramePlayerOnly:SetChecked(config.playeronly)
+        CursiveOptionsFrameMinHPSlider:SetValue(config.minhp)
+        CursiveOptionsFrameRefreshTimeSlider:SetValue(config.refreshtime)
         CursiveOptionsFrameBarHeightSlider:SetValue(config.height)
         CursiveOptionsFrameMaxRowSlider:SetValue(config.maxrow)
+        CursiveOptionsFrameNameFilter:SetText(config.name or "")
+        CursiveOptionsFrameIgnoreSpellID:SetText(config.ignorespellid == 0 and "" or config.ignorespellid)
+        CursiveOptionsFrameWarnings:SetChecked(config.warnings)
+        CursiveOptionsFrameResistSound:SetChecked(config.resistsound)
+        CursiveOptionsFrameExpiringSound:SetChecked(config.expiringsound)
+        CursiveOptionsFrameAllowOOC:SetChecked(config.allowooc)
+        CursiveOptionsFramePrioTarget:SetChecked(config.priotarget)
+        CursiveOptionsFrameIgnoreTarget:SetChecked(config.ignoretarget)
+        CursiveOptionsFrameIgnoreSpellTexture:SetText(config.ignorespelltexture or "")
+        CursiveOptionsFramePlayerOnly:SetChecked(config.playeronly)
 
         -- Update labels
         CursiveOptionsFrameScaleSliderText:SetText("Scale ("..(math.floor(config.scale * 100)/100)..")")
         CursiveOptionsFrameOpacitySliderText:SetText("Opacity ("..(math.floor((config.opacity or 1) * 100)/100)..")")
+        CursiveOptionsFrameMinHPSliderText:SetText("Min HP ("..config.minhp..")")
+        CursiveOptionsFrameRefreshTimeSliderText:SetText("Refresh Time ("..config.refreshtime..")")
         CursiveOptionsFrameBarHeightSliderText:SetText(L["Health Bar/Unit Name Height"].." ("..config.height..")")
         CursiveOptionsFrameMaxRowSliderText:SetText("Max Rows ("..config.maxrow..")")
 
@@ -370,6 +400,82 @@ end
 function ui.ToggleCompactMode(val)
     Cursive.db.profile.compactmode = val
     ui.UpdateLayout()
+end
+
+function ui.ToggleWarnings(val)
+    Cursive.db.profile.warnings = val
+end
+
+function ui.ToggleResistSound(val)
+    Cursive.db.profile.resistsound = val
+end
+
+function ui.ToggleExpiringSound(val)
+    Cursive.db.profile.expiringsound = val
+end
+
+function ui.ToggleAllowOOC(val)
+    Cursive.db.profile.allowooc = val
+end
+
+function ui.TogglePrioTarget(val)
+    Cursive.db.profile.priotarget = val
+end
+
+function ui.ToggleIgnoreTarget(val)
+    Cursive.db.profile.ignoretarget = val
+end
+
+function ui.TogglePlayerOnly(val)
+    Cursive.db.profile.playeronly = val
+end
+
+function ui.ToggleWarnings(val)
+    Cursive.db.profile.warnings = val
+end
+
+function ui.ToggleResistSound(val)
+    Cursive.db.profile.resistsound = val
+end
+
+function ui.ToggleExpiringSound(val)
+    Cursive.db.profile.expiringsound = val
+end
+
+function ui.ToggleAllowOOC(val)
+    Cursive.db.profile.allowooc = val
+end
+
+function ui.TogglePrioTarget(val)
+    Cursive.db.profile.priotarget = val
+end
+
+function ui.ToggleIgnoreTarget(val)
+    Cursive.db.profile.ignoretarget = val
+end
+
+function ui.NameFilterChanged(val)
+    Cursive.db.profile.name = val
+end
+
+function ui.IgnoreSpellIDChanged(val)
+    Cursive.db.profile.ignorespellid = tonumber(val) or 0
+end
+
+function ui.IgnoreSpellTextureChanged(val)
+    Cursive.db.profile.ignorespelltexture = val
+end
+
+function ui.MinHPChanged(val)
+    val = math.floor(val)
+    Cursive.db.profile.minhp = val
+    CursiveOptionsFrameMinHPSliderText:SetText("Min HP ("..val..")")
+end
+
+function ui.RefreshTimeChanged(val)
+    val = math.floor(val)
+    Cursive.db.profile.refreshtime = val
+    CursiveOptionsFrameRefreshTimeSliderText:SetText("Refresh Time ("..val..")")
 end
 
 function ui.BarHeightChanged(val)
@@ -588,17 +694,6 @@ function ui.OnUpdate()
         end
     end
 
-    -- Adjust main frame height based on num buttons (always draw a box that fits max rows)
-    if CursiveFrame then
-        local titleSize = config.showtitle and 40 or 10
-        local spacing = config.spacing or 4
-        local num = config.maxrow
-        local btnHeight = config.compactmode and (config.height or 22) or 48
-        local entriesHeight = (num * btnHeight) + ((num > 0 and num - 1 or 0) * spacing)
-        local padding = 15
-        CursiveFrame:SetWidth((config.healthwidth or 220) + 10)
-        CursiveFrame:SetHeight(titleSize + entriesHeight + padding)
-    end
 end
 
 -- Initialize the UI

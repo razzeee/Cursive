@@ -381,7 +381,7 @@
     </Slider>
 
     <Frame name="CursiveOptionsFrame" parent="UIParent" movable="true" enableMouse="true" toplevel="true" frameStrata="DIALOG" hidden="true">
-        <Size x="220" y="520"/>
+        <Size x="440" y="520"/>
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
@@ -397,6 +397,17 @@
                     <Anchors>
                         <Anchor point="TOPLEFT">
                             <Offset x="5" y="-5"/>
+                        </Anchor>
+                        <Anchor point="TOPRIGHT">
+                            <Offset x="-5" y="-35"/>
+                        </Anchor>
+                    </Anchors>
+                    <Color r="0" g="0" b="0"/>
+                </Texture>
+                <Texture>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset x="225" y="-5"/>
                         </Anchor>
                         <Anchor point="TOPRIGHT">
                             <Offset x="-5" y="-35"/>
@@ -570,11 +581,207 @@
                     </OnClick>
                 </Scripts>
             </CheckButton>
+            <CheckButton name="$parentWarnings" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset x="230" y="-50"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText(L["Warnings"] or "Warnings")
+                        this.tooltipText = L["Display text warnings when a curse fails to cast."]
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleWarnings(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentResistSound" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentWarnings" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText(L["Resist Sound"] or "Resist Sound")
+                        this.tooltipText = L["Play a sound when a curse is resisted."]
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleResistSound(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentExpiringSound" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentResistSound" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText(L["Expiry Sound"] or "Expiry Sound")
+                        this.tooltipText = L["Play a sound when a curse is about to expire."]
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleExpiringSound(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentAllowOOC" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentExpiringSound" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText(L["Allow OOC"] or "Allow OOC")
+                        this.tooltipText = L["Allow out of combat targets to be multicursed.  Would only consider using this solo to avoid potentially griefing raids/dungeons by pulling unintended mobs."]
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleAllowOOC(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentPrioTarget" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentAllowOOC" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText(L["Prio Target"] or "Prio Target")
+                        this.tooltipText = L["Always prioritize current target when choosing target for multicurse.  Does not affect 'curse' command."]
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.TogglePrioTarget(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentIgnoreTarget" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentPrioTarget" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText(L["Ignore Target"] or "Ignore Target")
+                        this.tooltipText = L["Ignore the current target when choosing target for multicurse.  Does not affect 'curse' command."]
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleIgnoreTarget(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentPlayerOnly" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentIgnoreTarget" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText(L["Player Only"] or "Player Only")
+                        this.tooltipText = L["Only choose players and ignore npcs when choosing target for multicurse.  Does not affect 'curse' command."]
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.TogglePlayerOnly(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+
+            <Slider name="$parentMinHPSlider" inherits="CursiveOptionsSliderTemplate">
+                <Size x="160" y="16"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentPlayerOnly" relativePoint="BOTTOMLEFT">
+                        <Offset x="18" y="-20"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText("Min HP")
+                        getglobal(this:GetName().."Low"):SetText("0")
+                        getglobal(this:GetName().."High"):SetText("1M")
+                        this:SetMinMaxValues(0, 1000000)
+                        this:SetValueStep(1000)
+                    </OnLoad>
+                    <OnValueChanged>
+                        Cursive.ui.MinHPChanged(this:GetValue())
+                    </OnValueChanged>
+                </Scripts>
+            </Slider>
+            <Slider name="$parentRefreshTimeSlider" inherits="CursiveOptionsSliderTemplate">
+                <Size x="160" y="16"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentMinHPSlider" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="-24"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText("Refresh Time")
+                        getglobal(this:GetName().."Low"):SetText("0")
+                        getglobal(this:GetName().."High"):SetText("30")
+                        this:SetMinMaxValues(0, 30)
+                        this:SetValueStep(1)
+                    </OnLoad>
+                    <OnValueChanged>
+                        Cursive.ui.RefreshTimeChanged(this:GetValue())
+                    </OnValueChanged>
+                </Scripts>
+            </Slider>
+
+            <EditBox name="$parentNameFilter" inherits="InputBoxTemplate" autoFocus="false">
+                <Size x="160" y="32"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentRefreshTimeSlider" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="-20"/>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString name="$parentLabel" inherits="GameFontNormalSmall" text="Name Filter">
+                            <Anchors>
+                                <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+                                    <Offset x="0" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Label"):SetText(L["Name Filter"] or "Name Filter")
+                    </OnLoad>
+                    <OnEscapePressed>
+                        this:ClearFocus()
+                    </OnEscapePressed>
+                    <OnEnterPressed>
+                        Cursive.ui.NameFilterChanged(this:GetText())
+                        this:ClearFocus()
+                    </OnEnterPressed>
+                </Scripts>
+            </EditBox>
+
             <Slider name="$parentBarHeightSlider" inherits="CursiveOptionsSliderTemplate">
                 <Size x="160" y="16"/>
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentCompactMode" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="-24"/>
+                        <Offset x="18" y="-20"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
@@ -611,6 +818,70 @@
                     </OnValueChanged>
                 </Scripts>
             </Slider>
+            <EditBox name="$parentIgnoreSpellID" inherits="InputBoxTemplate" autoFocus="false">
+                <Size x="70" y="32"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentNameFilter" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="-20"/>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString name="$parentLabel" inherits="GameFontNormalSmall" text="Ignore Spell ID">
+                            <Anchors>
+                                <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+                                    <Offset x="0" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Label"):SetText(L["Ignore Spell ID"] or "Ignore Spell ID")
+                    </OnLoad>
+                    <OnEscapePressed>
+                        this:ClearFocus()
+                    </OnEscapePressed>
+                    <OnEnterPressed>
+                        Cursive.ui.IgnoreSpellIDChanged(this:GetText())
+                        this:ClearFocus()
+                    </OnEnterPressed>
+                </Scripts>
+            </EditBox>
+            <EditBox name="$parentIgnoreSpellTexture" inherits="InputBoxTemplate" autoFocus="false">
+                <Size x="160" y="32"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentIgnoreSpellID" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="-20"/>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString name="$parentLabel" inherits="GameFontNormalSmall" text="Ignore Texture">
+                            <Anchors>
+                                <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+                                    <Offset x="0" y="0"/>
+                                </Anchor>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Label"):SetText(L["Ignore Texture"] or "Ignore Texture")
+                    </OnLoad>
+                    <OnEscapePressed>
+                        this:ClearFocus()
+                    </OnEscapePressed>
+                    <OnEnterPressed>
+                        Cursive.ui.IgnoreSpellTextureChanged(this:GetText())
+                        this:ClearFocus()
+                    </OnEnterPressed>
+                </Scripts>
+            </EditBox>
         </Frames>
         <Scripts>
             <OnMouseDown>
