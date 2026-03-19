@@ -381,7 +381,7 @@
     </Slider>
 
     <Frame name="CursiveOptionsFrame" parent="UIParent" movable="true" enableMouse="true" toplevel="true" frameStrata="DIALOG" hidden="true">
-        <Size x="440" y="520"/>
+        <Size x="420" y="520"/>
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
@@ -407,7 +407,7 @@
                 <Texture>
                     <Anchors>
                         <Anchor point="TOPLEFT">
-                            <Offset x="225" y="-5"/>
+                            <Offset x="215" y="-5"/>
                         </Anchor>
                         <Anchor point="TOPRIGHT">
                             <Offset x="-5" y="-35"/>
@@ -584,7 +584,7 @@
             <CheckButton name="$parentWarnings" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT">
-                        <Offset x="230" y="-50"/>
+                        <Offset x="220" y="-50"/>
                     </Anchor>
                 </Anchors>
                 <Scripts>
