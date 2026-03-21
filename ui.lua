@@ -75,10 +75,16 @@ end
 
 function ui.UpdateHeader()
     if not CursiveFrame then return end
-    if Cursive.db.profile.showtitle then
+    local config = Cursive.db.profile
+    if config.showtitle then
         CursiveFrameTitle:Show()
         CursiveFrameBackground:Show()
         CursiveFrameHitRect:Show()
+
+        local width = config.healthwidth or 220
+        CursiveFrameBackground:SetWidth(width)
+        CursiveFrameHitRect:SetWidth(width)
+        CursiveFrame:SetWidth(width + 10)
     else
         CursiveFrameTitle:Hide()
         CursiveFrameBackground:Hide()
@@ -129,10 +135,29 @@ function ui.UpdateLayout()
     end
 
     local spacing = config.spacing or 4
+    local btnWidth = config.healthwidth or 220
+    local btnHeight = config.compactmode and (config.height or 22) or 48
+
+    -- Adjust main frame height based on num buttons (always draw a box that fits max rows)
+    local titleSize = config.showtitle and 40 or 10
+    local num = config.maxrow
+    local entriesHeight = (num * btnHeight) + ((num > 0 and num - 1 or 0) * spacing)
+    local padding = 15
+    CursiveFrame:SetWidth(btnWidth + 10)
+    CursiveFrame:SetHeight(titleSize + entriesHeight + padding)
+    local barHeight = config.height or 22
+    local raidSize = config.raidiconsize or 18
+    local curseSize = config.curseiconsize or (config.compactmode and (barHeight - 4) or 20)
+
+    CursiveUnitsFrame:SetWidth(btnWidth)
+
     for i = 1, ui.maxButtons do
         local btn = ui.unitButtons[i]
         if not btn then break end
         btn:ClearAllPoints()
+        btn:SetWidth(btnWidth)
+        btn:SetHeight(btnHeight)
+
         if i == 1 then
             if config.expandupwards then
                 btn:SetPoint("BOTTOM", CursiveUnitsFrame, "BOTTOM", 0, 0)
@@ -162,24 +187,66 @@ function ui.UpdateLayout()
         raidIcon:ClearAllPoints()
         dots:ClearAllPoints()
 
+        healthBar:SetWidth(btnWidth)
+        healthBar:SetHeight(barHeight)
         healthBar:SetPoint("TOP", btn, "TOP", 0, 0)
-        dots:SetPoint("BOTTOM", btn, "BOTTOM", 0, 0)
+
+        raidIcon:SetWidth(raidSize)
+        raidIcon:SetHeight(raidSize)
+        targetInd:SetWidth(raidSize / 1.8)
+        targetInd:SetHeight(raidSize * 1.1)
+
+        dots:SetWidth(btnWidth)
+        dots:SetHeight(config.compactmode and barHeight or 20)
+
+        if config.compactmode then
+            dots:SetPoint("TOP", btn, "TOP", 0, 0)
+        else
+            dots:SetPoint("BOTTOM", btn, "BOTTOM", 0, 0)
+        end
+
+        nameText:SetHeight(barHeight)
+        hpText:SetHeight(barHeight)
+
+        if config.compactmode then
+            -- Reserve space for 3 curses (curseSize + 4 padding each) + HP text (approx 50)
+            -- If more than 3 curses, they will overlap the name or be hidden.
+            local reserved = 50 + (curseSize * 3) + 15
+            nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - reserved)
+        else
+            nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - 65)
+        end
+
+        -- Text settings (Move from OnUpdate for performance)
+        local font, _, flags = nameText:GetFont()
+        nameText:SetFont(font or "Fonts\\FRIZQT__.TTF", config.textsize or 12, flags)
+
+        local hpFont, _, hpFlags = hpText:GetFont()
+        hpText:SetFont(hpFont or "Fonts\\FRIZQT__.TTF", config.textsize or 9, hpFlags)
+
+        for j = 1, 5 do
+            local timer = getglobal(dots:GetName().."Curse"..j.."Timer")
+            local tFont, _, tFlags = timer:GetFont()
+            timer:SetFont(tFont or "Fonts\\FRIZQT__.TTF", config.cursetimersize or 11, tFlags)
+        end
+
+        healthBar:SetStatusBarTexture(config.bartexture or "Interface\\TargetingFrame\\UI-StatusBar")
 
         if config.invertbars then
-            raidIcon:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
-            targetInd:SetPoint("RIGHT", raidIcon, "LEFT", -2, 0)
+            targetInd:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
+            raidIcon:SetPoint("RIGHT", targetInd, "LEFT", -2, 0)
 
-            nameText:SetPoint("RIGHT", targetInd, "LEFT", -5, 0)
+            nameText:SetPoint("RIGHT", raidIcon, "LEFT", -5, 0)
             nameText:SetJustifyH("RIGHT")
             hpText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             hpText:SetJustifyH("LEFT")
         else
-            raidIcon:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
-            targetInd:SetPoint("LEFT", raidIcon, "RIGHT", 2, 0)
+            targetInd:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
+            raidIcon:SetPoint("LEFT", targetInd, "RIGHT", 2, 0)
 
-            nameText:SetPoint("LEFT", targetInd, "RIGHT", 5, 0)
+            nameText:SetPoint("LEFT", raidIcon, "RIGHT", 5, 0)
             nameText:SetJustifyH("LEFT")
             hpText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             hpText:SetJustifyH("RIGHT")
@@ -188,18 +255,42 @@ function ui.UpdateLayout()
         -- Update curses icons layout
         for j = 1, 5 do
             local curse = getglobal(dots:GetName().."Curse"..j)
+            local curseBorder = getglobal(dots:GetName().."Curse"..j.."Border")
             curse:ClearAllPoints()
+            curse:SetWidth(curseSize)
+            curse:SetHeight(curseSize)
+            curseBorder:SetWidth(curseSize * 1.1)
+            curseBorder:SetHeight(curseSize * 1.1)
+
             if config.invertbars then
                 if j == 1 then
-                    curse:SetPoint("RIGHT", dots, "RIGHT", -3, 0)
+                    if config.compactmode then
+                        -- In compact mode, anchor next to HP text (which is on the LEFT)
+                        curse:SetPoint("LEFT", hpText, "RIGHT", 5, 0)
+                    else
+                        curse:SetPoint("RIGHT", dots, "RIGHT", -3, 0)
+                    end
                 else
-                    curse:SetPoint("RIGHT", getglobal(dots:GetName().."Curse"..(j-1)), "LEFT", -4, 0)
+                    if config.compactmode then
+                        curse:SetPoint("LEFT", getglobal(dots:GetName().."Curse"..(j-1)), "RIGHT", 4, 0)
+                    else
+                        curse:SetPoint("RIGHT", getglobal(dots:GetName().."Curse"..(j-1)), "LEFT", -4, 0)
+                    end
                 end
             else
                 if j == 1 then
-                    curse:SetPoint("LEFT", dots, "LEFT", 3, 0)
+                    if config.compactmode then
+                        -- In compact mode, anchor next to HP text (which is on the RIGHT)
+                        curse:SetPoint("RIGHT", hpText, "LEFT", -5, 0)
+                    else
+                        curse:SetPoint("LEFT", dots, "LEFT", 3, 0)
+                    end
                 else
-                    curse:SetPoint("LEFT", getglobal(dots:GetName().."Curse"..(j-1)), "RIGHT", 4, 0)
+                    if config.compactmode then
+                        curse:SetPoint("RIGHT", getglobal(dots:GetName().."Curse"..(j-1)), "LEFT", -4, 0)
+                    else
+                        curse:SetPoint("LEFT", getglobal(dots:GetName().."Curse"..(j-1)), "RIGHT", 4, 0)
+                    end
                 end
             end
         end
@@ -219,11 +310,35 @@ function ui.ToggleOptions()
         CursiveOptionsFrameShowBackdrop:SetChecked(config.showbackdrop)
         CursiveOptionsFrameShowTitle:SetChecked(config.showtitle)
         CursiveOptionsFrameAlwaysShowTarget:SetChecked(config.alwaysshowcurrenttarget)
+        CursiveOptionsFrameCompactMode:SetChecked(config.compactmode)
+        CursiveOptionsFrameWarnings:SetChecked(config.warnings)
+        CursiveOptionsFrameResistSound:SetChecked(config.resistsound)
+        CursiveOptionsFrameExpiringSound:SetChecked(config.expiringsound)
+        CursiveOptionsFrameAllowOOC:SetChecked(config.allowooc)
+        CursiveOptionsFramePrioTarget:SetChecked(config.priotarget)
+        CursiveOptionsFrameIgnoreTarget:SetChecked(config.ignoretarget)
+        CursiveOptionsFramePlayerOnly:SetChecked(config.playeronly)
+        CursiveOptionsFrameMinHPSlider:SetValue(config.minhp)
+        CursiveOptionsFrameRefreshTimeSlider:SetValue(config.refreshtime)
+        CursiveOptionsFrameBarHeightSlider:SetValue(config.height)
         CursiveOptionsFrameMaxRowSlider:SetValue(config.maxrow)
+        CursiveOptionsFrameNameFilter:SetText(config.name or "")
+        CursiveOptionsFrameIgnoreSpellID:SetText(config.ignorespellid == 0 and "" or config.ignorespellid)
+        CursiveOptionsFrameWarnings:SetChecked(config.warnings)
+        CursiveOptionsFrameResistSound:SetChecked(config.resistsound)
+        CursiveOptionsFrameExpiringSound:SetChecked(config.expiringsound)
+        CursiveOptionsFrameAllowOOC:SetChecked(config.allowooc)
+        CursiveOptionsFramePrioTarget:SetChecked(config.priotarget)
+        CursiveOptionsFrameIgnoreTarget:SetChecked(config.ignoretarget)
+        CursiveOptionsFrameIgnoreSpellTexture:SetText(config.ignorespelltexture or "")
+        CursiveOptionsFramePlayerOnly:SetChecked(config.playeronly)
 
         -- Update labels
         CursiveOptionsFrameScaleSliderText:SetText("Scale ("..(math.floor(config.scale * 100)/100)..")")
         CursiveOptionsFrameOpacitySliderText:SetText("Opacity ("..(math.floor((config.opacity or 1) * 100)/100)..")")
+        CursiveOptionsFrameMinHPSliderText:SetText("Min HP ("..config.minhp..")")
+        CursiveOptionsFrameRefreshTimeSliderText:SetText("Refresh Time ("..config.refreshtime..")")
+        CursiveOptionsFrameBarHeightSliderText:SetText(L["Health Bar/Unit Name Height"].." ("..config.height..")")
         CursiveOptionsFrameMaxRowSliderText:SetText("Max Rows ("..config.maxrow..")")
 
         CursiveOptionsFrame:Show()
@@ -280,6 +395,94 @@ end
 
 function ui.ToggleAlwaysShowTarget(val)
     Cursive.db.profile.alwaysshowcurrenttarget = val
+end
+
+function ui.ToggleCompactMode(val)
+    Cursive.db.profile.compactmode = val
+    ui.UpdateLayout()
+end
+
+function ui.ToggleWarnings(val)
+    Cursive.db.profile.warnings = val
+end
+
+function ui.ToggleResistSound(val)
+    Cursive.db.profile.resistsound = val
+end
+
+function ui.ToggleExpiringSound(val)
+    Cursive.db.profile.expiringsound = val
+end
+
+function ui.ToggleAllowOOC(val)
+    Cursive.db.profile.allowooc = val
+end
+
+function ui.TogglePrioTarget(val)
+    Cursive.db.profile.priotarget = val
+end
+
+function ui.ToggleIgnoreTarget(val)
+    Cursive.db.profile.ignoretarget = val
+end
+
+function ui.TogglePlayerOnly(val)
+    Cursive.db.profile.playeronly = val
+end
+
+function ui.ToggleWarnings(val)
+    Cursive.db.profile.warnings = val
+end
+
+function ui.ToggleResistSound(val)
+    Cursive.db.profile.resistsound = val
+end
+
+function ui.ToggleExpiringSound(val)
+    Cursive.db.profile.expiringsound = val
+end
+
+function ui.ToggleAllowOOC(val)
+    Cursive.db.profile.allowooc = val
+end
+
+function ui.TogglePrioTarget(val)
+    Cursive.db.profile.priotarget = val
+end
+
+function ui.ToggleIgnoreTarget(val)
+    Cursive.db.profile.ignoretarget = val
+end
+
+function ui.NameFilterChanged(val)
+    Cursive.db.profile.name = val
+end
+
+function ui.IgnoreSpellIDChanged(val)
+    Cursive.db.profile.ignorespellid = tonumber(val) or 0
+end
+
+function ui.IgnoreSpellTextureChanged(val)
+    Cursive.db.profile.ignorespelltexture = val
+end
+
+function ui.MinHPChanged(val)
+    val = math.floor(val)
+    Cursive.db.profile.minhp = val
+    CursiveOptionsFrameMinHPSliderText:SetText("Min HP ("..val..")")
+end
+
+function ui.RefreshTimeChanged(val)
+    val = math.floor(val)
+    Cursive.db.profile.refreshtime = val
+    CursiveOptionsFrameRefreshTimeSliderText:SetText("Refresh Time ("..val..")")
+end
+
+function ui.BarHeightChanged(val)
+    val = math.floor(val)
+    Cursive.db.profile.height = val
+    ui.UpdateLayout()
+    CursiveOptionsFrameBarHeightSliderText:SetText(L["Health Bar/Unit Name Height"].." ("..val..")")
 end
 
 function ui.MaxRowChanged(val)
@@ -430,7 +633,6 @@ function ui.OnUpdate()
 
             local _, r, g, b = utils.GetUnitColor(guid)
             healthBar:SetStatusBarColor(r, g, b)
-            healthBar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
             getglobal(healthBar:GetName().."Background"):SetAlpha(0.8)
 
             -- HP text formatting
@@ -492,15 +694,6 @@ function ui.OnUpdate()
         end
     end
 
-    -- Adjust main frame height based on num buttons (always draw a box that fits max rows)
-    if CursiveFrame then
-        local titleSize = config.showtitle and 40 or 10
-        local spacing = config.spacing or 4
-        local num = config.maxrow
-        local entriesHeight = (num * 48) + ((num > 0 and num - 1 or 0) * spacing)
-        local padding = 15
-        CursiveFrame:SetHeight(titleSize + entriesHeight + padding)
-    end
 end
 
 -- Initialize the UI
