@@ -57,3 +57,9 @@ function Cursive:OnEnable()
 		Cursive.core.enable()
 	end
 end
+
+function Cursive:UpdateFramesFromConfig()
+    if self.ui and self.ui.Setup then
+        self.ui.Setup()
+    end
+end
