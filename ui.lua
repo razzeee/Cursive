@@ -233,20 +233,20 @@ function ui.UpdateLayout()
         healthBar:SetStatusBarTexture(config.bartexture or "Interface\\TargetingFrame\\UI-StatusBar")
 
         if config.invertbars then
-            raidIcon:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
-            targetInd:SetPoint("RIGHT", raidIcon, "LEFT", -2, 0)
+            targetInd:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-right")
+            raidIcon:SetPoint("RIGHT", targetInd, "LEFT", -2, 0)
 
-            nameText:SetPoint("RIGHT", targetInd, "LEFT", -5, 0)
+            nameText:SetPoint("RIGHT", raidIcon, "LEFT", -5, 0)
             nameText:SetJustifyH("RIGHT")
             hpText:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             hpText:SetJustifyH("LEFT")
         else
-            raidIcon:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
-            targetInd:SetPoint("LEFT", raidIcon, "RIGHT", 2, 0)
+            targetInd:SetPoint("LEFT", healthBar, "LEFT", 5, 0)
             targetInd:SetTexture("Interface\\AddOns\\Cursive\\img\\target-left")
+            raidIcon:SetPoint("LEFT", targetInd, "RIGHT", 2, 0)
 
-            nameText:SetPoint("LEFT", targetInd, "RIGHT", 5, 0)
+            nameText:SetPoint("LEFT", raidIcon, "RIGHT", 5, 0)
             nameText:SetJustifyH("LEFT")
             hpText:SetPoint("RIGHT", healthBar, "RIGHT", -5, 0)
             hpText:SetJustifyH("RIGHT")
