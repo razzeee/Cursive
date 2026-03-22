@@ -36,7 +36,6 @@ Cursive:RegisterDefaults("profile", {
 	maxcurses = 5,
 	spacing = 4,
 	maxrow = 10,
-	maxcol = 1,
 	textsize = 9,
 	cursetimersize = 11,
 
@@ -287,58 +286,6 @@ local barOptions = {
 		name = "Section Display",
 		order = 5,
 	},
-	["showtargetindicator"] = {
-		type = "toggle",
-		name = L["Show Targeting Arrow"],
-		desc = L["Show Targeting Arrow"],
-		order = 10,
-		get = function()
-			return Cursive.db.profile.showtargetindicator
-		end,
-		set = function(v)
-			Cursive.db.profile.showtargetindicator = v
-			Cursive.UpdateFramesFromConfig()
-		end,
-	},
-	["showraidicons"] = {
-		type = "toggle",
-		name = L["Show Raid Icons"],
-		desc = L["Show Raid Icons"],
-		order = 15,
-		get = function()
-			return Cursive.db.profile.showraidicons
-		end,
-		set = function(v)
-			Cursive.db.profile.showraidicons = v
-			Cursive.UpdateFramesFromConfig()
-		end,
-	},
-	["showhealthbar"] = {
-		type = "toggle",
-		name = L["Show Health Bar"],
-		desc = L["Show Health Bar"],
-		order = 20,
-		get = function()
-			return Cursive.db.profile.showhealthbar
-		end,
-		set = function(v)
-			Cursive.db.profile.showhealthbar = v
-			Cursive.UpdateFramesFromConfig()
-		end,
-	},
-	["showunitname"] = {
-		type = "toggle",
-		name = L["Show Unit Name"],
-		desc = L["Show Unit Name"],
-		order = 25,
-		get = function()
-			return Cursive.db.profile.showunitname
-		end,
-		set = function(v)
-			Cursive.db.profile.showunitname = v
-			Cursive.UpdateFramesFromConfig()
-		end,
-	},
 	["alwaysshowcurrenttarget"] = {
 		type = "toggle",
 		name = "Always Show Current Target",
@@ -370,58 +317,6 @@ local barOptions = {
 		set = function(v)
 			if v ~= Cursive.db.profile.height then
 				Cursive.db.profile.height = v
-				Cursive.UpdateFramesFromConfig()
-			end
-		end,
-	},
-	["bartexture"] = {
-		type = "text",
-		name = L["Health Bar Texture"],
-		desc = L["Health Bar Texture Desc"],
-		order = 55,
-		usage = "Interface\\TargetingFrame\\UI-StatusBar",
-		get = function()
-			return Cursive.db.profile.bartexture
-		end,
-		set = function(v)
-			if v ~= Cursive.db.profile.bartexture then
-				Cursive.db.profile.bartexture = v
-				Cursive.UpdateFramesFromConfig()
-			end
-		end,
-	},
-	["raidiconsize"] = {
-		type = "range",
-		name = L["Raid Icon Size"],
-		desc = L["Raid Icon Size"],
-		order = 60,
-		min = 10,
-		max = 30,
-		step = 1,
-		get = function()
-			return Cursive.db.profile.raidiconsize
-		end,
-		set = function(v)
-			if v ~= Cursive.db.profile.raidiconsize then
-				Cursive.db.profile.raidiconsize = v
-				Cursive.UpdateFramesFromConfig()
-			end
-		end,
-	},
-	["curseiconsize"] = {
-		type = "range",
-		name = L["Curse Icon Size"],
-		desc = L["Curse Icon Size"],
-		order = 70,
-		min = 10,
-		max = 30,
-		step = 1,
-		get = function()
-			return Cursive.db.profile.curseiconsize
-		end,
-		set = function(v)
-			if v ~= Cursive.db.profile.curseiconsize then
-				Cursive.db.profile.curseiconsize = v
 				Cursive.UpdateFramesFromConfig()
 			end
 		end,
@@ -696,19 +591,6 @@ Cursive.cmdtable = {
 				end
 			end,
 		},
-		["showtitle"] = {
-			type = "toggle",
-			name = L["Show Title"],
-			desc = L["Show the title of the frame"],
-			order = 3,
-			get = function()
-				return Cursive.db.profile.showtitle
-			end,
-			set = function(v)
-				Cursive.db.profile.showtitle = v
-				Cursive.UpdateFramesFromConfig()
-			end,
-		},
 		["clickthrough"] = {
 			type = "toggle",
 			name = L["Allow clickthrough"],
@@ -719,19 +601,6 @@ Cursive.cmdtable = {
 			end,
 			set = function(v)
 				Cursive.db.profile.clickthrough = v
-				Cursive.UpdateFramesFromConfig()
-			end,
-		},
-		["showbackdrop"] = {
-			type = "toggle",
-			name = L["Show Frame Background"],
-			desc = L["Toggle the frame background to help with positioning"],
-			order = 7,
-			get = function()
-				return Cursive.db.profile.showbackdrop
-			end,
-			set = function(v)
-				Cursive.db.profile.showbackdrop = v
 				Cursive.UpdateFramesFromConfig()
 			end,
 		},
@@ -817,24 +686,6 @@ Cursive.cmdtable = {
 			set = function(v)
 				if v ~= Cursive.db.profile.maxrow then
 					Cursive.db.profile.maxrow = v
-					Cursive.UpdateFramesFromConfig()
-				end
-			end,
-		},
-		["maxcol"] = {
-			type = "range",
-			name = L["Max Columns"],
-			desc = L["Max Columns"],
-			order = 40,
-			min = 1,
-			max = 20,
-			step = 1,
-			get = function()
-				return Cursive.db.profile.maxcol
-			end,
-			set = function(v)
-				if v ~= Cursive.db.profile.maxcol then
-					Cursive.db.profile.maxcol = v
 					Cursive.UpdateFramesFromConfig()
 				end
 			end,

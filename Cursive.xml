@@ -381,7 +381,7 @@
     </Slider>
 
     <Frame name="CursiveOptionsFrame" parent="UIParent" movable="true" enableMouse="true" toplevel="true" frameStrata="DIALOG" hidden="true">
-        <Size x="440" y="520"/>
+        <Size x="440" y="420"/>
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
@@ -520,39 +520,9 @@
                     </OnClick>
                 </Scripts>
             </CheckButton>
-            <CheckButton name="$parentShowBackdrop" inherits="CursiveOptionsCheckButtonTemplate">
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentExpandUpwards" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="0"/>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText("Show Background")
-                    </OnLoad>
-                    <OnClick>
-                        Cursive.ui.ToggleShowBackdrop(this:GetChecked())
-                    </OnClick>
-                </Scripts>
-            </CheckButton>
-             <CheckButton name="$parentShowTitle" inherits="CursiveOptionsCheckButtonTemplate">
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentShowBackdrop" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="0"/>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText("Show Header")
-                    </OnLoad>
-                    <OnClick>
-                        Cursive.ui.ToggleShowTitle(this:GetChecked())
-                    </OnClick>
-                </Scripts>
-            </CheckButton>
             <CheckButton name="$parentAlwaysShowTarget" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentShowTitle" relativePoint="BOTTOMLEFT">
+                    <Anchor point="TOPLEFT" relativeTo="$parentExpandUpwards" relativePoint="BOTTOMLEFT">
                         <Offset x="0" y="0"/>
                     </Anchor>
                 </Anchors>

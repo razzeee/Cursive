@@ -95,7 +95,29 @@ end
 
 function ui.UpdateBackdrop()
     if not CursiveFrame then return end
-    if Cursive.db.profile.showbackdrop then
+
+    if IsAddOnLoaded("pfUI") then
+        -- pfUI Skinning
+        CursiveFrame:SetBackdrop({
+            bgFile = "Interface\\Buttons\\WHITE8X8",
+            edgeFile = "Interface\\Buttons\\WHITE8X8",
+            tile = false, tileSize = 0, edgeSize = 1,
+            insets = { left = 0, right = 0, top = 0, bottom = 0 }
+        })
+        CursiveFrame:SetBackdropColor(0, 0, 0, 0.7)
+        CursiveFrame:SetBackdropBorderColor(0.2, 0.2, 0.2, 1)
+
+        if CursiveOptionsFrame then
+            CursiveOptionsFrame:SetBackdrop({
+                bgFile = "Interface\\Buttons\\WHITE8X8",
+                edgeFile = "Interface\\Buttons\\WHITE8X8",
+                tile = false, tileSize = 0, edgeSize = 1,
+                insets = { left = 0, right = 0, top = 0, bottom = 0 }
+            })
+            CursiveOptionsFrame:SetBackdropColor(0, 0, 0, 0.9)
+            CursiveOptionsFrame:SetBackdropBorderColor(0.2, 0.2, 0.2, 1)
+        end
+    elseif Cursive.db.profile.showbackdrop then
         local top = Cursive.db.profile.showtitle and 5 or 0
         CursiveFrame:SetBackdrop({
             bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
@@ -139,7 +161,7 @@ function ui.UpdateLayout()
     local btnHeight = config.compactmode and (config.height or 22) or 48
 
     -- Adjust main frame height based on num buttons (always draw a box that fits max rows)
-    local titleSize = config.showtitle and 40 or 10
+    local titleSize = (config.showtitle or IsAddOnLoaded("pfUI")) and 40 or 10
     local num = config.maxrow
     local entriesHeight = (num * btnHeight) + ((num > 0 and num - 1 or 0) * spacing)
     local padding = 15
@@ -174,6 +196,25 @@ function ui.UpdateLayout()
 
         -- Layout components
         local healthBar = getglobal(btn:GetName().."HealthBar")
+
+        if IsAddOnLoaded("pfUI") then
+            btn:SetBackdrop({
+                bgFile = "Interface\\Buttons\\WHITE8X8",
+                edgeFile = "Interface\\Buttons\\WHITE8X8",
+                tile = false, tileSize = 0, edgeSize = 1,
+                insets = { left = 0, right = 0, top = 0, bottom = 0 }
+            })
+            btn:SetBackdropColor(0, 0, 0, 0.4)
+            btn:SetBackdropBorderColor(0.2, 0.2, 0.2, 1)
+
+            local selection = getglobal(btn:GetName().."Selection")
+            selection:SetBackdrop({
+                edgeFile = "Interface\\Buttons\\WHITE8X8",
+                tile = false, tileSize = 0, edgeSize = 1,
+                insets = { left = 0, right = 0, top = 0, bottom = 0 }
+            })
+            selection:SetBackdropBorderColor(1, 1, 1, 1)
+        end
         local nameText = getglobal(btn:GetName().."HealthBarName")
         local hpText = getglobal(btn:GetName().."HealthBarHPText")
         local targetInd = getglobal(btn:GetName().."HealthBarTargetIndicator")
@@ -191,10 +232,22 @@ function ui.UpdateLayout()
         healthBar:SetHeight(barHeight)
         healthBar:SetPoint("TOP", btn, "TOP", 0, 0)
 
+        if config.showhealthbar then
+            healthBar:Show()
+        else
+            healthBar:Hide()
+        end
+
         raidIcon:SetWidth(raidSize)
         raidIcon:SetHeight(raidSize)
         targetInd:SetWidth(raidSize / 1.8)
         targetInd:SetHeight(raidSize * 1.1)
+
+        if config.showunitname then
+            nameText:Show()
+        else
+            nameText:Hide()
+        end
 
         dots:SetWidth(btnWidth)
         dots:SetHeight(config.compactmode and barHeight or 20)
@@ -208,13 +261,17 @@ function ui.UpdateLayout()
         nameText:SetHeight(barHeight)
         hpText:SetHeight(barHeight)
 
+        local raidReserved = config.showraidicons and raidSize or 0
+        local targetReserved = config.showtargetindicator and (raidSize / 1.8) or 0
+        local extraPadding = (raidReserved > 0 or targetReserved > 0) and 10 or 5
+
         if config.compactmode then
             -- Reserve space for 3 curses (curseSize + 4 padding each) + HP text (approx 50)
             -- If more than 3 curses, they will overlap the name or be hidden.
             local reserved = 50 + (curseSize * 3) + 15
-            nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - reserved)
+            nameText:SetWidth(btnWidth - raidReserved - targetReserved - reserved - extraPadding)
         else
-            nameText:SetWidth(btnWidth - raidSize - (raidSize / 1.8) - 65)
+            nameText:SetWidth(btnWidth - raidReserved - targetReserved - 70)
         end
 
         -- Text settings (Move from OnUpdate for performance)
@@ -307,8 +364,6 @@ function ui.ToggleOptions()
         CursiveOptionsFrameLock:SetChecked(config.clickthrough)
         CursiveOptionsFrameInvert:SetChecked(config.invertbars)
         CursiveOptionsFrameExpandUpwards:SetChecked(config.expandupwards)
-        CursiveOptionsFrameShowBackdrop:SetChecked(config.showbackdrop)
-        CursiveOptionsFrameShowTitle:SetChecked(config.showtitle)
         CursiveOptionsFrameAlwaysShowTarget:SetChecked(config.alwaysshowcurrenttarget)
         CursiveOptionsFrameCompactMode:SetChecked(config.compactmode)
         CursiveOptionsFrameWarnings:SetChecked(config.warnings)
@@ -324,14 +379,7 @@ function ui.ToggleOptions()
         CursiveOptionsFrameMaxRowSlider:SetValue(config.maxrow)
         CursiveOptionsFrameNameFilter:SetText(config.name or "")
         CursiveOptionsFrameIgnoreSpellID:SetText(config.ignorespellid == 0 and "" or config.ignorespellid)
-        CursiveOptionsFrameWarnings:SetChecked(config.warnings)
-        CursiveOptionsFrameResistSound:SetChecked(config.resistsound)
-        CursiveOptionsFrameExpiringSound:SetChecked(config.expiringsound)
-        CursiveOptionsFrameAllowOOC:SetChecked(config.allowooc)
-        CursiveOptionsFramePrioTarget:SetChecked(config.priotarget)
-        CursiveOptionsFrameIgnoreTarget:SetChecked(config.ignoretarget)
         CursiveOptionsFrameIgnoreSpellTexture:SetText(config.ignorespelltexture or "")
-        CursiveOptionsFramePlayerOnly:SetChecked(config.playeronly)
 
         -- Update labels
         CursiveOptionsFrameScaleSliderText:SetText("Scale ("..(math.floor(config.scale * 100)/100)..")")
@@ -428,30 +476,6 @@ end
 
 function ui.TogglePlayerOnly(val)
     Cursive.db.profile.playeronly = val
-end
-
-function ui.ToggleWarnings(val)
-    Cursive.db.profile.warnings = val
-end
-
-function ui.ToggleResistSound(val)
-    Cursive.db.profile.resistsound = val
-end
-
-function ui.ToggleExpiringSound(val)
-    Cursive.db.profile.expiringsound = val
-end
-
-function ui.ToggleAllowOOC(val)
-    Cursive.db.profile.allowooc = val
-end
-
-function ui.TogglePrioTarget(val)
-    Cursive.db.profile.priotarget = val
-end
-
-function ui.ToggleIgnoreTarget(val)
-    Cursive.db.profile.ignoretarget = val
 end
 
 function ui.NameFilterChanged(val)
@@ -643,7 +667,11 @@ function ui.OnUpdate()
 
             -- Target indicator and Selection border
             if guid and UnitIsUnit("target", guid) then
-                targetInd:Show()
+                if config.showtargetindicator then
+                    targetInd:Show()
+                else
+                    targetInd:Hide()
+                end
                 getglobal(btn:GetName().."Selection"):Show()
             else
                 targetInd:Hide()
@@ -652,7 +680,7 @@ function ui.OnUpdate()
 
             -- Raid icon
             local raidIndex = guid and GetRaidTargetIndex(guid)
-            if raidIndex then
+            if raidIndex and config.showraidicons then
                 SetRaidTargetIconTexture(raidIcon, raidIndex)
                 raidIcon:Show()
             else
