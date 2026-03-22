@@ -373,19 +373,12 @@ function ui.ToggleOptions()
         CursiveOptionsFramePrioTarget:SetChecked(config.priotarget)
         CursiveOptionsFrameIgnoreTarget:SetChecked(config.ignoretarget)
         CursiveOptionsFramePlayerOnly:SetChecked(config.playeronly)
-        CursiveOptionsFrameMinHPSlider:SetValue(config.minhp)
-        CursiveOptionsFrameRefreshTimeSlider:SetValue(config.refreshtime)
         CursiveOptionsFrameBarHeightSlider:SetValue(config.height)
         CursiveOptionsFrameMaxRowSlider:SetValue(config.maxrow)
-        CursiveOptionsFrameNameFilter:SetText(config.name or "")
-        CursiveOptionsFrameIgnoreSpellID:SetText(config.ignorespellid == 0 and "" or config.ignorespellid)
-        CursiveOptionsFrameIgnoreSpellTexture:SetText(config.ignorespelltexture or "")
 
         -- Update labels
         CursiveOptionsFrameScaleSliderText:SetText("Scale ("..(math.floor(config.scale * 100)/100)..")")
         CursiveOptionsFrameOpacitySliderText:SetText("Opacity ("..(math.floor((config.opacity or 1) * 100)/100)..")")
-        CursiveOptionsFrameMinHPSliderText:SetText("Min HP ("..config.minhp..")")
-        CursiveOptionsFrameRefreshTimeSliderText:SetText("Refresh Time ("..config.refreshtime..")")
         CursiveOptionsFrameBarHeightSliderText:SetText(L["Health Bar/Unit Name Height"].." ("..config.height..")")
         CursiveOptionsFrameMaxRowSliderText:SetText("Max Rows ("..config.maxrow..")")
 
@@ -476,30 +469,6 @@ end
 
 function ui.TogglePlayerOnly(val)
     Cursive.db.profile.playeronly = val
-end
-
-function ui.NameFilterChanged(val)
-    Cursive.db.profile.name = val
-end
-
-function ui.IgnoreSpellIDChanged(val)
-    Cursive.db.profile.ignorespellid = tonumber(val) or 0
-end
-
-function ui.IgnoreSpellTextureChanged(val)
-    Cursive.db.profile.ignorespelltexture = val
-end
-
-function ui.MinHPChanged(val)
-    val = math.floor(val)
-    Cursive.db.profile.minhp = val
-    CursiveOptionsFrameMinHPSliderText:SetText("Min HP ("..val..")")
-end
-
-function ui.RefreshTimeChanged(val)
-    val = math.floor(val)
-    Cursive.db.profile.refreshtime = val
-    CursiveOptionsFrameRefreshTimeSliderText:SetText("Refresh Time ("..val..")")
 end
 
 function ui.BarHeightChanged(val)
