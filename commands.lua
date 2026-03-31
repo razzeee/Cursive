@@ -12,15 +12,10 @@ local commandOptions = {
 	resistsound = L["Play a sound when a curse is resisted."],
 	expiringsound = L["Play a sound when a curse is about to expire."],
 	allowooc = L["Allow out of combat targets to be multicursed.  Would only consider using this solo to avoid potentially griefing raids/dungeons by pulling unintended mobs."],
-	minhp = L["Minimum HP for a target to be considered.  Example usage minhp=10000. "],
-	refreshtime = L["Time threshold at which to allow refreshing a curse.  Default is 0 seconds."],
 	priotarget = L["Always prioritize current target when choosing target for multicurse.  Does not affect 'curse' command."],
 	ignoretarget = L["Ignore the current target when choosing target for multicurse.  Does not affect 'curse' command."],
 	playeronly = L["Only choose players and ignore npcs when choosing target for multicurse.  Does not affect 'curse' command."],
 	istapped = L["Only choose mobs tagged by other players when choosing target for multicurse.  Does not affect 'curse' command."],
-	name = L["Filter targets by name. Can be a partial match.  If no match is found, the command will do nothing."],
-	ignorespellid = L["Ignore targets with the specified spell id already on them. Useful for ignoring targets that already have a shared debuff."],
-	ignorespelltexture = L["Ignore targets with the specified spell texture already on them. Useful for ignoring targets that already have a shared debuff."],
 	malediction = L["For Warlocks with the Malediction talent: when checking if Curse of Recklessness, Curse of the Elements, or Curse of Shadow is already on a target, check for Curse of Agony instead. Default is 1 (enabled). Set malediction=0 to disable and check for the original curse."],
 }
 
@@ -66,32 +61,7 @@ local function parseOptions(optionsStr)
 	if optionsStr then
 		for option, _ in pairs(commandOptions) do
 			-- special case for options that take a param
-			if option == "minhp" then
-				local _, _, minHp = string.find(optionsStr, "minhp=(%d+)")
-				if minHp then
-					options["minhp"] = tonumber(minHp)
-				end
-			elseif option == "refreshtime" then
-				local _, _, refreshTime = string.find(optionsStr, "refreshtime=(%d+)")
-				if refreshTime then
-					options["refreshtime"] = tonumber(refreshTime)
-				end
-			elseif option == "name" then
-				local _, _, name = string.find(optionsStr, "name=([%w%s]+)")
-				if name then
-					options["name"] = name
-				end
-			elseif option == "ignorespellid" then
-				local _, _, spellId = string.find(optionsStr, "ignorespellid=(%d+)")
-				if spellId then
-					options["ignorespellid"] = tonumber(spellId)
-				end
-			elseif option == "ignorespelltexture" then
-				local _, _, texture = string.find(optionsStr, "ignorespelltexture=([%w_]+)")
-				if texture then
-					options["ignorespelltexture"] = texture
-				end
-			elseif option == "malediction" then
+			if option == "malediction" then
 				local _, _, maledictionVal = string.find(optionsStr, "malediction=(%d)")
 				if maledictionVal then
 					options["malediction"] = tonumber(maledictionVal)
@@ -345,22 +315,6 @@ local function hasSpellTexture(guid, ignoreTexture)
 end
 
 local function passedOptionFilters(guid, options)
-	if options["name"] then
-		local name = UnitName(guid)
-		if not string.find(name, options["name"]) then
-			return false
-		end
-	end
-	if options["ignorespellid"] then
-		if hasSpellId(guid, options["ignorespellid"]) then
-			return false
-		end
-	end
-	if options["ignorespelltexture"] then
-		if hasSpellTexture(guid, options["ignorespelltexture"]) then
-			return false
-		end
-	end
 	if options["playeronly"] and not UnitIsPlayer(guid) then
 		return false
 	end
@@ -380,9 +334,7 @@ local function pickTarget(selectedPriority, lowercaseSpellNameNoRank, checkRange
 		highestPrimaryValue = 999999999999 -- should be bigger than any mob hp
 	end
 
-	local minHp = options["minhp"]
 	local ignoreInFight = options["allowooc"]
-	local refreshTime = options["refreshtime"]
 
 	local _, currentTargetGuid = UnitExists("target")
 
@@ -418,11 +370,9 @@ local function pickTarget(selectedPriority, lowercaseSpellNameNoRank, checkRange
 						end
 						if passedRangeCheck then
 							-- check if the target has the curse
-              if not Cursive.curses:HasCurse(lowercaseSpellNameNoRank, guid, refreshTime, options["malediction"]) and
-                  not isMobCrowdControlled(guid) and
-                  not isMobSpellImmune(guid) then
-								local mobHp = UnitHealth(guid)
-								if not minHp or mobHp >= minHp then
+							if not Cursive.curses:HasCurse(lowercaseSpellNameNoRank, guid, 0, options["malediction"]) and
+								not isMobCrowdControlled(guid) and
+								not isMobSpellImmune(guid) then
 									local primaryValue = -1
 									local secondaryValue = -1
 									if options["priotarget"] and guid == currentTargetGuid then
@@ -474,13 +424,12 @@ local function pickTarget(selectedPriority, lowercaseSpellNameNoRank, checkRange
 										highestSecondaryValue = secondaryValue
 										targetedGuid = guid
 									end
-								end
-							end
 						end
 					end
 				end
 			end
 		end
+	end
 	end
 
 	-- run again if no target found ignoring range (only if IsSpellInRange is not available)

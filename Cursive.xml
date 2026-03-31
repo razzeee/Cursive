@@ -381,7 +381,7 @@
     </Slider>
 
     <Frame name="CursiveOptionsFrame" parent="UIParent" movable="true" enableMouse="true" toplevel="true" frameStrata="DIALOG" hidden="true">
-        <Size x="440" y="520"/>
+        <Size x="440" y="420"/>
         <Anchors>
             <Anchor point="CENTER"/>
         </Anchors>
@@ -520,39 +520,9 @@
                     </OnClick>
                 </Scripts>
             </CheckButton>
-            <CheckButton name="$parentShowBackdrop" inherits="CursiveOptionsCheckButtonTemplate">
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentExpandUpwards" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="0"/>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText("Show Background")
-                    </OnLoad>
-                    <OnClick>
-                        Cursive.ui.ToggleShowBackdrop(this:GetChecked())
-                    </OnClick>
-                </Scripts>
-            </CheckButton>
-             <CheckButton name="$parentShowTitle" inherits="CursiveOptionsCheckButtonTemplate">
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentShowBackdrop" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="0"/>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnLoad>
-                        getglobal(this:GetName().."Text"):SetText("Show Header")
-                    </OnLoad>
-                    <OnClick>
-                        Cursive.ui.ToggleShowTitle(this:GetChecked())
-                    </OnClick>
-                </Scripts>
-            </CheckButton>
             <CheckButton name="$parentAlwaysShowTarget" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentShowTitle" relativePoint="BOTTOMLEFT">
+                    <Anchor point="TOPLEFT" relativeTo="$parentExpandUpwards" relativePoint="BOTTOMLEFT">
                         <Offset x="0" y="0"/>
                     </Anchor>
                 </Anchors>
@@ -701,82 +671,6 @@
                 </Scripts>
             </CheckButton>
 
-            <Slider name="$parentMinHPSlider" inherits="CursiveOptionsSliderTemplate">
-                <Size x="160" y="16"/>
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentPlayerOnly" relativePoint="BOTTOMLEFT">
-                        <Offset x="18" y="-20"/>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnLoad>
-                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
-                        getglobal(this:GetName().."Text"):SetText("Min HP")
-                        getglobal(this:GetName().."Low"):SetText("0")
-                        getglobal(this:GetName().."High"):SetText("1M")
-                        this:SetMinMaxValues(0, 1000000)
-                        this:SetValueStep(1000)
-                    </OnLoad>
-                    <OnValueChanged>
-                        Cursive.ui.MinHPChanged(this:GetValue())
-                    </OnValueChanged>
-                </Scripts>
-            </Slider>
-            <Slider name="$parentRefreshTimeSlider" inherits="CursiveOptionsSliderTemplate">
-                <Size x="160" y="16"/>
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentMinHPSlider" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="-24"/>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnLoad>
-                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
-                        getglobal(this:GetName().."Text"):SetText("Refresh Time")
-                        getglobal(this:GetName().."Low"):SetText("0")
-                        getglobal(this:GetName().."High"):SetText("30")
-                        this:SetMinMaxValues(0, 30)
-                        this:SetValueStep(1)
-                    </OnLoad>
-                    <OnValueChanged>
-                        Cursive.ui.RefreshTimeChanged(this:GetValue())
-                    </OnValueChanged>
-                </Scripts>
-            </Slider>
-
-            <EditBox name="$parentNameFilter" inherits="InputBoxTemplate" autoFocus="false">
-                <Size x="160" y="32"/>
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentRefreshTimeSlider" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="-20"/>
-                    </Anchor>
-                </Anchors>
-                <Layers>
-                    <Layer level="ARTWORK">
-                        <FontString name="$parentLabel" inherits="GameFontNormalSmall" text="Name Filter">
-                            <Anchors>
-                                <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
-                                    <Offset x="0" y="0"/>
-                                </Anchor>
-                            </Anchors>
-                        </FontString>
-                    </Layer>
-                </Layers>
-                <Scripts>
-                    <OnLoad>
-                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
-                        getglobal(this:GetName().."Label"):SetText(L["Name Filter"] or "Name Filter")
-                    </OnLoad>
-                    <OnEscapePressed>
-                        this:ClearFocus()
-                    </OnEscapePressed>
-                    <OnEnterPressed>
-                        Cursive.ui.NameFilterChanged(this:GetText())
-                        this:ClearFocus()
-                    </OnEnterPressed>
-                </Scripts>
-            </EditBox>
-
             <Slider name="$parentBarHeightSlider" inherits="CursiveOptionsSliderTemplate">
                 <Size x="160" y="16"/>
                 <Anchors>
@@ -818,70 +712,6 @@
                     </OnValueChanged>
                 </Scripts>
             </Slider>
-            <EditBox name="$parentIgnoreSpellID" inherits="InputBoxTemplate" autoFocus="false">
-                <Size x="70" y="32"/>
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentNameFilter" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="-20"/>
-                    </Anchor>
-                </Anchors>
-                <Layers>
-                    <Layer level="ARTWORK">
-                        <FontString name="$parentLabel" inherits="GameFontNormalSmall" text="Ignore Spell ID">
-                            <Anchors>
-                                <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
-                                    <Offset x="0" y="0"/>
-                                </Anchor>
-                            </Anchors>
-                        </FontString>
-                    </Layer>
-                </Layers>
-                <Scripts>
-                    <OnLoad>
-                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
-                        getglobal(this:GetName().."Label"):SetText(L["Ignore Spell ID"] or "Ignore Spell ID")
-                    </OnLoad>
-                    <OnEscapePressed>
-                        this:ClearFocus()
-                    </OnEscapePressed>
-                    <OnEnterPressed>
-                        Cursive.ui.IgnoreSpellIDChanged(this:GetText())
-                        this:ClearFocus()
-                    </OnEnterPressed>
-                </Scripts>
-            </EditBox>
-            <EditBox name="$parentIgnoreSpellTexture" inherits="InputBoxTemplate" autoFocus="false">
-                <Size x="160" y="32"/>
-                <Anchors>
-                    <Anchor point="TOPLEFT" relativeTo="$parentIgnoreSpellID" relativePoint="BOTTOMLEFT">
-                        <Offset x="0" y="-20"/>
-                    </Anchor>
-                </Anchors>
-                <Layers>
-                    <Layer level="ARTWORK">
-                        <FontString name="$parentLabel" inherits="GameFontNormalSmall" text="Ignore Texture">
-                            <Anchors>
-                                <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
-                                    <Offset x="0" y="0"/>
-                                </Anchor>
-                            </Anchors>
-                        </FontString>
-                    </Layer>
-                </Layers>
-                <Scripts>
-                    <OnLoad>
-                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
-                        getglobal(this:GetName().."Label"):SetText(L["Ignore Texture"] or "Ignore Texture")
-                    </OnLoad>
-                    <OnEscapePressed>
-                        this:ClearFocus()
-                    </OnEscapePressed>
-                    <OnEnterPressed>
-                        Cursive.ui.IgnoreSpellTextureChanged(this:GetText())
-                        this:ClearFocus()
-                    </OnEnterPressed>
-                </Scripts>
-            </EditBox>
         </Frames>
         <Scripts>
             <OnMouseDown>

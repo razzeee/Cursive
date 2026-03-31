@@ -13,8 +13,6 @@ Cursive:RegisterDefaults("profile", {
 	-- editable
 	enabled = true,
 	clickthrough = false,
-	showbackdrop = false,
-	showtitle = true,
 	showtargetindicator = true,
 	showraidicons = true,
 	showhealthbar = true,
@@ -31,14 +29,10 @@ Cursive:RegisterDefaults("profile", {
 	scale = 1,
 	healthwidth = 200,
 	height = 22,
-	bartexture = "Interface\\TargetingFrame\\UI-StatusBar",
 
-	raidiconsize = 16,
-	curseiconsize = 16,
 	maxcurses = 5,
 	spacing = 4,
 	maxrow = 10,
-	maxcol = 1,
 	textsize = 9,
 	cursetimersize = 11,
 
@@ -65,14 +59,9 @@ Cursive:RegisterDefaults("profile", {
 	resistsound = false,
 	expiringsound = false,
 	allowooc = false,
-	minhp = 0,
-	refreshtime = 0,
 	priotarget = false,
 	ignoretarget = false,
 	playeronly = false,
-	name = "",
-	ignorespellid = 0,
-	ignorespelltexture = "",
 })
 
 local function splitIgnoreString(str, delimiter)
@@ -155,36 +144,6 @@ local commandDefaults = {
 			Cursive.db.profile.priotarget = v
 		end,
 	},
-	["minhp"] = {
-		type = "range",
-		name = L["Minimum HP for a target to be considered.  Example usage minhp=10000. "],
-		desc = L["Minimum HP for a target to be considered.  Example usage minhp=10000. "],
-		order = 6,
-		min = 0,
-		max = 2000000,
-		step = 100,
-		get = function()
-			return Cursive.db.profile.minhp
-		end,
-		set = function(v)
-			Cursive.db.profile.minhp = v
-		end,
-	},
-	["refreshtime"] = {
-		type = "range",
-		name = L["Time threshold at which to allow refreshing a curse.  Default is 0 seconds."],
-		desc = L["Time threshold at which to allow refreshing a curse.  Default is 0 seconds."],
-		order = 7,
-		min = 0,
-		max = 30,
-		step = 1,
-		get = function()
-			return Cursive.db.profile.refreshtime
-		end,
-		set = function(v)
-			Cursive.db.profile.refreshtime = v
-		end,
-	},
 	["ignoretarget"] = {
 		type = "toggle",
 		name = L["Ignore the current target when choosing target for multicurse.  Does not affect 'curse' command."],
@@ -207,45 +166,6 @@ local commandDefaults = {
 		end,
 		set = function(v)
 			Cursive.db.profile.playeronly = v
-		end,
-	},
-	["name"] = {
-		type = "text",
-		name = L["Filter targets by name. Can be a partial match.  If no match is found, the command will do nothing."],
-		desc = L["Filter targets by name. Can be a partial match.  If no match is found, the command will do nothing."],
-		order = 10,
-		get = function()
-			return Cursive.db.profile.name
-		end,
-		set = function(v)
-			Cursive.db.profile.name = v
-		end,
-	},
-	["ignorespellid"] = {
-		type = "range",
-		name = L["Ignore targets with the specified spell id already on them. Useful for ignoring targets that already have a shared debuff."],
-		desc = L["Ignore targets with the specified spell id already on them. Useful for ignoring targets that already have a shared debuff."],
-		order = 11,
-		min = 0,
-		max = 60000,
-		step = 1,
-		get = function()
-			return Cursive.db.profile.ignorespellid
-		end,
-		set = function(v)
-			Cursive.db.profile.ignorespellid = v
-		end,
-	},
-	["ignorespelltexture"] = {
-		type = "text",
-		name = L["Ignore targets with the specified spell texture already on them. Useful for ignoring targets that already have a shared debuff."],
-		desc = L["Ignore targets with the specified spell texture already on them. Useful for ignoring targets that already have a shared debuff."],
-		order = 12,
-		get = function()
-			return Cursive.db.profile.ignorespelltexture
-		end,
-		set = function(v)
-			Cursive.db.profile.ignorespelltexture = v
 		end,
 	},
 }
@@ -295,58 +215,6 @@ local barOptions = {
 		name = "Section Display",
 		order = 5,
 	},
-	["showtargetindicator"] = {
-		type = "toggle",
-		name = L["Show Targeting Arrow"],
-		desc = L["Show Targeting Arrow"],
-		order = 10,
-		get = function()
-			return Cursive.db.profile.showtargetindicator
-		end,
-		set = function(v)
-			Cursive.db.profile.showtargetindicator = v
-			Cursive.UpdateFramesFromConfig()
-		end,
-	},
-	["showraidicons"] = {
-		type = "toggle",
-		name = L["Show Raid Icons"],
-		desc = L["Show Raid Icons"],
-		order = 15,
-		get = function()
-			return Cursive.db.profile.showraidicons
-		end,
-		set = function(v)
-			Cursive.db.profile.showraidicons = v
-			Cursive.UpdateFramesFromConfig()
-		end,
-	},
-	["showhealthbar"] = {
-		type = "toggle",
-		name = L["Show Health Bar"],
-		desc = L["Show Health Bar"],
-		order = 20,
-		get = function()
-			return Cursive.db.profile.showhealthbar
-		end,
-		set = function(v)
-			Cursive.db.profile.showhealthbar = v
-			Cursive.UpdateFramesFromConfig()
-		end,
-	},
-	["showunitname"] = {
-		type = "toggle",
-		name = L["Show Unit Name"],
-		desc = L["Show Unit Name"],
-		order = 25,
-		get = function()
-			return Cursive.db.profile.showunitname
-		end,
-		set = function(v)
-			Cursive.db.profile.showunitname = v
-			Cursive.UpdateFramesFromConfig()
-		end,
-	},
 	["alwaysshowcurrenttarget"] = {
 		type = "toggle",
 		name = "Always Show Current Target",
@@ -378,58 +246,6 @@ local barOptions = {
 		set = function(v)
 			if v ~= Cursive.db.profile.height then
 				Cursive.db.profile.height = v
-				Cursive.UpdateFramesFromConfig()
-			end
-		end,
-	},
-	["bartexture"] = {
-		type = "text",
-		name = L["Health Bar Texture"],
-		desc = L["Health Bar Texture Desc"],
-		order = 55,
-		usage = "Interface\\TargetingFrame\\UI-StatusBar",
-		get = function()
-			return Cursive.db.profile.bartexture
-		end,
-		set = function(v)
-			if v ~= Cursive.db.profile.bartexture then
-				Cursive.db.profile.bartexture = v
-				Cursive.UpdateFramesFromConfig()
-			end
-		end,
-	},
-	["raidiconsize"] = {
-		type = "range",
-		name = L["Raid Icon Size"],
-		desc = L["Raid Icon Size"],
-		order = 60,
-		min = 10,
-		max = 30,
-		step = 1,
-		get = function()
-			return Cursive.db.profile.raidiconsize
-		end,
-		set = function(v)
-			if v ~= Cursive.db.profile.raidiconsize then
-				Cursive.db.profile.raidiconsize = v
-				Cursive.UpdateFramesFromConfig()
-			end
-		end,
-	},
-	["curseiconsize"] = {
-		type = "range",
-		name = L["Curse Icon Size"],
-		desc = L["Curse Icon Size"],
-		order = 70,
-		min = 10,
-		max = 30,
-		step = 1,
-		get = function()
-			return Cursive.db.profile.curseiconsize
-		end,
-		set = function(v)
-			if v ~= Cursive.db.profile.curseiconsize then
-				Cursive.db.profile.curseiconsize = v
 				Cursive.UpdateFramesFromConfig()
 			end
 		end,
@@ -704,19 +520,6 @@ Cursive.cmdtable = {
 				end
 			end,
 		},
-		["showtitle"] = {
-			type = "toggle",
-			name = L["Show Title"],
-			desc = L["Show the title of the frame"],
-			order = 3,
-			get = function()
-				return Cursive.db.profile.showtitle
-			end,
-			set = function(v)
-				Cursive.db.profile.showtitle = v
-				Cursive.UpdateFramesFromConfig()
-			end,
-		},
 		["clickthrough"] = {
 			type = "toggle",
 			name = L["Allow clickthrough"],
@@ -727,19 +530,6 @@ Cursive.cmdtable = {
 			end,
 			set = function(v)
 				Cursive.db.profile.clickthrough = v
-				Cursive.UpdateFramesFromConfig()
-			end,
-		},
-		["showbackdrop"] = {
-			type = "toggle",
-			name = L["Show Frame Background"],
-			desc = L["Toggle the frame background to help with positioning"],
-			order = 7,
-			get = function()
-				return Cursive.db.profile.showbackdrop
-			end,
-			set = function(v)
-				Cursive.db.profile.showbackdrop = v
 				Cursive.UpdateFramesFromConfig()
 			end,
 		},
@@ -825,24 +615,6 @@ Cursive.cmdtable = {
 			set = function(v)
 				if v ~= Cursive.db.profile.maxrow then
 					Cursive.db.profile.maxrow = v
-					Cursive.UpdateFramesFromConfig()
-				end
-			end,
-		},
-		["maxcol"] = {
-			type = "range",
-			name = L["Max Columns"],
-			desc = L["Max Columns"],
-			order = 40,
-			min = 1,
-			max = 20,
-			step = 1,
-			get = function()
-				return Cursive.db.profile.maxcol
-			end,
-			set = function(v)
-				if v ~= Cursive.db.profile.maxcol then
-					Cursive.db.profile.maxcol = v
 					Cursive.UpdateFramesFromConfig()
 				end
 			end,
