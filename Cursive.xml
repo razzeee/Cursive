@@ -490,6 +490,40 @@
                     </OnClick>
                 </Scripts>
             </CheckButton>
+            <CheckButton name="$parentSharedFaerieFire" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentPlayerOnly" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText(L["Shared Faerie Fire"] or "Shared Faerie Fire")
+                        this.tooltipText = L["This will show other player's Faerie Fires and avoid trying to cast Faerie Fire on those mobs"]
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleSharedFaerieFire(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
+            <CheckButton name="$parentSharedCC" inherits="CursiveOptionsCheckButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentSharedFaerieFire" relativePoint="BOTTOMLEFT">
+                        <Offset x="0" y="0"/>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local L = AceLibrary("AceLocale-2.2"):new("Cursive")
+                        getglobal(this:GetName().."Text"):SetText(L["Shared CC"] or "Shared CC")
+                        this.tooltipText = L["This will show other player's CCs and avoid trying to cast CC on those mobs"]
+                    </OnLoad>
+                    <OnClick>
+                        Cursive.ui.ToggleSharedCC(this:GetChecked())
+                    </OnClick>
+                </Scripts>
+            </CheckButton>
             <CheckButton name="$parentInvert" inherits="CursiveOptionsCheckButtonTemplate">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentLock" relativePoint="BOTTOMLEFT">

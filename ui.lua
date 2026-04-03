@@ -872,6 +872,8 @@ function ui.ToggleOptions()
         CursiveOptionsFrameOpacitySlider:SetValue(config.opacity or 1)
         CursiveOptionsFrameLock:SetChecked(config.clickthrough)
         CursiveOptionsFrameInvert:SetChecked(config.invertbars)
+        CursiveOptionsFrameSharedFaerieFire:SetChecked(config.shareddebuffs.faeriefire)
+        CursiveOptionsFrameSharedCC:SetChecked(config.shareddebuffs.cc)
         CursiveOptionsFrameExpandUpwards:SetChecked(config.expandupwards)
         CursiveOptionsFrameAlwaysShowTarget:SetChecked(config.alwaysshowcurrenttarget)
         CursiveOptionsFrameCompactMode:SetChecked(config.compactmode)
@@ -925,6 +927,16 @@ end
 function ui.ToggleInvert(val)
     Cursive.db.profile.invertbars = val
     ui.UpdateLayout()
+end
+
+function ui.ToggleSharedFaerieFire(val)
+    Cursive.db.profile.shareddebuffs.faeriefire = val
+    Cursive.UpdateFramesFromConfig()
+end
+
+function ui.ToggleSharedCC(val)
+    Cursive.db.profile.shareddebuffs.cc = val
+    Cursive.UpdateFramesFromConfig()
 end
 
 function ui.ToggleExpandUpwards(val)
@@ -1177,7 +1189,7 @@ function ui.OnUpdate()
                         local curseTex = getglobal(dots:GetName().."Curse"..curseIdx)
                         local curseBorder = getglobal(dots:GetName().."Curse"..curseIdx.."Border")
                         local curseTimer = getglobal(dots:GetName().."Curse"..curseIdx.."Timer")
-                        curseTex:SetTexture(Cursive.curses.trackedCurseIds[curseData.spellID].texture)
+                        curseTex:SetTexture(Cursive.curses:GetTexture(curseData.spellID))
                         curseTex:SetDesaturated(not curseData.currentPlayer)
                         curseTex:Show()
                         curseBorder:Show()

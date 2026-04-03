@@ -22,6 +22,7 @@ Cursive:RegisterDefaults("profile", {
 
 	shareddebuffs = {
 		faeriefire = false,
+		cc = false,
 	},
 
 	alwaysshowcurrenttarget = true,
@@ -181,6 +182,19 @@ local barOptions = {
 		end,
 		set = function(v)
 			Cursive.db.profile.invertbars = v
+			Cursive.UpdateFramesFromConfig()
+		end,
+	},
+	["sharedCC"] = {
+		type = "toggle",
+		name = L["Shared CC"],
+		desc = L["This will show other player's CCs and avoid trying to cast CC on those mobs"],
+		order = 11,
+		get = function()
+			return Cursive.db.profile.shareddebuffs.cc
+		end,
+		set = function(v)
+			Cursive.db.profile.shareddebuffs.cc = v
 			Cursive.UpdateFramesFromConfig()
 		end,
 	},
@@ -494,6 +508,19 @@ local sharedDebuffs = {
 		end,
 		set = function(v)
 			Cursive.db.profile.shareddebuffs.faeriefire = v
+			Cursive.UpdateFramesFromConfig()
+		end,
+	},
+	["sharedCC"] = {
+		type = "toggle",
+		name = L["Shared CC"],
+		desc = L["This will show other player's CCs and avoid trying to cast CC on those mobs"],
+		order = 11,
+		get = function()
+			return Cursive.db.profile.shareddebuffs.cc
+		end,
+		set = function(v)
+			Cursive.db.profile.shareddebuffs.cc = v
 			Cursive.UpdateFramesFromConfig()
 		end,
 	},

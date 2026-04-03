@@ -37,9 +37,7 @@ local curses = {
 	sharedDebuffs = {
 		faeriefire = {},
 	},
-	sharedDebuffGuids = {
-		faeriefire = {}, -- used for scanning for shared debuffs like faerie fire
-	}, -- used for scanning for shared debuffs like faerie fire
+	sharedDebuffGuids = {},
 
 	-- Whitelist of mobs that can bleed (for rake tracking at client debuff cap)
 	mobsThatBleed = {
@@ -148,6 +146,15 @@ function curses:LoadCurses()
 
 	-- load shared debuffs
 	curses.sharedDebuffs = getSharedDebuffs()
+	for key, debuffs in pairs(curses.sharedDebuffs) do
+		curses.sharedDebuffGuids[key] = {}
+		for id, data in pairs(debuffs) do
+			local name, rank, texture = SpellInfo(id)
+			if texture then
+				curses.trackedCurseNamesToTextures[data.name] = texture
+			end
+		end
+	end
 
   -- register faerie fire tracking from other players
   if Cursive.db.profile.shareddebuffs.faeriefire then
@@ -329,6 +336,22 @@ end);
 
 Cursive:RegisterEvent("SPELLCAST_CHANNEL_STOP", StopChanneling);
 Cursive:RegisterEvent("SPELLCAST_INTERRUPTED", StopChanneling);
+
+-- track other players' shared debuffs
+Cursive:RegisterEvent("UNIT_CASTEVENT", function(casterGuid, targetGuid, event, spellID, castDuration)
+	if event == "CAST" then
+		local _, guid = UnitExists("player")
+		if casterGuid ~= guid then
+			-- check for shared debuffs
+			for key, debuffs in pairs(curses.sharedDebuffs) do
+				if Cursive.db.profile.shareddebuffs[key] and debuffs[spellID] then
+					curses.sharedDebuffGuids[key][targetGuid] = GetTime()
+					curses:ApplySharedCurse(key, spellID, targetGuid, GetTime())
+				end
+			end
+		end
+	end
+end)
 
 -- player spell completions
 Cursive:RegisterEvent("SPELL_GO_SELF", function(itemId, spellID, casterGuid, targetGuid, castFlags, numTargetsHit, numTargetsMissed)
@@ -698,6 +721,21 @@ function curses:RemoveGuid(guid)
 	curses.resistSoundGuids[guid] = nil
 	curses.expiringSoundGuids[guid] = nil
 	curses.requestedExpiringSoundGuids[guid] = nil
+end
+
+function curses:GetTexture(spellID)
+	if curses.trackedCurseIds[spellID] then
+		return curses.trackedCurseIds[spellID].texture
+	end
+
+	for key, debuffs in pairs(curses.sharedDebuffs) do
+		if debuffs[spellID] then
+			local _, _, texture = SpellInfo(spellID)
+			return texture
+		end
+	end
+
+	return nil
 end
 
 Cursive.curses = curses
