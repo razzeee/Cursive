@@ -339,6 +339,13 @@ Cursive:RegisterEvent("SPELLCAST_INTERRUPTED", StopChanneling);
 
 -- track other players' shared debuffs
 Cursive:RegisterEvent("UNIT_CASTEVENT", function(casterGuid, targetGuid, event, spellID, castDuration)
+	if casterGuid then
+		Cursive.core.addGuid(casterGuid)
+	end
+	if targetGuid then
+		Cursive.core.addGuid(targetGuid)
+	end
+	-- immolate will fire both start and cast
 	if event == "CAST" then
 		local _, guid = UnitExists("player")
 		if casterGuid ~= guid then

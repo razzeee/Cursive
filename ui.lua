@@ -1090,6 +1090,10 @@ function ui.OnUpdate()
     if ui.tick < 0.1 then return end
     ui.tick = 0
 
+    if Cursive.core and Cursive.core.ScanUnits then
+        Cursive.core.ScanUnits()
+    end
+
     -- Logic for choosing which GUIDs to show
     local guidList = {}
 
