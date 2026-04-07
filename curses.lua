@@ -275,6 +275,12 @@ Cursive:RegisterEvent("SPELLCAST_CHANNEL_STOP", StopChanneling);
 Cursive:RegisterEvent("SPELLCAST_INTERRUPTED", StopChanneling);
 
 Cursive:RegisterEvent("UNIT_CASTEVENT", function(casterGuid, targetGuid, event, spellID, castDuration)
+	if casterGuid then
+		Cursive.core.addGuid(casterGuid)
+	end
+	if targetGuid then
+		Cursive.core.addGuid(targetGuid)
+	end
 	-- immolate will fire both start and cast
 	if event == "CAST" then
 		local _, guid = UnitExists("player")
