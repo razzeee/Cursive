@@ -40,6 +40,119 @@ local curses = {
 		faeriefire = {}, -- used for scanning for shared debuffs like faerie fire
 	}, -- used for scanning for shared debuffs like faerie fire
 
+	ccSpellIds = {
+		[700] = { name = L["sleep"], rank = L["Rank 1"], duration = 20 },
+		[1090] = { name = L["sleep"], rank = L["Rank 2"], duration = 30 },
+		[2937] = { name = L["sleep"], rank = L["Rank 3"], duration = 40 },
+
+		[339] = { name = L["entangling roots"], rank = L["Rank 1"], duration = 12 },
+		[1062] = { name = L["entangling roots"], rank = L["Rank 2"], duration = 15 },
+		[5195] = { name = L["entangling roots"], rank = L["Rank 3"], duration = 18 },
+		[5196] = { name = L["entangling roots"], rank = L["Rank 4"], duration = 21 },
+		[9852] = { name = L["entangling roots"], rank = L["Rank 5"], duration = 24 },
+		[9853] = { name = L["entangling roots"], rank = L["Rank 6"], duration = 27 },
+
+		[2637] = { name = L["hibernate"], rank = L["Rank 1"], duration = 20 },
+		[18657] = { name = L["hibernate"], rank = L["Rank 2"], duration = 30 },
+		[18658] = { name = L["hibernate"], rank = L["Rank 3"], duration = 40 },
+
+		[1425] = { name = L["shackle undead"], rank = L["Rank 1"], duration = 30 },
+		[9486] = { name = L["shackle undead"], rank = L["Rank 2"], duration = 40 },
+		[10956] = { name = L["shackle undead"], rank = L["Rank 3"], duration = 50 },
+
+		-- polymorph
+		[118] = { name = L["polymorph"], rank = L["Rank 1"], duration = 20 },
+		[12824] = { name = L["polymorph"], rank = L["Rank 2"], duration = 30 },
+		[12825] = { name = L["polymorph"], rank = L["Rank 3"], duration = 40 },
+		[12826] = { name = L["polymorph"], rank = L["Rank 4"], duration = 50 },
+
+		[28270] = { name = L["polymorph: cow"], rank = L["Rank 1"], duration = 50 },
+		[28271] = { name = L["polymorph: turtle"], rank = L["Rank 1"], duration = 50 },
+		[28272] = { name = L["polymorph: pig"], rank = L["Rank 1"], duration = 50 },
+
+		[2878] = { name = L["turn undead"], rank = L["Rank 1"], duration = 10 },
+		[5627] = { name = L["turn undead"], rank = L["Rank 2"], duration = 15 },
+		[10326] = { name = L["turn undead"], rank = L["Rank 3"], duration = 20 },
+
+		[2094] = { name = L["blind"], rank = L["Rank 1"], duration = 10 },
+		[21060] = { name = L["blind"], rank = L["Rank 1"], duration = 10 },
+
+		[6770] = { name = L["sap"], rank = L["Rank 1"], duration = 25 },
+		[2070] = { name = L["sap"], rank = L["Rank 2"], duration = 35 },
+		[11297] = { name = L["sap"], rank = L["Rank 3"], duration = 45 },
+
+		[1776] = { name = L["gouge"], rank = L["Rank 1"], duration = 4 },
+		[1777] = { name = L["gouge"], rank = L["Rank 2"], duration = 4 },
+		[8629] = { name = L["gouge"], rank = L["Rank 3"], duration = 4 },
+		[11285] = { name = L["gouge"], rank = L["Rank 4"], duration = 4 },
+		[11286] = { name = L["gouge"], rank = L["Rank 5"], duration = 4 },
+
+		[3355] = { name = L["freezing trap"], rank = L["Rank 1"], duration = 10 },
+		[14308] = { name = L["freezing trap"], rank = L["Rank 2"], duration = 15 },
+		[14309] = { name = L["freezing trap"], rank = L["Rank 3"], duration = 20 },
+
+		[710] = { name = L["banish"], rank = L["Rank 1"], duration = 30 },
+		[18647] = { name = L["banish"], rank = L["Rank 2"], duration = 30 },
+
+		-- mind control effects
+		[28410] = { name = "Chains of Kel'Thuzad" }, -- we aren't casting these, name doesn't matter
+		[7621] = { name = "Arugal's Curse" },
+		[24261] = { name = "Brain Wash" },
+		[12888] = { name = "Cause Insanity" },
+		[24327] = { name = "Cause Insanity" },
+		[26079] = { name = "Cause Insanity" },
+		[23174] = { name = "Chromatic Mutation" },
+		[25806] = { name = "Creature of Nightmare" },
+		[23298] = { name = "Demonic Doom" },
+		[7645] = { name = "Dominate Mind" },
+		[14515] = { name = "Dominate Mind" },
+		[15859] = { name = "Dominate Mind" },
+		[20604] = { name = "Dominate Mind" },
+		[20740] = { name = "Dominate Mind" },
+		[17405] = { name = "Domination" },
+		[3442] = { name = "Enslave" },
+		[13181] = { name = "Gnomish Mind Control Cap" },
+		[26740] = { name = "Gnomish Mind Control Cap" },
+		[12483] = { name = "Hex of Jammal'an" },
+		[25772] = { name = "Mental Domination" },
+		[7967] = { name = "Naralex's Nightmare" },
+		[19469] = { name = "Poison Mind" },
+		[17244] = { name = "Possess" },
+		[22667] = { name = "Shadow Command" },
+		[20668] = { name = "Sleepwalk" },
+		[785] = { name = "True Fulfillment" },
+		[26195] = { name = "Whisperings of C'Thun" },
+		[26197] = { name = "Whisperings of C'Thun" },
+		[26198] = { name = "Whisperings of C'Thun" },
+		[26258] = { name = "Whisperings of C'Thun" },
+		[26259] = { name = "Whisperings of C'Thun" },
+		[24178] = { name = "Will of Hakkar" },
+
+		-- immunity effects
+		[642] = { name = "Divine Shield" },
+		[1020] = { name = "Divine Shield" },
+		[13874] = { name = "Divine Shield" },
+		[5573] = { name = "Divine Protection" },
+		[13007] = { name = "Divine Protection" },
+		[6356] = { name = "Spell Immunity" },
+		[6724] = { name = "Light of Elune" },
+		[7121] = { name = "Anti-Magic Shield" },
+		[19645] = { name = "Anti-Magic Shield" },
+		[24021] = { name = "Anti-Magic Shield" },
+		[8361] = { name = "Purity" },
+		[8611] = { name = "Phase Shift" },
+		[45713] = { name = "Phase Shift" },
+		[9438] = { name = "Arcane Bubble" },
+		[11958] = { name = "Ice Block" },
+		[12843] = { name = "Mordresh's Shield" },
+		[21892] = { name = "Arcane Protection" },
+		[51096] = { name = "Worgen Dimension" },
+		[51228] = { name = "Invulnerability" },
+		[52010] = { name = "Pending Detonation" },
+		[53225] = { name = "Ward of Vorgendor" },
+		[57644] = { name = "Veil of Vorgendor" },
+	},
+
 	-- Whitelist of mobs that can bleed (for rake tracking at client debuff cap)
 	mobsThatBleed = {
 		["0xF13000F1F3276A33"] = true, -- Keeper Gnarlmoon
@@ -245,6 +358,41 @@ function curses:ScanGuidForCurse(guid, curseSpellID)
 	end
 
 	return nil
+end
+
+function curses:GetMobCC(guid)
+	-- check debuffs
+	for i = 1, 16 do
+		local _, _, _, spellId = UnitDebuff(guid, i)
+		if spellId then
+			if curses.ccSpellIds[spellId] then
+				return spellId
+			end
+		else
+			break
+		end
+	end
+
+	-- check buffs
+	for i = 1, 32 do
+		local _, _, spellId = UnitBuff(guid, i)
+		if spellId then
+			if curses.ccSpellIds[spellId] then
+				return spellId
+			end
+		else
+			break
+		end
+	end
+
+	return nil
+end
+
+function curses:IsMobCrowdControlled(guid)
+	if curses:GetMobCC(guid) then
+		return true
+	end
+	return false
 end
 
 function curses:GetLowercaseSpellName(spellName)
