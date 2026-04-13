@@ -56,6 +56,9 @@ local curses = {
 		[18657] = { name = L["hibernate"], rank = L["Rank 2"], duration = 30 },
 		[18658] = { name = L["hibernate"], rank = L["Rank 3"], duration = 40 },
 
+		[9484] = { name = L["shackle undead"], rank = L["Rank 1"], duration = 30 },
+		[9485] = { name = L["shackle undead"], rank = L["Rank 2"], duration = 40 },
+		[10955] = { name = L["shackle undead"], rank = L["Rank 3"], duration = 50 },
 		[1425] = { name = L["shackle undead"], rank = L["Rank 1"], duration = 30 },
 		[9486] = { name = L["shackle undead"], rank = L["Rank 2"], duration = 40 },
 		[10956] = { name = L["shackle undead"], rank = L["Rank 3"], duration = 50 },
