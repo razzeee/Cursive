@@ -629,6 +629,9 @@ function ui.OnUpdate()
             healthBar:SetValue(hp)
 
             local _, r, g, b = utils.GetUnitColor(guid)
+            if Cursive.curses:IsMobCrowdControlled(guid) then
+                r, g, b = 0.5, 0.5, 0.5
+            end
             healthBar:SetStatusBarColor(r, g, b)
             getglobal(healthBar:GetName().."Background"):SetAlpha(0.8)
 
@@ -663,22 +666,40 @@ function ui.OnUpdate()
             -- Curses
             local guidCurses = guid and Cursive.curses.guids[guid]
             local curseIdx = 1
+
+            local ccSpellID = Cursive.curses:GetMobCC(guid)
+            if ccSpellID then
+                local curseTex = getglobal(dots:GetName().."Curse"..curseIdx)
+                local curseBorder = getglobal(dots:GetName().."Curse"..curseIdx.."Border")
+                local curseTimer = getglobal(dots:GetName().."Curse"..curseIdx.."Timer")
+                local _, _, texture = SpellInfo(ccSpellID)
+                curseTex:SetTexture(texture)
+                curseTex:SetDesaturated(false)
+                curseTex:Show()
+                curseBorder:Show()
+                curseTimer:Hide()
+                curseIdx = curseIdx + 1
+            end
+
             if guidCurses then
                 -- Sort curses
                 for curseName, curseData in GetSortedCurses(guidCurses) do
                     if curseIdx > 5 then break end
-                    local remaining = Cursive.curses:TimeRemaining(curseData)
-                    if remaining >= 0 then
-                        local curseTex = getglobal(dots:GetName().."Curse"..curseIdx)
-                        local curseBorder = getglobal(dots:GetName().."Curse"..curseIdx.."Border")
-                        local curseTimer = getglobal(dots:GetName().."Curse"..curseIdx.."Timer")
-                        curseTex:SetTexture(Cursive.curses.trackedCurseIds[curseData.spellID].texture)
-                        curseTex:SetDesaturated(not curseData.currentPlayer)
-                        curseTex:Show()
-                        curseBorder:Show()
-                        curseTimer:SetText(remaining)
-                        curseTimer:Show()
-                        curseIdx = curseIdx + 1
+                    -- skip if already shown as CC
+                    if curseData.spellID ~= ccSpellID then
+                        local remaining = Cursive.curses:TimeRemaining(curseData)
+                        if remaining >= 0 then
+                            local curseTex = getglobal(dots:GetName().."Curse"..curseIdx)
+                            local curseBorder = getglobal(dots:GetName().."Curse"..curseIdx.."Border")
+                            local curseTimer = getglobal(dots:GetName().."Curse"..curseIdx.."Timer")
+                            curseTex:SetTexture(Cursive.curses.trackedCurseIds[curseData.spellID].texture)
+                            curseTex:SetDesaturated(not curseData.currentPlayer)
+                            curseTex:Show()
+                            curseBorder:Show()
+                            curseTimer:SetText(remaining)
+                            curseTimer:Show()
+                            curseIdx = curseIdx + 1
+                        end
                     end
                 end
             end
