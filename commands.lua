@@ -288,7 +288,6 @@ local function pickTarget(selectedPriority, lowercaseSpellNameNoRank, checkRange
 							end
 						end
 					end
-				end
 			end
 		end
 	end

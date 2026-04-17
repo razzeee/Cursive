@@ -124,6 +124,12 @@ L:RegisterTranslations("enUS", function()
 		["Rank 2"] = true,
 		["Rank 3"] = true,
 		["Rank 4"] = true,
+		["Rank 5"] = true,
+		["Rank 6"] = true,
+		["Rank 7"] = true,
+		["Rank 8"] = true,
+		["Rank 9"] = true,
+		["Rank 10"] = true,
 
 		-- druid
 		["entangling roots"] = true,
@@ -352,6 +358,12 @@ L:RegisterTranslations("zhCN", function()
 		["Rank 2"] = "等级 2",
 		["Rank 3"] = "等级 3",
 		["Rank 4"] = "等级 4",
+		["Rank 5"] = "等级 5",
+		["Rank 6"] = "等级 6",
+		["Rank 7"] = "等级 7",
+		["Rank 8"] = "等级 8",
+		["Rank 9"] = "等级 9",
+		["Rank 10"] = "等级 10",
 
 		-- druid
 		["entangling roots"] = "纠缠根须",
