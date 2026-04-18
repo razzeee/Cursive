@@ -688,9 +688,6 @@ function ui.OnUpdate()
                     -- skip if already shown as CC
                     if curseData.spellID ~= ccSpellID then
                         local remaining = Cursive.curses:TimeRemaining(curseData)
-                        if remaining <= 2 and Cursive.curses:ShouldPlayExpiringSound(curseName, guid) then
-                            PlaySoundFile("Interface/AddOns/Cursive/sounds/expiring.mp3")
-                        end
                         if remaining >= 0 then
                             local curseTex = getglobal(dots:GetName().."Curse"..curseIdx)
                             local curseBorder = getglobal(dots:GetName().."Curse"..curseIdx.."Border")

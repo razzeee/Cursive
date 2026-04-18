@@ -564,7 +564,7 @@ Cursive:RegisterEvent("CHAT_MSG_SPELL_SELF_DAMAGE",
 					Cursive:CancelScheduledEvent("addCurse" .. lastGuid .. spellName)
 					-- check if sound should be played
 					if curses:ShouldPlayResistSound(lastGuid) then
-						PlaySoundFile("Interface/AddOns/Cursive/sounds/resist.mp3")
+						PlaySoundFile("Interface\\AddOns\\Cursive\\Sounds\\resist.mp3")
 					end
 				elseif spellName == L["conflagrate"] and lastGuid then
 					Cursive:CancelScheduledEvent("updateCurse" .. lastGuid .. spellName)
@@ -826,10 +826,6 @@ function curses:ApplyCurse(spellID, targetGuid, startTime, duration)
 		targetGuid = targetGuid,
 		currentPlayer = true,
 	}
-
-	if curses:HasRequestedExpiringSound(name, targetGuid) then
-		curses:EnableExpiringSound(name, targetGuid)
-	end
 end
 
 function curses:UpdateCurse(spellID, targetGuid, startTime)
